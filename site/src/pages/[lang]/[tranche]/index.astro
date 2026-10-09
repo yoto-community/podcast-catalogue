@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../../components/CatalogBrowser.astro";
+import {
+  categoryOptions,
+  entriesOf,
+  entriesOfLanguage,
+  getGroups,
+  getLanguages,
+  groupAgeRange,
+  groupLabel,
+} from "../../../lib/catalog";
+import { plural } from "../../../lib/format";
+import { itemListJsonLd } from "../../../lib/seo";
+import { pageUrl } from "../../../lib/url";
+import type { ManifestGroup, ManifestLanguage, StaticPath } from "../../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<GroupProps>> {
+  const paths: Array<StaticPath<GroupProps>> = [];
+  for (const language of getLanguages()) {
+    for (const group of getGroups()) {
+      if (entriesOf(language.code, group.id).length > 0) {
+        paths.push({
+          params: { lang: language.code, tranche: group.id },
+          props: { language, group },
+        });
+      }
+    }
+  }
+  return paths;
+}
+
+interface GroupProps {
+  language: ManifestLanguage;
+  group: ManifestGroup;
+}
+
+interface Props extends GroupProps {}
+
+const { language, group } = Astro.props;
+const entries = entriesOf(language.code, group.id);
+const label = groupLabel(group, language.code);
+const ageRange = groupAgeRange(group, language.code);
+const path = `/${language.code}/${group.id}/`;
+
+const jsonLd = itemListJsonLd(
+  `${label} — podcasts`,
+  entries.map((entry) => ({
+    name: entry.name,
+    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  })),
+  Astro.site,
+);
+
+const title = `${label} (${ageRange}) — podcasts en ${language.code === "fr" ? "français" : "anglais"}`;
+const description = `${plural(entries.length, "podcast")} pour la tranche ${label} (${ageRange}), avec écoute directe et lien vers le site de l’éditeur.`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang={language.code}>
+  <CatalogBrowser
+    title={label}
+    intro={`${plural(entries.length, "podcast")} pour la tranche « ${label} » — ${ageRange}.`}
+    entries={entries}
+    languages={[]}
+    groups={[]}
+    categories={categoryOptions(entries, language.code)}
+    preset={{ language: language.code, group: group.id }}
+    nav={{
+      label: "Toutes les tranches",
+      items: [
+        {
+          href: pageUrl(`/${language.code}/`),
+          label: "Toutes les tranches",
+          count: entriesOfLanguage(language.code).length,
+          active: false,
+        },
+        ...getGroups()
+          .map((candidate) => ({
+            href: pageUrl(`/${language.code}/${candidate.id}/`),
+            label: groupLabel(candidate, language.code),
+            count: entriesOf(language.code, candidate.id).length,
+            active: candidate.id === group.id,
+          }))
+          .filter((item) => item.count > 0),
+      ],
+    }}
+  />
+</BaseLayout>

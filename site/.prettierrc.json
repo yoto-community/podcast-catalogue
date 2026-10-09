@@ -1,0 +1,13 @@
+{
+  "printWidth": 100,
+  "proseWrap": "preserve",
+  "plugins": ["./node_modules/prettier-plugin-astro/dist/index.js"],
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ]
+}

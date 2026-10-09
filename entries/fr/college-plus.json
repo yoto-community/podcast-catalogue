@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Bonjour London",
+    "publisher": "Cheriefm",
+    "category": "education",
+    "rssUrl": "https://feeds.audiomeans.fr/feed/d14e5dff-e6a7-47a3-a2b5-a0b3fc2acdc5.xml",
+    "description": "Découvertes culturelles à Londres. Podcast bilingue pour les enfants, qui te raconte une histoire tout en t’apprenant l’anglais !",
+    "websiteUrl": "https://www.cheriefm.fr/podcasts/bonjour-london",
+    "tags": [
+      "sciences",
+      "contes-classiques",
+      "geographie-voyages",
+      "arts-culture",
+      "langues"
+    ]
+  },
+  {
+    "name": "Ma vie d'ado",
+    "category": "histoire",
+    "rssUrl": "https://feed.ausha.co/y01KDSEdz8lE",
+    "description": "Ma Vie d'ado, c'est le podcast du magazine Okapi. Ici, des collégiens parlent d’eux-mêmes, de leurs profs, de leurs amis, de leurs familles. Ils évoquent leur vie intime, au collège, en famille, seuls ou entre potes. Amour, amité, délires... ils partagent aussi leurs colères, leurs coups de coeur, leurs angoisses et... leurs espoirs. Ma Vie d’Ado, c’est intime, c’est joyeux, c’est drôle, c’est triste, c’est mouvementé… C’est bouleversant comme une vie d’ado ! Ma Vie d’ado, le podcast du magazine Okapi, est réalisé avec des adolescents venus de toute la France. À retrouver tous les quinze jours, en même temps que le magazine !",
+    "tags": [
+      "histoire-france",
+      "emotions-bienetre",
+      "arts-culture",
+      "humour"
+    ]
+  },
+  {
+    "name": "Pépites d'Histoires",
+    "category": "education",
+    "rssUrl": "https://feeds.acast.com/public/shows/b23d0069-4ee8-54aa-b64c-02bbad04cad9?fbclid=IwY2xjawUTvxxwZG9mBWV4dG4DYWVtAjEwAGJyaWQRMDZkaTFxaWNJbzVPdmhZVmFzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEejA3V3H1CBh9KWC4XjOBuqe-0Q-jmgPT7KTWBPmZExYgkFax05Sya5PbR6mU_aem_cyBiv-mVJKibwurQNyfaQw",
+    "description": "Un podcast immersif pour découvrir chaque mois une nouvelle anecdote surprenante, croustillante et toujours passionnante de l'Histoire. Que vous soyez fan des récits de Nota Bene, de Franck Ferrand, de Richard Fremder ou encore de Stéphane Bern, laissez-vous tenter, écoutez quelques Perles d'Histoire",
+    "tags": [
+      "animaux",
+      "apprentissages"
+    ]
+  },
+  {
+    "name": "Une autre histoire",
+    "publisher": "Louiemedia",
+    "category": "education",
+    "rssUrl": "https://feeds.acast.com/public/shows/547f335e-d313-453e-89d0-a59b1fb7cf11",
+    "description": "Une Autre histoire est un podcast qui redonne aux femmes la place qu’on leur a ôtée. La première saison vous raconte la naissance du cinéma à travers la figure d’Alice Guy.",
+    "websiteUrl": "https://louiemedia.com/une-autre-histoire",
+    "tags": [
+      "contes-classiques",
+      "heros-filles"
+    ]
+  }
+]

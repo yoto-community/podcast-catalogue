@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../components/CatalogBrowser.astro";
+import {
+  categoryOptions,
+  entriesOfLanguage,
+  getGroups,
+  getLanguages,
+  groupLabel,
+  groupOptions,
+  languageFrenchName,
+} from "../../lib/catalog";
+import { plural } from "../../lib/format";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
+import type { ManifestLanguage, StaticPath } from "../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<LanguageProps>> {
+  return getLanguages().map((language) => ({
+    params: { lang: language.code },
+    props: { language },
+  }));
+}
+
+interface LanguageProps {
+  language: ManifestLanguage;
+}
+
+interface Props extends LanguageProps {}
+
+const { language } = Astro.props;
+const entries = entriesOfLanguage(language.code);
+const frenchName = languageFrenchName(language.code);
+
+const groupNav = getGroups()
+  .map((group) => ({
+    href: pageUrl(`/${language.code}/${group.id}/`),
+    label: groupLabel(group, language.code),
+    count: entries.filter((entry) => entry.groupId === group.id).length,
+    active: false,
+  }))
+  .filter((item) => item.count > 0);
+
+const jsonLd = itemListJsonLd(
+  `Podcasts en ${frenchName}`,
+  entries.map((entry) => ({
+    name: entry.name,
+    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  })),
+  Astro.site,
+);
+
+const title = `Podcasts en ${frenchName} — Annuaire de podcasts`;
+const description = `${plural(entries.length, "podcast")} en ${frenchName}, toutes tranches d’âge : écoute directe, description et lien vers le site de l’éditeur.`;
+const path = `/${language.code}/`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang={language.code}>
+  <CatalogBrowser
+    title={`Podcasts en ${frenchName}`}
+    intro={`Feuilleter tous les podcasts en ${frenchName}. Utilisez la recherche et les filtres pour affiner la liste.`}
+    entries={entries}
+    languages={[]}
+    groups={groupOptions(entries, language.code)}
+    categories={categoryOptions(entries, language.code)}
+    preset={{ language: language.code }}
+    nav={{ label: "Tranches d’âge", items: groupNav }}
+  />
+</BaseLayout>

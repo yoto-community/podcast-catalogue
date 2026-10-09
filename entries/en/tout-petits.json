@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Circle Round",
+    "publisher": "Wbur",
+    "category": "histoire",
+    "rssUrl": "https://rss.wbur.org/circleround/podcast",
+    "description": "WBUR's Circle Round adapts carefully-selected folktales from around the world into sound- and music-rich radio plays for kids ages 3-103. Each 15 to 25-minute episode explores important issues like kindness, persistence and generosity.",
+    "websiteUrl": "https://www.wbur.org/podcasts/circleround",
+    "tags": [
+      "contes-classiques"
+    ]
+  },
+  {
+    "name": "Draw Along Stories",
+    "category": "education",
+    "rssUrl": "https://anchor.fm/s/25ebb444/podcast/rss",
+    "description": "\"Draw Along Stories\" encourages the inner artist in all young ones! In each episode La La shares an original story or poem and invites kiddos to draw the images they see in their imagination while listening in.",
+    "tags": [
+      "arts-culture"
+    ]
+  },
+  {
+    "name": "Story Train: Magical Bedtime Stories for Kids",
+    "publisher": "Gokidgo",
+    "category": "histoire",
+    "rssUrl": "https://www.spreaker.com/show/5196976/episodes/feed",
+    "description": "Storytelling escapades designed specifically for children aged four and up! Dive into fantastic, G-rated tales that transport young listeners on magical journeys to far-off places across the globe.",
+    "websiteUrl": "https://www.gokidgo.com/storytrain",
+    "tags": [
+      "sante-corps"
+    ]
+  }
+]

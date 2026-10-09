@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../../components/CatalogBrowser.astro";
+import { entriesOfPublisher, getEntries, getPublishers, slugifyPublisher } from "../../../lib/catalog";
+import { plural } from "../../../lib/format";
+import { itemListJsonLd } from "../../../lib/seo";
+import { pageUrl } from "../../../lib/url";
+import type { StaticPath } from "../../../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<PublisherProps>> {
+  return getPublishers()
+    .filter((p) => entriesOfPublisher(p.slug).length > 0)
+    .map((publisher) => ({
+      params: { slug: publisher.slug },
+      props: { publisher },
+    }));
+}
+
+interface PublisherProps {
+  publisher: { name: string; slug: string; count: number };
+}
+
+interface Props extends PublisherProps {}
+
+const { publisher } = Astro.props;
+const entries = entriesOfPublisher(publisher.slug);
+const path = `/editeurs/${publisher.slug}/`;
+
+const jsonLd = itemListJsonLd(
+  `Podcasts — ${publisher.name}`,
+  entries.map((entry) => ({
+    name: entry.name,
+    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  })),
+  Astro.site,
+);
+
+const title = `${publisher.name} — podcasts`;
+const description = `${plural(entries.length, "podcast")} de l'éditeur « ${publisher.name} » — écoute directe, description et lien vers le site de l'éditeur.`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <nav class="breadcrumb" aria-label="Fil d'ariane">
+    <ol>
+      <li><a href={pageUrl("/")}>Catalogue</a></li>
+      <li><a href={pageUrl("/editeurs/")}>Éditeurs</a></li>
+      <li><span aria-current="page">{publisher.name}</span></li>
+    </ol>
+  </nav>
+  <CatalogBrowser
+    title={publisher.name}
+    intro={`${plural(entries.length, "podcast")} publiés par « ${publisher.name} ».`}
+    entries={entries}
+    languages={[]}
+    groups={[]}
+    categories={[]}
+    preset={{}}
+    nav={{
+      label: "Tous les éditeurs",
+      items: [
+        { href: pageUrl("/editeurs/"), label: "Tous les éditeurs", count: getPublishers().length, active: false },
+      ],
+    }}
+  />
+</BaseLayout>

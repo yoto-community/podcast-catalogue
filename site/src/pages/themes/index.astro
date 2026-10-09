@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getEntries, getTags, tagLabel } from "../../lib/catalog";
+import { pageUrl } from "../../lib/url";
+import type { TagDef } from "../../lib/types";
+
+const entries = getEntries();
+const tags = getTags();
+
+const tagStats = tags.map((tag) => ({
+  ...tag,
+  count: entries.filter((e) => e.tags?.includes(tag.id)).length,
+})).filter((t) => t.count > 0);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Thèmes",
+  description: "Tous les thèmes du catalogue de podcasts pour enfants",
+};
+
+const title = "Thèmes — Catalogue de podcasts";
+const description = `${tagStats.length} thèmes pour découvrir les podcasts par sujet — animaux, espace, histoire, sciences, musique et plus.`;
+const path = "/themes/";
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <section class="catalog" data-catalog aria-labelledby="titre-page">
+    <header class="catalog__header">
+      <h1 id="titre-page">Thèmes</h1>
+      <p class="catalog__intro">Parcourez les podcasts par thème — chaque thème regroupe des podcasts partageant un même sujet.</p>
+      <p class="catalog__count" role="status">{tagStats.length} thèmes</p>
+    </header>
+
+    <ul class="grid themes-grid">
+      {tagStats.map((tag) => (
+        <li class="theme-card">
+          <a class="theme-card__link" href={pageUrl(`/themes/${tag.id}/`)}>
+            <span class="theme-card__label">{tagLabel(tag.id)}</span>
+            <span class="theme-card__count">{tag.count} podcast{tag.count > 1 ? "s" : ""}</span>
+            {tag.translations?.en && (
+              <span class="theme-card__desc">{tag.translations.en.description}</span>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <style>
+    .themes-grid {
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    }
+    .theme-card {
+      display: flex;
+    }
+    .theme-card__link {
+      display: block;
+      width: 100%;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .theme-card__link:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+    .theme-card__label {
+      display: block;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+    .theme-card__count {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .theme-card__desc {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: var(--measure);
+    }
+  </style>
+</BaseLayout>

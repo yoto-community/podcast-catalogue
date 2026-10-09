@@ -1,0 +1,145 @@
+---
+import PodcastCard from "./PodcastCard.astro";
+import { plural } from "../lib/format";
+import { sortByName } from "../lib/catalog";
+import type { DistEntry, FilterOption, NavItem } from "../lib/types";
+
+interface Props {
+  title: string;
+  intro?: string;
+  entries: DistEntry[];
+  languages: FilterOption[];
+  groups: FilterOption[];
+  categories: FilterOption[];
+  /** Filtres déjà imposés par la page (masqués dans l'interface). */
+  preset?: { language?: string; group?: string };
+  nav?: { label: string; items: NavItem[] };
+}
+
+const { title, intro, entries, languages, groups, categories, preset, nav } = Astro.props;
+const sorted = sortByName(entries);
+const showLanguages = !preset?.language && languages.length > 1;
+const showGroups = !preset?.group && groups.length > 1;
+const showCategories = categories.length > 1;
+---
+
+<section class="catalog" data-catalog aria-labelledby="titre-page">
+  <header class="catalog__header">
+    <h1 id="titre-page">{title}</h1>
+    {intro && <p class="catalog__intro">{intro}</p>}
+    <p class="catalog__count" data-count role="status">
+      {plural(entries.length, "podcast")}
+    </p>
+  </header>
+
+  {nav && nav.items.length > 1 && (
+    <nav class="catalog__nav" aria-label={nav.label}>
+      <ul>
+        {nav.items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.active ? "page" : undefined}>
+              <span>{item.label}</span>
+              <span class="catalog__nav-count">{item.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
+  <form class="filters" role="search" data-search-form>
+    <div class="filters__row">
+      <div class="field field--search">
+        <label for="recherche">Rechercher un podcast</label>
+        <div class="field__control">
+          <input
+            id="recherche"
+            type="search"
+            name="q"
+            data-search
+            placeholder="Nom, éditeur, description, catégorie…"
+            autocomplete="off"
+            aria-describedby="recherche-aide"
+          />
+          <kbd class="field__shortcut" aria-hidden="true">
+            /
+          </kbd>
+        </div>
+        <p class="field__help" id="recherche-aide">
+          Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
+        </p>
+      </div>
+
+      {showLanguages && (
+        <div class="field">
+          <label for="filtre-langue">Langue</label>
+          <select id="filtre-langue" data-filter="language">
+            <option value="">Toutes les langues</option>
+            {languages.map((option) => (
+              <option value={option.value}>
+                {option.label} ({option.count})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {showGroups && (
+        <div class="field">
+          <label for="filtre-tranche">Tranche d’âge</label>
+          <select id="filtre-tranche" data-filter="group">
+            <option value="">Toutes les tranches</option>
+            {groups.map((option) => (
+              <option value={option.value}>
+                {option.label} ({option.count})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {showCategories && (
+        <div class="field">
+          <label for="filtre-categorie">Catégorie</label>
+          <select id="filtre-categorie" data-filter="category">
+            <option value="">Toutes les catégories</option>
+            {categories.map((option) => (
+              <option value={option.value}>
+                {option.label} ({option.count})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+    </div>
+
+    <div class="filters__row filters__row--footer">
+      <div class="field field--sort">
+        <span class="field__label" id="tri-label">
+          Trier par
+        </span>
+        <div class="sort" role="group" aria-labelledby="tri-label">
+          <button type="button" class="sort__button" data-sort="name" aria-pressed="true">
+            Nom
+          </button>
+          <button type="button" class="sort__button" data-sort="category" aria-pressed="false">
+            Catégorie
+          </button>
+        </div>
+      </div>
+      <button type="button" class="filters__reset" data-reset>
+        Réinitialiser les filtres
+      </button>
+    </div>
+  </form>
+
+  <p class="catalog__empty" data-empty hidden>
+    Aucun podcast ne correspond à ces filtres.
+  </p>
+
+  <ul class="grid" data-list>
+    {sorted.map((entry) => (
+      <PodcastCard entry={entry} />
+    ))}
+  </ul>
+</section>

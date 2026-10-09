@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getEntries, getPublishers } from "../../lib/catalog";
+import { pageUrl } from "../../lib/url";
+import { plural } from "../../lib/format";
+
+const entries = getEntries();
+const publishers = getPublishers();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Éditeurs",
+  description: "Tous les éditeurs du catalogue de podcasts pour enfants",
+};
+
+const title = "Éditeurs — Catalogue de podcasts";
+const description = `${publishers.length} éditeurs — ${plural(entries.length, "podcast")} classés par maison d'édition.`;
+const path = "/editeurs/";
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <section class="catalog" data-catalog aria-labelledby="titre-page">
+    <header class="catalog__header">
+      <h1 id="titre-page">Éditeurs</h1>
+      <p class="catalog__intro">Découvrez les podcasts par maison d'édition / producteur.</p>
+      <p class="catalog__count" role="status">{publishers.length} éditeurs · {plural(entries.length, "podcast")}</p>
+    </header>
+
+    <ul class="grid publishers-grid">
+      {publishers.map((publisher) => (
+        <li class="publisher-card">
+          <a class="publisher-card__link" href={pageUrl(`/editeurs/${publisher.slug}/`)}>
+            <span class="publisher-card__name">{publisher.name}</span>
+            <span class="publisher-card__count">{publisher.count} podcast{publisher.count > 1 ? "s" : ""}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <style>
+    .publishers-grid {
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    }
+    .publisher-card {
+      display: flex;
+    }
+    .publisher-card__link {
+      display: block;
+      width: 100%;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .publisher-card__link:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+    .publisher-card__name {
+      display: block;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+    .publisher-card__count {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

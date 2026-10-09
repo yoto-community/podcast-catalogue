@@ -1,0 +1,201 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import EpisodeList from "../../../../components/EpisodeList.astro";
+import FavoriteButton from "../../../../components/FavoriteButton.astro";
+import {
+  categoryLabel,
+  externalUrl,
+  getEntries,
+  getEpisodes,
+  getGroups,
+} from "../../../../lib/catalog";
+import { truncate } from "../../../../lib/format";
+import { podcastSeriesJsonLd } from "../../../../lib/seo";
+import { pageUrl } from "../../../../lib/url";
+import type { DistEntry, StaticPath } from "../../../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<EntryProps>> {
+  return getEntries().map((entry) => ({
+    params: { lang: entry.language, tranche: entry.groupId, slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface EntryProps {
+  entry: DistEntry;
+}
+
+interface Props extends EntryProps {}
+
+const { entry } = Astro.props;
+const full = entry;
+const episodes = getEpisodes(full.slug);
+const group = getGroups().find((candidate) => candidate.id === full.groupId);
+const external = externalUrl(full);
+const image = full.imageUrl;
+const path = `/${full.language}/${full.groupId}/${full.slug}/`;
+const absoluteUrl = Astro.site ? new URL(pageUrl(path), Astro.site).href : pageUrl(path);
+const description =
+  truncate(full.description, 160) ??
+  `${full.name} — podcast en ${full.language}, éditeur ${full.publisher}.`;
+
+const jsonLd = podcastSeriesJsonLd(full, {
+  path,
+  episodeCount: episodes?.episodes.length,
+  site: Astro.site,
+});
+---
+
+<BaseLayout
+  title={`${full.name} — ${full.publisher}`}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  image={image}
+  lang={full.language}
+>
+  <article class="detail">
+    <nav class="breadcrumb" aria-label="Fil d'ariane">
+      <ol>
+        <li>
+          <a href={pageUrl("/")}>Catalogue</a>
+        </li>
+        <li>
+          <a href={pageUrl(`/${full.language}/`)}>
+            {full.language === "fr" ? "Français" : "English"}
+          </a>
+        </li>
+        {group && (
+          <li>
+            <a href={pageUrl(`/${full.language}/${full.groupId}/`)}>{group.label}</a>
+          </li>
+        )}
+        <li>
+          <span aria-current="page">{full.name}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <header class="detail__header">
+      <img
+        class="detail__image"
+        src={image || pageUrl("/placeholder.svg")}
+        alt={image ? `Pochette du podcast « ${full.name} »` : ""}
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="detail__headline">
+        <h1>{full.name}</h1>
+        <p class="detail__publisher">{full.publisher}</p>
+        <ul class="badges" aria-label="Caractéristiques du podcast">
+          <li class="badge">{full.language === "fr" ? "Français" : "English"}</li>
+          {group && <li class="badge">{group.label}</li>}
+          <li class="badge">{full.ageRange}</li>
+          <li class="badge badge--category">{categoryLabel(full.category, full.language)}</li>
+        </ul>
+        <p class="detail__links">
+          <a class="btn btn--primary" href={external} target="_blank" rel="noopener noreferrer">
+            Écouter sur le site de l'éditeur<span class="sr-only"> (nouvel onglet)</span>
+          </a>
+          <a class="btn btn--ghost" href={full.rssUrl} target="_blank" rel="noopener noreferrer">
+            Flux RSS<span class="sr-only"> (nouvel onglet)</span>
+          </a>
+          <button
+            type="button"
+            class="btn btn--ghost"
+            data-copy-rss
+            data-rss-url={full.rssUrl}
+            aria-label="Copier l'URL du flux RSS"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"></path>
+            </svg>
+            Copier le flux
+          </button>
+          <FavoriteButton slug={full.slug} variant="icon-text" />
+          <button
+            type="button"
+            class="btn btn--ghost"
+            data-share
+            data-url={absoluteUrl}
+            data-title={full.name}
+            data-text={`Écouter "${full.name}" — ${full.publisher}`}
+            aria-label="Partager ce podcast"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" fill="currentColor"></path>
+            </svg>
+            Partager
+          </button>
+        </p>
+      </div>
+    </header>
+
+    <section class="detail__section" aria-labelledby="description">
+      <h2 id="description">Description</h2>
+      <p class="detail__description">{full.description}</p>
+    </section>
+
+    <section class="detail__section" aria-labelledby="episodes">
+      <h2 id="episodes">
+        Épisodes
+        {episodes && episodes.episodes.length > 0 && (
+          <span class="detail__count">({episodes.episodes.length})</span>
+        )}
+      </h2>
+      <EpisodeList entry={full} episodes={episodes} />
+    </section>
+  </article>
+
+  <script>
+    // Copier le flux RSS
+    document.querySelector('[data-copy-rss]')?.addEventListener('click', async (e) => {
+      const btn = e.currentTarget;
+      const rssUrl = btn.dataset.rssUrl;
+      try {
+        await navigator.clipboard.writeText(rssUrl);
+        const original = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"></path></svg> Copié !';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch {
+        // fallback
+        const input = document.createElement('input');
+        input.value = rssUrl;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+    });
+
+    // Partager (Web Share API + fallback)
+    document.querySelector('[data-share]')?.addEventListener('click', async (e) => {
+      const btn = e.currentTarget;
+      const url = btn.dataset.url;
+      const title = btn.dataset.title;
+      const text = btn.dataset.text;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, text, url });
+        } catch {
+          // user cancelled
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(url);
+          const original = btn.innerHTML;
+          btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"></path></svg> Lien copié';
+          setTimeout(() => { btn.innerHTML = original; }, 2000);
+        } catch {
+          // fallback manuel
+        }
+      }
+    });
+  </script>
+</BaseLayout>

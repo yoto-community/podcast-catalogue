@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Pochette indisponible">
+  <rect width="300" height="300" fill="#e8e8e4" />
+  <g fill="none" stroke="#8a8a84" stroke-width="10" stroke-linecap="round">
+    <circle cx="150" cy="128" r="42" />
+    <path d="M96 196a54 54 0 0 0 108 0" />
+    <path d="M150 86v-24M113 96l-14-18M187 96l14-18" />
+  </g>
+  <text x="150" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" fill="#6f6f69">Image indisponible</text>
+</svg>

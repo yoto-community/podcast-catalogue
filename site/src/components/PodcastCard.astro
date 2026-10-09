@@ -1,0 +1,60 @@
+---
+import { categoryLabel, getGroups, languageLabel } from "../lib/catalog";
+import { searchIndex, normalizeText } from "../lib/text";
+import { pageUrl } from "../lib/url";
+import FavoriteButton from "./FavoriteButton.astro";
+import type { DistEntry } from "../lib/types";
+
+interface Props {
+  entry: DistEntry;
+}
+
+const { entry } = Astro.props;
+
+const href = pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`);
+const image = entry.imageUrl || pageUrl("/placeholder.svg");
+const alt = entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : "";
+const group = getGroups().find((candidate) => candidate.id === entry.groupId);
+const searchText = searchIndex(
+  entry.name,
+  entry.publisher,
+  entry.description,
+  categoryLabel(entry.category, entry.language),
+);
+const sortName = normalizeText(entry.name);
+const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.language))} ${sortName}`;
+---
+
+<li
+  class="card"
+  data-entry
+  data-language={entry.language}
+  data-group={entry.groupId}
+  data-category={entry.category}
+  data-search={searchText}
+  data-sort-name={sortName}
+  data-sort-category={sortCategory}
+>
+  <article class="card__body">
+    <a class="card__link" href={href}>
+      <img
+        class="card__image"
+        src={image}
+        alt={alt}
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
+      />
+      <h2 class="card__title">{entry.name}</h2>
+    </a>
+    <p class="card__publisher">{entry.publisher}</p>
+    <ul class="badges" aria-label={`Caractéristiques de ${entry.name}`}>
+      <li class="badge">{languageLabel(entry.language)}</li>
+      {group && <li class="badge">{group.label}</li>}
+      <li class="badge">{entry.ageRange}</li>
+      <li class="badge badge--category">{categoryLabel(entry.category, entry.language)}</li>
+    </ul>
+    <FavoriteButton slug={entry.slug} size="sm" />
+  </article>
+</li>

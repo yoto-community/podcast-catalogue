@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sgr-domo/yoto-podcast-catalog/blob/main/schema/artifact.schema.json",
+  "title": "Entrée publiée dans dist/",
+  "description": "Contrat de sortie du build (schemaVersion 1) : toujours complet (imageUrl, description, publisher obligatoires).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "name",
+    "language",
+    "groupId",
+    "ageRange",
+    "category",
+    "publisher",
+    "rssUrl",
+    "imageUrl",
+    "description"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Identifiant URL stable (slug du nom)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "fr",
+        "en"
+      ],
+      "description": "Langue dérivée du chemin entries/<langue>/."
+    },
+    "groupId": {
+      "type": "string",
+      "enum": [
+        "tout-petits",
+        "maternelle-cp",
+        "primaire",
+        "college-plus"
+      ],
+      "description": "Tranche dérivée du nom de fichier."
+    },
+    "ageRange": {
+      "type": "string",
+      "description": "Tranche d'âge affichable, dérivée de groups/groups.json (traduite)."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "histoire",
+        "education",
+        "fiction",
+        "documentaire",
+        "musique",
+        "science"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "animaux",
+          "dinosaures",
+          "espace",
+          "sciences",
+          "histoires-soir",
+          "contes-classiques",
+          "histoires-originales",
+          "enquetes-mysteres",
+          "personnages-recurrents",
+          "musique",
+          "histoire-france",
+          "geographie-voyages",
+          "emotions-bienetre",
+          "apprentissages",
+          "nature-environnement",
+          "philosophie",
+          "arts-culture",
+          "langues",
+          "heros-filles",
+          "humour",
+          "sante-corps",
+          "technologie",
+          "politique-societe",
+          "cuisine-alimentation"
+        ]
+      },
+      "description": "Tags thématiques."
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "rssUrl": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "imageUrl": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "websiteUrl": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    }
+  }
+}
