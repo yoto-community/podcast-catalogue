@@ -1,0 +1,67 @@
+# Publication scellée (plan §8) : le tag `v*` devient l'artefact que l'application épingle.
+# URL immuable : …/releases/download/<tag>/catalog.json — l'app ne suit jamais `main`.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Construire et publier l'artefact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache des flux
+        uses: actions/cache@v4
+        with:
+          path: .cache/feeds
+          key: feeds-${{ github.run_id }}
+          restore-keys: feeds-
+
+      - name: Construire dist/ + épisodes
+        run: |
+          pnpm build
+          pnpm build:episodes
+
+      - name: Vérifier la conformité des artefacts (S8)
+        run: pnpm validate:dist
+
+      - name: Empaqueter
+        run: |
+          cp dist/catalog.json catalog.json
+          cp dist/index.json manifest.json
+          tar -czf yoto-podcast-catalog-dist.tar.gz dist
+
+      - name: Créer la release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > notes.md <<'EOF'
+          Catalogue statique **__TAG__** — `schemaVersion` et empreintes dans `manifest.json`.
+
+          L'application épingle ce tag, jamais `main` : une contribution externe ne casse
+          jamais la production sans revue (voir CONTRIBUTING.md).
+
+          - `catalog.json` — bundle complet
+          - `manifest.json` — version, éclats, compteurs, sha256
+          - `yoto-podcast-catalog-dist.tar.gz` — dist/ complet (éclats + épisodes)
+          EOF
+          sed -i "s/__TAG__/${GITHUB_REF_NAME}/" notes.md
+          gh release create "$GITHUB_REF_NAME" catalog.json manifest.json yoto-podcast-catalog-dist.tar.gz \
+            --title "Catalogue $GITHUB_REF_NAME" \
+            --notes-file notes.md

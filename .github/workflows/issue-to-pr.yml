@@ -1,0 +1,291 @@
+# Formulaire d'issue → PR automatique (plan §6, voies B et C) :
+#   « Proposer un podcast »  → entries/<langue>/<tranche>.json + PR
+#   « Signaler un flux »     → correction d'une entrée + PR
+#
+# Le job est choisi d'après le CORPS du formulaire (le libellé peut manquer tant que
+# les labels du dépôt ne sont pas créés). La CI valide ensuite la PR comme une
+# contribution humaine.
+#
+# ⚠️ Prérequis côté dépôt (rien dans ce fichier ne le remplace) : les deux cases de
+# Settings → Actions → General → Workflow permissions doivent être cochées, sinon
+# `gh pr create` échoue avec « GitHub Actions is not permitted to create or approve
+# pull requests » alors que la branche est déjà publiée :
+#   - Read and write permissions
+#   - Allow GitHub Actions to create and approve pull requests
+# Le réglage existe aussi au niveau organisation/entreprise et prime sur celui-ci.
+# Une PAT classée dans le secret `PA_TOKEN` contourne cette limite (voir GH_TOKEN).
+name: Issue → PR
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  add-podcast:
+    name: Ajouter le podcast proposé
+    if: >-
+      contains(github.event.issue.labels.*.name, 'podcast:ajout') ||
+      (contains(github.event.issue.body, 'Nom du podcast') && contains(github.event.issue.body, 'URL du flux RSS'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Générer l'entrée
+        id: generer
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: pnpm issue-to-entry
+
+      - name: Valider (structure · doublons)
+        id: valider
+        run: pnpm validate
+
+      - name: Publier la branche
+        id: branche
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          set -euo pipefail
+          branch="auto/issue-${ISSUE_NUMBER}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add entries/
+          if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::L'entrée proposée est déjà identique à celle du dépôt."
+            exit 0
+          fi
+          # -F : le titre d'issue vient de l'utilisateur, il peut contenir des guillemets
+          printf 'feat: ajoute « %s » (issue #%s)' "$ISSUE_TITLE" "$ISSUE_NUMBER" | git commit -F -
+          git push --force origin "HEAD:refs/heads/${branch}"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Ouvrir la PR
+        id: pr
+        if: steps.branche.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PA_TOKEN || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          BRANCH: ${{ steps.branche.outputs.branch }}
+        run: |
+          set -euo pipefail
+          cat > pr-body.md <<EOF
+          Closes #${ISSUE_NUMBER}
+
+          Entrée générée automatiquement depuis le formulaire de l'issue, puis validée
+          (structure, doublons, tri). Le niveau 3 (flux) sera vérifié par la CI de la PR.
+
+          - [ ] Le podcast correspond bien à la tranche d'âge annoncée
+          - [ ] Le podcast n'existe pas déjà sous un autre nom
+          - [ ] Le flux s'écoute (épisodes audio https)
+
+          _Relance possible : rouvrez l'issue avec les champs corrigés, la PR est écrasée._
+          EOF
+          if [ "$(gh pr list --head "$BRANCH" --state open --json number --jq 'length')" = "0" ]; then
+            gh pr create --head "$BRANCH" \
+              --title "Ajout : ${ISSUE_TITLE}" \
+              --body-file pr-body.md
+          else
+            echo "PR déjà ouverte pour $BRANCH (push mis à jour)"
+          fi
+
+      - name: "Expliquer : formulaire invalide"
+        if: failure() && (steps.generer.outcome == 'failure' || steps.valider.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu préparer la PR : le formulaire contient un champ manquant ou invalide.
+
+          Corrigez l'issue (nom, **flux https**, catégorie, langue, tranche) et **rouvrez-la**
+          en la commentant, ou ouvrez une nouvelle issue. Le détail est dans l'onglet Actions.
+          EOF
+          )" || true
+
+      - name: "Expliquer : publication impossible"
+        if: failure() && steps.branche.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu publier la branche `auto/issue-…` : erreur technique, pas de votre
+          formulaire. Un mainteneur doit regarder l'onglet Actions de cette exécution.
+
+          Rien à corriger dans l'issue.
+          EOF
+          )" || true
+
+      - name: "Expliquer : PR non ouverte par permission"
+        if: failure() && steps.pr.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          BRANCH: ${{ steps.branche.outputs.branch }}
+          PR_URL: https://github.com/${{ github.repository }}/pull/new/${{ steps.branche.outputs.branch }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<EOF
+          ⚠️ Votre contribution est **prête et publiée** sur la branche \`${BRANCH}\`.
+
+          Le contenu a été généré et validé, mais je n'ai **pas pu ouvrir la pull request** :
+          le dépôt interdit aux GitHub Actions d'en créer (paramètre « Allow GitHub Actions to
+          create and approve pull requests »). Un mainteneur peut l'ouvrir en un clic :
+          ${PR_URL}
+
+          Rien à corriger dans le formulaire.
+          EOF
+          )" || true
+
+  fix-feed:
+    name: Corriger le flux signalé
+    if: >-
+      contains(github.event.issue.labels.*.name, 'podcast:flux') ||
+      contains(github.event.issue.body, 'Nouvelle URL du flux')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Appliquer la correction
+        id: appliquer
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: pnpm issue-to-fix
+
+      - name: Valider (structure · doublons)
+        id: valider
+        run: pnpm validate
+
+      - name: Publier la branche
+        id: branche
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          set -euo pipefail
+          branch="fix/issue-${ISSUE_NUMBER}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add entries/
+          if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            gh issue comment "$ISSUE_NUMBER" --body "ℹ️ Aucun changement à appliquer : la correction proposée correspond déjà au contenu de l'entrée."
+            exit 0
+          fi
+          printf 'fix: corrige un flux (issue #%s)' "$ISSUE_NUMBER" | git commit -F -
+          git push --force origin "HEAD:refs/heads/${branch}"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Ouvrir la PR
+        id: pr
+        if: steps.branche.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PA_TOKEN || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          BRANCH: ${{ steps.branche.outputs.branch }}
+        run: |
+          set -euo pipefail
+          cat > pr-body.md <<EOF
+          Closes #${ISSUE_NUMBER}
+
+          Correction de flux proposée par l'issue. Le niveau 3 de la CI revalidera le
+          nouveau flux (accès https, épisodes audio, langue) avant merge.
+
+          - [ ] L'ancien flux est réellement mort ou changé d'URL
+          - [ ] Le nouveau flux contient les mêmes épisodes
+          EOF
+
+          if [ "$(gh pr list --head "$BRANCH" --state open --json number --jq 'length')" = "0" ]; then
+            gh pr create --head "$BRANCH" \
+              --title "Correction de flux : ${ISSUE_TITLE}" \
+              --body-file pr-body.md
+          else
+            echo "PR déjà ouverte pour $BRANCH (push mis à jour)"
+          fi
+
+      - name: "Expliquer : correction invalide"
+        if: failure() && (steps.appliquer.outcome == 'failure' || steps.valider.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu préparer la PR de correction : vérifiez que le **nom exact du podcast**
+          (ou son URL actuel) et la **nouvelle URL https** figurent dans l'issue.
+
+          Le détail est dans l'onglet Actions.
+          EOF
+          )" || true
+
+      - name: "Expliquer : publication impossible"
+        if: failure() && steps.branche.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu publier la branche `fix/issue-…` : erreur technique, pas de votre
+          formulaire. Un mainteneur doit regarder l'onglet Actions de cette exécution.
+
+          Rien à corriger dans l'issue.
+          EOF
+          )" || true
+
+      - name: "Expliquer : PR non ouverte par permission"
+        if: failure() && steps.pr.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          BRANCH: ${{ steps.branche.outputs.branch }}
+          PR_URL: https://github.com/${{ github.repository }}/pull/new/${{ steps.branche.outputs.branch }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<EOF
+          ⚠️ Votre correction est **prête et publiée** sur la branche \`${BRANCH}\`.
+
+          Le contenu a été généré et validé, mais je n'ai **pas pu ouvrir la pull request** :
+          le dépôt interdit aux GitHub Actions d'en créer (paramètre « Allow GitHub Actions to
+          create and approve pull requests »). Un mainteneur peut l'ouvrir en un clic :
+          ${PR_URL}
+
+          Rien à corriger dans l'issue.
+          EOF
+          )" || true

@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../../components/CatalogBrowser.astro";
+import { entriesOfTag, getTags, tagLabel } from "../../../lib/catalog";
+import { plural } from "../../../lib/format";
+import { itemListJsonLd } from "../../../lib/seo";
+import { pageUrl } from "../../../lib/url";
+import type { StaticPath, TagDef } from "../../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<ThemeProps>> {
+  return getTags()
+    .filter((tag) => entriesOfTag(tag.id).length > 0)
+    .map((tag) => ({
+      params: { slug: tag.id },
+      props: { tag },
+    }));
+}
+
+interface ThemeProps {
+  tag: TagDef;
+}
+
+interface Props extends ThemeProps {}
+
+const { tag } = Astro.props;
+const entries = entriesOfTag(tag.id);
+const label = tagLabel(tag.id);
+const path = `/themes/${tag.id}/`;
+
+const jsonLd = itemListJsonLd(
+  `Podcasts — ${label}`,
+  entries.map((entry) => ({
+    name: entry.name,
+    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  })),
+  Astro.site,
+);
+
+const title = `${label} — podcasts`;
+const description = `${plural(entries.length, "podcast")} sur le thème « ${label} » — écoute directe, description et lien vers le site de l'éditeur.`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <nav class="breadcrumb" aria-label="Fil d'ariane">
+    <ol>
+      <li>
+        <a href={pageUrl("/")}>Catalogue</a>
+      </li>
+      <li>
+        <a href={pageUrl("/themes/")}>Thèmes</a>
+      </li>
+      <li>
+        <span aria-current="page">{label}</span>
+      </li>
+    </ol>
+  </nav>
+  <CatalogBrowser
+    title={label}
+    intro={`${plural(entries.length, "podcast")} taggués « ${label} ».`}
+    entries={entries}
+    languages={[]}
+    groups={[]}
+    categories={[]}
+    preset={{}}
+    nav={{
+      label: "Tous les thèmes",
+      items: [
+        {
+          href: pageUrl("/themes/"),
+          label: "Tous les thèmes",
+          count: getTags().length,
+          active: false,
+        },
+      ],
+    }}
+  />
+</BaseLayout>

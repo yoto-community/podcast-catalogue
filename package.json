@@ -1,0 +1,48 @@
+{
+  "name": "yoto-podcast-catalog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Catalogue statique de podcasts pour enfants — source éditoriale (entries/) validée par CI et publiée en JSON (dist/)",
+  "license": "MIT",
+  "packageManager": "pnpm@12.4.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "build:episodes": "tsx scripts/build-episodes.ts",
+    "validate": "tsx scripts/validate.ts",
+    "validate:changed": "tsx scripts/validate.ts --rss --changed",
+    "validate:all": "tsx scripts/validate.ts --rss --all",
+    "validate:dist": "tsx scripts/validate.ts --dist",
+    "check-feeds": "tsx scripts/check-feeds.ts",
+    "issue-to-entry": "tsx scripts/issue-to-entry.ts",
+    "issue-to-fix": "tsx scripts/issue-to-fix.ts",
+    "enrich": "tsx scripts/enrich.ts",
+    "auto-tag": "tsx scripts/auto-tag.ts",
+    "import-legacy": "tsx scripts/import-legacy.ts",
+    "gen:types": "tsx scripts/gen-types.ts",
+    "site:dev": "pnpm --filter site dev",
+    "site:build": "pnpm --filter site build",
+    "typecheck": "tsc --noEmit",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "prettier": "^3.9.9",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vite-plugin-pwa": "^1.3.0",
+    "workbox-window": "^7.4.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.2.5"
+  }
+}

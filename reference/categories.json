@@ -1,0 +1,8 @@
+[
+  { "id": "histoire", "label": "Histoire", "translations": { "en": { "label": "History" } } },
+  { "id": "education", "label": "Éducation", "translations": { "en": { "label": "Education" } } },
+  { "id": "fiction", "label": "Fiction", "translations": { "en": { "label": "Fiction" } } },
+  { "id": "documentaire", "label": "Documentaire", "translations": { "en": { "label": "Documentary" } } },
+  { "id": "musique", "label": "Musique", "translations": { "en": { "label": "Music" } } },
+  { "id": "science", "label": "Science", "translations": { "en": { "label": "Science" } } }
+]

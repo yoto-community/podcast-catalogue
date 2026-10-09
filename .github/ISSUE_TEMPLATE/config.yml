@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contribuer directement (git)
+    url: https://github.com/yoto-community/podcast-catalogue/blob/main/CONTRIBUTING.md
+    about: Éditer entries/<langue>/<tranche>.json soi-même, ou améliorer le site — voir CONTRIBUTING.md.

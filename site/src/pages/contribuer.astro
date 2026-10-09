@@ -1,0 +1,308 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { pageUrl } from "../lib/url";
+
+const title = "Contribuer — Catalogue de podcasts";
+const description =
+  "Comment proposer un podcast, signaler un flux défaillant ou améliorer les données du catalogue.";
+const path = "/contribuer/";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Contribuer au catalogue",
+  description,
+};
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <main class="contribute">
+    <h1>Contribuer au catalogue</h1>
+    <p class="lead">
+      Cet outil aide les parents d'enfants utilisant une Yoto (ou tout autre lecteur) à découvrir et
+      partager des podcasts adaptés. Le catalogue est ouvert : vos suggestions le font grandir.
+    </p>
+
+    <section class="contribute__section">
+      <h2>🎙️ Proposer un nouveau podcast</h2>
+      <p>Vous connaissez un podcast pour enfants qui n'est pas encore dans l'annuaire ?</p>
+      <ol>
+        <li>
+          Vérifiez qu'il n'existe pas déjà via la <a href={pageUrl("/?focus=search")}>recherche</a>.
+        </li>
+        <li>
+          Ouvrez le{" "}
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/issues/new?template=add-podcast.yml"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            formulaire « Proposer un podcast »
+          </a>{" "}
+          (GitHub Issues).
+        </li>
+        <li>
+          Remplissez les champs : nom, flux RSS (obligatoire), catégorie, tranche d'âge, langue,
+          description, image, site web, éditeur.
+        </li>
+        <li>Soumettez — une pull request sera créée automatiquement après validation.</li>
+      </ol>
+      <p class="note">
+        <strong>Critères :</strong> podcast pour enfants (0–14 ans), flux RSS public en HTTPS,
+        contenu audio (pas de vidéo seule), pas de publicité intrusive pour les enfants.
+      </p>
+    </section>
+
+    <section class="contribute__section">
+      <h2>🔧 Signaler un flux défaillant</h2>
+      <p>
+        Un podcast ne se met plus à jour, le flux renvoie une erreur, ou les épisodes ne sont plus
+        accessibles ?
+      </p>
+      <ol>
+        <li>
+          Ouvrez le{" "}
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/issues/new?template=fix-feed.yml"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            formulaire « Signaler un flux »
+          </a>
+          .
+        </li>
+        <li>Indiquez le podcast concerné (lien vers sa page) et le problème observé.</li>
+        <li>Une pull request de correction sera ouverte automatiquement.</li>
+      </ol>
+    </section>
+
+    <section class="contribute__section">
+      <h2>✏️ Corriger ou enrichir une fiche</h2>
+      <p>
+        Vous avez repéré une erreur (mauvaise catégorie, description incomplète, image manquante,
+        éditeur erroné) ?
+      </p>
+      <ol>
+        <li>
+          Sur la page du podcast, cliquez sur « Modifier ce fichier » (icône crayon) en haut à
+          droite — cela ouvre l'édition GitHub du fichier JSON source.
+        </li>
+        <li>
+          Modifiez les champs nécessaires (<code>category</code>, <code>description</code>,{" "}
+          <code>imageUrl</code>, <code>websiteUrl</code>, <code>publisher</code>, <code>tags</code>
+          ).
+        </li>
+        <li>Proposez le changement (commit) — une pull request sera créée.</li>
+      </ol>
+      <p class="note">
+        Les champs <code>language</code>, <code>groupId</code>, <code>ageRange</code>,{" "}
+        <code>slug</code>, <code>id</code> sont <strong>interdits</strong> dans la source : ils sont
+        dérivés automatiquement du chemin du fichier.
+      </p>
+    </section>
+
+    <section class="contribute__section">
+      <h2>📋 Ajouter des tags (thèmes)</h2>
+      <p>
+        Les tags permettent de découvrir les podcasts par sujet (animaux, espace, histoires du soir,
+        etc.).
+      </p>
+      <ol>
+        <li>
+          Consultez la liste des <a href={pageUrl("/themes/")}>tags disponibles</a> (24 thèmes).
+        </li>
+        <li>
+          Éditez le fichier JSON du podcast (voir ci-dessus) et ajoutez un champ <code>tags</code> :{" "}
+          <code>["animaux", "histoires-soir"]</code>.
+        </li>
+        <li>Maximum 10 tags par podcast, choisis parmi la liste de référence.</li>
+      </ol>
+    </section>
+
+    <section class="contribute__section">
+      <h2>🛠️ Contribuer au code (site, scripts, validation)</h2>
+      <p>
+        Le dépôt est un monorepo <code>pnpm</code> avec :
+      </p>
+      <ul>
+        <li>
+          <code>entries/</code> — données sources (JSON édités à la main ou via formulaires)
+        </li>
+        <li>
+          <code>scripts/</code> — build, validation, auto-complétion depuis les flux RSS
+        </li>
+        <li>
+          <code>site/</code> — site statique Astro (GitHub Pages)
+        </li>
+        <li>
+          <code>reference/</code> — catégories, tags, langues, éditeurs
+        </li>
+        <li>
+          <code>groups/</code> — tranches d'âge
+        </li>
+      </ul>
+      <p>Commandes utiles :</p>
+      <pre><code>pnpm install           # installe tout (racine + site/)
+pnpm validate          # validation structure + doublons (< 5 s)
+pnpm build             # génère dist/ (catalogue + épisodes)
+pnpm site:dev          # site en local sur http://localhost:4321
+pnpm site:build        # build de production du site
+pnpm gen:types         # régénère les schémas JSON + types TypeScript</code></pre>
+    </section>
+
+    <section class="contribute__section">
+      <h2>✅ Validation avant de proposer</h2>
+      <p>Pour que votre contribution soit acceptée rapidement :</p>
+      <ul>
+        <li>
+          Le flux RSS doit être accessible en <code>https://</code> (règle anti-SSRF).
+        </li>
+        <li>
+          Le flux doit contenir au moins un épisode avec URL audio <code>https://</code>.
+        </li>
+        <li>
+          La langue du flux doit correspondre au dossier <code>entries/fr/</code> ou{" "}
+          <code>entries/en/</code>.
+        </li>
+        <li>
+          La tranche d'âge doit exister dans <code>groups/groups.json</code>.
+        </li>
+        <li>
+          La catégorie doit exister dans <code>reference/categories.json</code>.
+        </li>
+        <li>
+          Les tags doivent exister dans <code>reference/tags.json</code>.
+        </li>
+      </ul>
+      <p>
+        La CI exécute <code>pnpm validate</code> + <code>pnpm build</code> sur chaque PR — les
+        erreurs bloquent la fusion.
+      </p>
+    </section>
+
+    <section class="contribute__section">
+      <h2>📄 Licence & réutilisation</h2>
+      <p>
+        Les métadonnées éditoriales (noms, descriptions, tags, etc.) sont sous{" "}
+        <a href="https://github.com/yoto-community/podcast-catalogue/blob/main/LICENSE">
+          licence MIT
+        </a>{" "}
+        — libres de réutilisation.
+      </p>
+      <p>
+        Les flux RSS et contenus audio restent la propriété de leurs éditeurs respectifs. Ce
+        catalogue ne fait que les référencer.
+      </p>
+    </section>
+
+    <section class="contribute__section">
+      <h2>💬 Questions ?</h2>
+      <ul>
+        <li>
+          Ouvrez une{" "}
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/issues/new/choose"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            issue GitHub
+          </a>{" "}
+          pour toute question.
+        </li>
+        <li>
+          Consultez le{" "}
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CONTRIBUTING.md
+          </a>{" "}
+          pour les conventions détaillées.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <style>
+    .contribute {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .contribute h1 {
+      font-size: clamp(2rem, 1.5rem + 2vw, 2.8rem);
+      margin-bottom: 0.5rem;
+    }
+    .lead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: var(--measure);
+      margin-bottom: 2.5rem;
+    }
+    .contribute__section {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .contribute__section:last-child {
+      border-bottom: none;
+    }
+    .contribute__section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .contribute__section p {
+      margin-bottom: 0.75rem;
+    }
+    .contribute__section ol,
+    .contribute__section ul {
+      margin: 0.75rem 0 0 1.5rem;
+      padding: 0;
+    }
+    .contribute__section li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    .contribute__section code {
+      background: var(--surface-2);
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .contribute__section pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .contribute__section pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-top: 0.75rem;
+    }
+    .note strong {
+      color: var(--accent-strong);
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    a:hover {
+      color: var(--accent-strong);
+    }
+  </style>
+</BaseLayout>

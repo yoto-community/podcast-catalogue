@@ -1,0 +1,42 @@
+name: Signaler un flux défaillant
+description: Un flux ne répond plus, renvoie du vide, ou l'image/description a disparu
+title: "[Flux] "
+labels: ["podcast:flux"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Indiquez la **nouvelle URL** si vous la connaissez : une PR de correction
+        est alors ouverte automatiquement. Sans nouvelle URL, l'issue servira de
+        signalement pour la revue humaine (l'onglet *Actions* affiche l'échec).
+  - type: input
+    id: name
+    attributes:
+      label: Podcast concerné
+      description: Nom exact du podcast dans le catalogue (ou son URL de flux actuel).
+      placeholder: Les comptines du soir
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: URL actuelle du flux
+      description: Facultatif si le nom est exact — aide à localiser l'entrée.
+      placeholder: https://feeds.example.com/comptines.xml
+  - type: input
+    id: newurl
+    attributes:
+      label: Nouvelle URL du flux
+      description: À remplir si vous avez trouvé l'adresse à jour (https uniquement).
+      placeholder: https://feeds.example.com/nouveau-comptines.xml
+  - type: input
+    id: image
+    attributes:
+      label: Nouvelle image (URL https, optionnel)
+      description: Si la couverture renvoie une 404.
+  - type: textarea
+    id: details
+    attributes:
+      label: Détails
+      description: Ce que vous observez (page vide, 410, épisodes figés depuis…).
+      placeholder: Le flux renvoie une page 404 depuis le 1er octobre.

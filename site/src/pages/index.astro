@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogBrowser from "../components/CatalogBrowser.astro";
+import {
+  categoryOptions,
+  entriesOfLanguage,
+  getEntries,
+  getLanguages,
+  getManifest,
+  groupOptions,
+  languageOptions,
+} from "../lib/catalog";
+import { itemListJsonLd } from "../lib/seo";
+import { pageUrl } from "../lib/url";
+import { plural } from "../lib/format";
+
+const entries = getEntries();
+const manifest = getManifest();
+const languages = getLanguages();
+
+const languageNav = languages.map((language) => {
+  const count = entriesOfLanguage(language.code).length;
+  return {
+    href: pageUrl(`/${language.code}/`),
+    label: language.label,
+    count,
+    active: false,
+  };
+});
+
+const jsonLd = itemListJsonLd(
+  "Catalogue de podcasts pour enfants",
+  entries.map((entry) => ({
+    name: entry.name,
+    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  })),
+  Astro.site,
+);
+
+const description = `${plural(manifest.counts.total, "podcast")} pour enfants — classés par langue, tranche d'âge et thème. Flux RSS vérifiés, prêts pour cartes MYO Yoto.`;
+---
+
+<script is:inline>
+  function goRandomPodcast() {
+    const button = document.querySelector("[data-entries]");
+    const entries = JSON.parse(button?.dataset.entries ?? "[]");
+    if (entries.length === 0) return;
+    const random = entries[Math.floor(Math.random() * entries.length)];
+    window.location.href = `/${random.language}/${random.groupId}/${random.slug}/`;
+  }
+</script>
+
+<BaseLayout
+  title="Catalogue de podcasts pour enfants"
+  description={description}
+  path="/"
+  jsonLd={jsonLd}
+  lang="fr"
+>
+  <section class="hero" aria-labelledby="titre-accueil">
+    <header class="hero__header">
+      <h1 id="titre-accueil">Catalogue de podcasts pour enfants</h1>
+      <p class="hero__intro">
+        Flux RSS validés, classés par âge et thème — prêts à ajouter sur une carte MYO Yoto ou tout
+        lecteur.
+      </p>
+      <div class="hero__actions">
+        <button
+          type="button"
+          class="btn btn--primary"
+          onclick="goRandomPodcast()"
+          aria-label="Découvrir un podcast au hasard"
+          data-entries={JSON.stringify(
+            entries.map((e) => ({ slug: e.slug, language: e.language, groupId: e.groupId })),
+          )}
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path
+              d="M12 2a10 10 0 0 1 7.38 16.75A1.5 1.5 0 0 0 21 18.5V16a1 1 0 0 0-1-1h-3a1 1 0 0 1-.88-1.5A8 8 0 0 0 12 2z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M12 22a10 10 0 0 1-7.38-16.75A1.5 1.5 0 0 0 3 5.5V8a1 1 0 0 0 1 1h3a1 1 0 0 1 .88 1.5A8 8 0 0 1 12 22z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          Podcast au hasard
+        </button>
+      </div>
+    </header>
+  </section>
+  <CatalogBrowser
+    title="Catalogue de podcasts pour enfants"
+    entries={entries}
+    languages={languageOptions(entries)}
+    groups={groupOptions(entries)}
+    categories={categoryOptions(entries)}
+    nav={{ label: "Langues", items: languageNav }}
+  />
+</BaseLayout>

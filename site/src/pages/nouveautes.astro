@@ -1,0 +1,165 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getEntries, getEpisodes } from "../lib/catalog";
+import { formatDate, isoDay } from "../lib/format";
+import { itemListJsonLd } from "../lib/seo";
+import { pageUrl } from "../lib/url";
+import { plural } from "../lib/format";
+
+const entries = getEntries();
+
+// Récupérer tous les épisodes avec leur date de publication
+const episodesWithMeta = entries.flatMap((entry) => {
+  const episodes = getEpisodes(entry.slug);
+  if (!episodes || episodes.episodes.length === 0) return [];
+  return episodes.episodes.map((ep) => ({
+    ...ep,
+    podcast: entry,
+    podcastUrl: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+  }));
+});
+
+// Trier par date de publication décroissante (plus récent en premier)
+episodesWithMeta.sort((a, b) => {
+  const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+  const db = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+  return db - da;
+});
+
+// Prendre les 50 plus récents
+const recentEpisodes = episodesWithMeta.slice(0, 50);
+
+const jsonLd = itemListJsonLd(
+  "Nouveaux épisodes — Catalogue de podcasts",
+  recentEpisodes.map((ep) => ({
+    name: `${ep.podcast.name} — ${ep.title}`,
+    path: ep.podcastUrl,
+  })),
+  Astro.site,
+);
+
+const title = "Nouveautés — Catalogue de podcasts";
+const description = `Les ${recentEpisodes.length} épisodes les plus récents du catalogue — toutes langues et tranches confondues.`;
+const path = "/nouveautes/";
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <section class="catalog" data-catalog aria-labelledby="titre-page">
+    <header class="catalog__header">
+      <h1 id="titre-page">Nouveautés</h1>
+      <p class="catalog__intro">
+        Les épisodes les plus récemment publiés, toutes langues et tranches d'âge confondues.
+      </p>
+      <p class="catalog__count" role="status">
+        {plural(recentEpisodes.length, "épisode")} récents
+      </p>
+    </header>
+
+    <ul class="grid episodes-grid">
+      {recentEpisodes.map((ep) => {
+        const date = formatDate(ep.pubDate);
+        const day = isoDay(ep.pubDate);
+        const duration = ep.durationSec ? `${Math.floor(ep.durationSec / 60)} min` : "";
+        return (
+          <li class="episode-card">
+            <article class="episode-card__body">
+              <a class="episode-card__link" href={ep.podcastUrl}>
+                <img
+                  class="episode-card__image"
+                  src={ep.podcast.imageUrl || pageUrl("/placeholder.svg")}
+                  alt={ep.podcast.imageUrl ? `Pochette de ${ep.podcast.name}` : ""}
+                  width="300"
+                  height="300"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <h2 class="episode-card__title">{ep.title}</h2>
+              </a>
+              <p class="episode-card__podcast">
+                <a href={ep.podcastUrl}>{ep.podcast.name}</a>
+              </p>
+              <p class="episode-card__meta">
+                {date && <time datetime={day ?? ep.pubDate}>{date}</time>}
+                {duration && <span>{duration}</span>}
+              </p>
+              <p class="episode-card__actions">
+                <a class="btn btn--ghost" href={ep.podcastUrl}>
+                  Voir le podcast
+                </a>
+              </p>
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+
+    {recentEpisodes.length === 0 && (
+      <p class="catalog__empty">Aucun épisode indexé pour le moment.</p>
+    )}
+  </section>
+
+  <style>
+    .episodes-grid {
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    }
+    .episode-card {
+      display: flex;
+    }
+    .episode-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .episode-card__link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+    .episode-card__link:hover .episode-card__title {
+      color: var(--accent);
+    }
+    .episode-card__image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      margin-bottom: 0.6rem;
+    }
+    .episode-card__title {
+      font-size: 1rem;
+      margin: 0;
+      line-height: 1.3;
+    }
+    .episode-card__podcast {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .episode-card__podcast a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .episode-card__podcast a:hover {
+      color: var(--accent);
+    }
+    .episode-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .episode-card__actions {
+      margin-top: 0.25rem;
+    }
+  </style>
+</BaseLayout>

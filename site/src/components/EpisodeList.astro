@@ -1,0 +1,138 @@
+---
+import { externalUrl } from "../lib/catalog";
+import { formatDate, formatDuration, isoDay, truncate } from "../lib/format";
+import type { DistEntry, DistEpisode, DistEpisodesFile } from "../lib/types";
+
+interface Props {
+  entry: DistEntry;
+  episodes: DistEpisodesFile | null;
+}
+
+const { entry, episodes } = Astro.props;
+const external = externalUrl(entry);
+
+function isPlayable(episode: DistEpisode): boolean {
+  if (episode.insecure) return false;
+  if (!episode.audioUrl) return false;
+  return /^https:\/\//i.test(episode.audioUrl);
+}
+
+const list = episodes?.episodes ?? [];
+const fetchedAt = episodes?.fetchedAt;
+const fetchedLabel = formatDate(fetchedAt);
+const fetchedDay = isoDay(fetchedAt);
+---
+
+{list.length > 0 ? (
+  <div class="episodes">
+    <p class="episodes__freshness">
+      {fetchedLabel && (
+        <>
+          Épisodes mis à jour le <time datetime={fetchedDay ?? fetchedAt}>{fetchedLabel}</time>
+          {" · "}
+        </>
+      )}
+      {list.length} épisode{list.length > 1 ? "s" : ""} indexé{list.length > 1 ? "s" : ""} (
+      {episodes?.count ?? list.length} au total dans le flux)
+    </p>
+
+    <ol class="episodes__list">
+      {list.map((episode) => {
+        const playable = isPlayable(episode);
+        const date = formatDate(episode.pubDate);
+        const day = isoDay(episode.pubDate);
+        const duration = formatDuration(episode.durationSec);
+        const description = truncate(episode.description, 300);
+
+        return (
+          <li class="episode">
+            <div class="episode__body">
+              <h3 class="episode__title">{episode.title}</h3>
+              <p class="episode__meta">
+                {date && <time datetime={day ?? episode.pubDate}>{date}</time>}
+                {duration && <span>{duration}</span>}
+                {episode.episodeNumber !== undefined && (
+                  <span>Épisode n° {episode.episodeNumber}</span>
+                )}
+              </p>
+              {description && <p class="episode__description">{description}</p>}
+              {!playable && (
+                <p class="episode__notice">Écoute indisponible ici — utilisez le lien externe.</p>
+              )}
+            </div>
+
+            <div class="episode__actions">
+              {playable ? (
+                <button
+                  type="button"
+                  class="btn btn--primary"
+                  data-play
+                  data-episode={episode.id}
+                  data-audio={episode.audioUrl}
+                  data-title={episode.title}
+                  data-artist={entry.publisher}
+                  data-album={entry.name}
+                  data-external={external}
+                  data-image={entry.imageUrl}
+                  aria-label={`Écouter « ${episode.title} »`}
+                  aria-pressed="false"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+                  </svg>
+                  Écouter
+                  <span class="sr-only">l’épisode</span>
+                </button>
+              ) : (
+                <a
+                  class="btn btn--primary"
+                  href={external}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Écouter sur le site de l’éditeur
+                  <span class="sr-only"> (nouvel onglet)</span>
+                </a>
+              )}
+
+              {playable && (
+                <a
+                  class="btn btn--ghost"
+                  href={episode.audioUrl}
+                  download
+                  aria-label={`Télécharger « ${episode.title} »`}
+                >
+                  Télécharger
+                </a>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+) : (
+  <div class="state" data-episodes-empty>
+    <p class="state__title">Épisodes en cours d’indexation…</p>
+    <p class="state__text">
+      La liste des épisodes de ce podcast n’est pas encore publiée dans le catalogue. Elle
+      apparaîtra automatiquement au prochain indexage des flux.
+    </p>
+    <p class="state__actions">
+      <a class="btn btn--primary" href={external} target="_blank" rel="noopener noreferrer">
+        Écouter sur le site de l’éditeur
+        <span class="sr-only"> (nouvel onglet)</span>
+      </a>
+      <a class="btn btn--ghost" href={entry.rssUrl} target="_blank" rel="noopener noreferrer">
+        Voir le flux RSS
+        <span class="sr-only"> (nouvel onglet)</span>
+      </a>
+    </p>
+  </div>
+)}

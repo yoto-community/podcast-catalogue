@@ -1,0 +1,12 @@
+import { defineConfig } from "astro/config";
+import pwa from "@vite-pwa/astro";
+
+export default defineConfig({
+  output: "static",
+  integrations: [
+    pwa({
+      manifest: { name: "Test", short_name: "Test" },
+      devOptions: { enabled: true },
+    })
+  ]
+});

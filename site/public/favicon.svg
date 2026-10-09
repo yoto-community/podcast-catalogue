@@ -1,0 +1,15 @@
+<!-- Option 2b: Barres RSS = Carte Yoto (sans pastilles) - Couleur Yoto Orange - Centré -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#FF6B00" />
+  <g transform="translate(16, 16)" fill="#ffffff">
+    <!-- Cinq barres RSS centrées symétriquement sur x=0 -->
+    <!-- Barres aux centres: -10, -5, 0, 5, 10 | largeur: 3 -->
+    <rect x="-11.5" y="2" width="3" height="12" rx="1.5" opacity="0.25"/>
+    <rect x="-6.5"  y="-2" width="3" height="16" rx="1.5" opacity="0.5"/>
+    <rect x="-1.5"  y="-6" width="3" height="20" rx="1.5" opacity="0.85"/>
+    <rect x="3.5"   y="-2" width="3" height="16" rx="1.5" opacity="0.5"/>
+    <rect x="8.5"   y="2" width="3" height="12" rx="1.5" opacity="0.25"/>
+    <!-- Point RSS central (source du flux) -->
+    <circle cx="0" cy="-10" r="2.5" fill="#FF6B00"/>
+  </g>
+</svg>

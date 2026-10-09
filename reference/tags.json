@@ -1,0 +1,146 @@
+[
+  {
+    "id": "animaux",
+    "label": "Animaux",
+    "description": "Faune, vie animale, bestioles",
+    "translations": { "en": { "label": "Animals", "description": "Wildlife, animal life" } }
+  },
+  {
+    "id": "dinosaures",
+    "label": "Dinosaures",
+    "description": "Monde préhistorique, dinosaures",
+    "translations": { "en": { "label": "Dinosaurs", "description": "Prehistoric world, dinosaurs" } }
+  },
+  {
+    "id": "espace",
+    "label": "Espace",
+    "description": "Astronomie, planètes, étoiles, univers",
+    "translations": { "en": { "label": "Space", "description": "Astronomy, planets, stars, universe" } }
+  },
+  {
+    "id": "sciences",
+    "label": "Sciences",
+    "description": "Expériences, inventions, découvertes, vulgarisation",
+    "translations": { "en": { "label": "Science", "description": "Experiments, inventions, discoveries" } }
+  },
+  {
+    "id": "histoires-soir",
+    "label": "Histoires du soir",
+    "description": "Pour s'endormir, rituels du coucher, rêves",
+    "translations": { "en": { "label": "Bedtime Stories", "description": "Sleep routines, bedtime rituals, dreams" } }
+  },
+  {
+    "id": "contes-classiques",
+    "label": "Contes classiques",
+    "description": "Grimm, Perrault, Andersen, légendes, mythologies",
+    "translations": { "en": { "label": "Classic Tales", "description": "Grimm, Perrault, Andersen, legends, mythologies" } }
+  },
+  {
+    "id": "histoires-originales",
+    "label": "Histoires originales",
+    "description": "Fictions inédites, improvisation, créations sonores",
+    "translations": { "en": { "label": "Original Stories", "description": "Original fiction, improvisation, audio creations" } }
+  },
+  {
+    "id": "enquetes-mysteres",
+    "label": "Enquêtes & mystères",
+    "description": "Détectives, espions, énigmes, suspense",
+    "translations": { "en": { "label": "Mysteries", "description": "Detectives, spies, riddles, suspense" } }
+  },
+  {
+    "id": "personnages-recurrents",
+    "label": "Personnages récurrents",
+    "description": "Séries à héros fixe (Tintin, Petit Nicolas, Pomme d'Api…)",
+    "translations": { "en": { "label": "Recurring Characters", "description": "Series with recurring heroes" } }
+  },
+  {
+    "id": "musique",
+    "label": "Musique & comptines",
+    "description": "Chansons, opéra, instruments, orchestres, comptines",
+    "translations": { "en": { "label": "Music & Nursery Rhymes", "description": "Songs, opera, instruments, nursery rhymes" } }
+  },
+  {
+    "id": "histoire-france",
+    "label": "Histoire de France",
+    "description": "Rois, reines, Révolution, châteaux, patrimoine",
+    "translations": { "en": { "label": "History of France", "description": "Kings, queens, Revolution, castles, heritage" } }
+  },
+  {
+    "id": "geographie-voyages",
+    "label": "Géographie & voyages",
+    "description": "Tour du monde, pays, villes, découvertes culturelles",
+    "translations": { "en": { "label": "Geography & Travel", "description": "World tour, countries, cities, cultural discoveries" } }
+  },
+  {
+    "id": "emotions-bienetre",
+    "label": "Émotions & bien-être",
+    "description": "Sentiments, confiance, peur, bonheur, psychologie positive",
+    "translations": { "en": { "label": "Emotions & Wellbeing", "description": "Feelings, confidence, fear, happiness, positive psychology" } }
+  },
+  {
+    "id": "apprentissages",
+    "label": "Apprentissages",
+    "description": "École, quiz, questions-réponses, curiosité, découverte",
+    "translations": { "en": { "label": "Learning", "description": "School, quizzes, Q&A, curiosity, discovery" } }
+  },
+  {
+    "id": "nature-environnement",
+    "label": "Nature & environnement",
+    "description": "Forêts, rivières, écologie, plantes, monde sauvage",
+    "translations": { "en": { "label": "Nature & Environment", "description": "Forests, rivers, ecology, plants, wilderness" } }
+  },
+  {
+    "id": "philosophie",
+    "label": "Philosophie",
+    "description": "Grandes questions, sens de la vie, débat, réflexion",
+    "translations": { "en": { "label": "Philosophy", "description": "Big questions, meaning of life, debate, reflection" } }
+  },
+  {
+    "id": "arts-culture",
+    "label": "Arts & culture",
+    "description": "Musées, peinture, dessin, théâtre, créativité, patrimoine",
+    "translations": { "en": { "label": "Arts & Culture", "description": "Museums, painting, drawing, theatre, creativity, heritage" } }
+  },
+  {
+    "id": "langues",
+    "label": "Langues",
+    "description": "Bilingue, apprentissage de l'anglais, langues étrangères",
+    "translations": { "en": { "label": "Languages", "description": "Bilingual, English learning, foreign languages" } }
+  },
+  {
+    "id": "heros-filles",
+    "label": "Héroïnes & filles",
+    "description": "Filles qui osent, modèles féminins, empowerment",
+    "translations": { "en": { "label": "Girls & Heroines", "description": "Girls who dare, female role models, empowerment" } }
+  },
+  {
+    "id": "humour",
+    "label": "Humour",
+    "description": "Drôle, blagues, comédie, bêtises, improvisation rigolote",
+    "translations": { "en": { "label": "Humour", "description": "Funny, jokes, comedy, silly, improv" } }
+  },
+  {
+    "id": "sante-corps",
+    "label": "Santé & corps",
+    "description": "Hygiène, dents, médecin, handicap, inclusion, corps",
+    "translations": { "en": { "label": "Health & Body", "description": "Hygiene, teeth, doctor, disability, inclusion, body" } }
+  },
+  {
+    "id": "technologie",
+    "label": "Technologie & inventions",
+    "description": "Robots, code, programmation, inventions, innovation",
+    "translations": { "en": { "label": "Technology", "description": "Robots, coding, programming, inventions, innovation" } }
+  },
+  {
+    "id": "politique-societe",
+    "label": "Politique & société",
+    "description": "Démocratie, citoyenneté, président, société, droits",
+    "translations": { "en": { "label": "Politics & Society", "description": "Democracy, citizenship, president, society, rights" } }
+  },
+  {
+    "id": "cuisine-alimentation",
+    "label": "Cuisine & alimentation",
+    "description": "Manger, nourriture, assiette, cultures culinaires",
+    "translations": { "en": { "label": "Food & Cooking", "description": "Eating, food, plate, culinary cultures" } }
+  }
+]

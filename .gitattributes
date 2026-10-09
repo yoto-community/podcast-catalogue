@@ -1,0 +1,6 @@
+# Format JSON imposé : LF, fin de fichier, 2 espaces d'indentation (prettier).
+*.json text eol=lf
+
+# Les entrées sont des listes triées par slug : git gère les diffs de ligne,
+# la CI (--fix) garantit l'ordre. Aucun driver de merge exotique par défaut
+# (voir plan §6 : merge=union uniquement si les conflits deviennent fréquents).

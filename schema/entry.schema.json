@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/yoto-community/podcast-catalogue/blob/main/schema/entry.schema.json",
+  "title": "Entrée du catalogue de podcasts",
+  "description": "Contribution humaine dans entries/<langue>/<tranche>.json. Les champs `language`, `groupId` et `ageRange` sont interdits : ils sont dérivés du chemin du fichier. Tri par slug obligatoire.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "category",
+    "rssUrl"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Nom public du podcast (≤ 200 caractères)."
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Éditeur / production. Auto-complété depuis `itunes:author` au build s’il est absent (défaut : « Indépendant »)."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "histoire",
+        "education",
+        "fiction",
+        "documentaire",
+        "musique",
+        "science"
+      ],
+      "description": "Catégorie — doit exister dans `reference/categories.json`."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "animaux",
+          "dinosaures",
+          "espace",
+          "sciences",
+          "histoires-soir",
+          "contes-classiques",
+          "histoires-originales",
+          "enquetes-mysteres",
+          "personnages-recurrents",
+          "musique",
+          "histoire-france",
+          "geographie-voyages",
+          "emotions-bienetre",
+          "apprentissages",
+          "nature-environnement",
+          "philosophie",
+          "arts-culture",
+          "langues",
+          "heros-filles",
+          "humour",
+          "sante-corps",
+          "technologie",
+          "politique-societe",
+          "cuisine-alimentation"
+        ]
+      },
+      "description": "Tags thématiques — doivent exister dans `reference/tags.json`."
+    },
+    "rssUrl": {
+      "type": "string",
+      "pattern": "^https://",
+      "description": "URL du flux RSS/Atom (https, hôte public — règles anti-SSRF)."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Description éditoriale (≤ 1000 caractères). Auto-proposée depuis `<description>` du flux si absente."
+    },
+    "imageUrl": {
+      "type": "string",
+      "pattern": "^https://",
+      "description": "URL https de la couverture (auto-complétée depuis `itunes:image` / `<image>` si absente)."
+    },
+    "websiteUrl": {
+      "type": "string",
+      "pattern": "^https://",
+      "description": "URL https du site de l’éditeur (auto-complétée depuis `<link>` du canal si absente)."
+    }
+  }
+}

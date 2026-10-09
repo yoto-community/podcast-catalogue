@@ -1,0 +1,10 @@
+# Relecture obligatoire : à ajuster si le dépôt change de compte
+# (le compte doit correspondre à REPOSITORY dans scripts/lib/config.ts).
+* @sgr-domo
+
+# Les garde-fous ne se contourne pas sans revue : réservés au mainteneur.
+/.github/ @sgr-domo
+/schema/ @sgr-domo
+/scripts/ @sgr-domo
+/groups/ @sgr-domo
+/reference/ @sgr-domo

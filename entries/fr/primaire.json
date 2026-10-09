@@ -1,0 +1,126 @@
+[
+  {
+    "name": "Les aventures d'Arsene Lupin",
+    "category": "histoire",
+    "rssUrl": "https://feeds.audiomeans.fr/feed/528b4d5d-99e6-428d-bb0e-5a2f563e4d1d.xml",
+    "websiteUrl": "https://podcasts.ina.fr/les-aventures-darsene-lupin-528b4d5d",
+    "tags": [
+      "personnages-recurrents"
+    ]
+  },
+  {
+    "name": "Les mondes de Chloé à la belle étoile",
+    "publisher": "Radiofrance",
+    "category": "histoire",
+    "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_23313.xml",
+    "description": "Repérez les constellations et voyagez dans l'espace avec Chloé, sa grand-mère un peu sorcière et l'astrophysicienne Françoise Combes. Un voyage initiatique en 12 nuits, à écouter en famille dès 8 ans.",
+    "websiteUrl": "https://www.radiofrance.fr/franceculture/podcasts/les-mondes-de-chloe-a-la-belle-etoile",
+    "tags": [
+      "animaux",
+      "espace",
+      "histoires-soir",
+      "geographie-voyages",
+      "technologie"
+    ]
+  },
+  {
+    "name": "Mystères et légendes",
+    "category": "histoire",
+    "rssUrl": "https://feeds.acast.com/public/shows/688877e26ba6bf2e17ae077b",
+    "description": "Histoires troublantes, phénomènes paranormaux ou drôles de coïncidences, plongez avec ce podcast dans de nombreux mystères, mythes et légendes plus ou moins connus. On vous raconte la petite histoire de la grande Histoire et on décrypte le vrai du faux.",
+    "tags": [
+      "contes-classiques",
+      "enquetes-mysteres",
+      "humour"
+    ]
+  },
+  {
+    "name": "Nouvelles héroines (histoires vraies)",
+    "category": "education",
+    "rssUrl": "https://feed.ausha.co/bVDemUw96Zq5",
+    "description": "LE podcast des power girls qui osent rêver grand à travers des histoires vraies de femmes incroyables comme Aya Nakamura, Nina Métayer, Heidi Sevestre, Dorothée Gilbert, Jane Goodall, Louane, Angèle et bien d’autres.",
+    "tags": [
+      "histoires-soir",
+      "histoire-france",
+      "heros-filles"
+    ]
+  },
+  {
+    "name": "Olma",
+    "publisher": "Radiofrance",
+    "category": "education",
+    "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_21770.xml",
+    "description": "France Inter invite les enfants de 8 à 12 ans à partir à la découverte des sciences",
+    "websiteUrl": "https://www.radiofrance.fr/franceinter/podcasts/olma",
+    "tags": [
+      "sciences",
+      "histoire-france",
+      "arts-culture"
+    ]
+  },
+  {
+    "name": "Politikids",
+    "category": "education",
+    "rssUrl": "https://feed.ausha.co/DP3pjHx8qr5p",
+    "description": "Podcast Educatif - Politique A quoi ça sert un Président ? Est-ce qu’il peut décider de tout ? A quoi il occupe ses journées ? Pourquoi il n’y a pas de femme Présidente ?",
+    "tags": [
+      "apprentissages",
+      "philosophie",
+      "heros-filles",
+      "sante-corps",
+      "politique-societe"
+    ]
+  },
+  {
+    "name": "Qui a inventé?",
+    "publisher": "Bayard-jeunesse",
+    "category": "education",
+    "rssUrl": "https://feed.ausha.co/ygdr9TNV059K",
+    "description": "Podcast qui raconte les petites et les grandes histoires des inventions qui ont changé l'humanité... le cinéma, l'ampoule, la poubelle, la démocratie, le microscope, la boussole…",
+    "websiteUrl": "https://www.bayard-jeunesse.com/infos/podcasts/qui-a-invente/",
+    "tags": [
+      "sciences",
+      "contes-classiques",
+      "technologie",
+      "politique-societe"
+    ]
+  },
+  {
+    "name": "Raconte-moi l'espace",
+    "category": "education",
+    "rssUrl": "https://podcast.cnes.fr/programme/raconte-moi-lespace",
+    "description": "Série de podcast qui répond aux questions scientifiques et spatiales des enfants... petits et grands !",
+    "tags": [
+      "espace",
+      "sciences",
+      "contes-classiques",
+      "apprentissages",
+      "technologie"
+    ]
+  },
+  {
+    "name": "Raconte-moi Paris",
+    "publisher": "Racontemoiparis",
+    "category": "education",
+    "rssUrl": "https://feeds.acast.com/public/shows/649e91f9a38f0d0011f64322",
+    "description": "L'histoire des monuments",
+    "websiteUrl": "https://www.racontemoiparis.com/",
+    "tags": [
+      "contes-classiques",
+      "geographie-voyages"
+    ]
+  },
+  {
+    "name": "Science infuse",
+    "category": "education",
+    "rssUrl": "https://feeds.podcastics.com/podcastics/podcasts/rss/7819_b1c007e2fbfdb5236015f4afa5117460.rss?fbclid=IwY2xjawUTvRhwZG9mBWV4dG4DYWVtAjEwAGJyaWQRMDZkaTFxaWNJbzVPdmhZVmFzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEe7pu4UZvpvk7lEitTU8PetX-5hZkwFKh54DlDIn8i5jsPjyaJTjee7zSBv7k_aem_J3ccCbhrPpqI6a1yFjAvaw",
+    "description": "Une semaine sur deux, buvez une grande tasse de science infuse ! Avec ce podcast, vous allez développer votre culture générale, découvrir d'étranges phénomènes scientifiques, entendre des anecdotes insolites, apprendre des choses à savoir absolument si la science vous passionne ou encore voyager dans le temps et l'espace grâce à des questions que vous n'osiez même pas vous poser",
+    "tags": [
+      "espace",
+      "sciences",
+      "geographie-voyages",
+      "apprentissages",
+      "arts-culture"
+    ]
+  }
+]
