@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sgr-domo/yoto-podcast-catalog/blob/main/schema/entry.schema.json",
+  "$id": "https://github.com/yoto-community/podcast-catalogue/blob/main/schema/entry.schema.json",
   "title": "Entrée du catalogue de podcasts",
   "description": "Contribution humaine dans entries/<langue>/<tranche>.json. Les champs `language`, `groupId` et `ageRange` sont interdits : ils sont dérivés du chemin du fichier. Tri par slug obligatoire.",
   "type": "object",

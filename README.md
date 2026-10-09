@@ -8,9 +8,9 @@ L'objectif pratique : **constituer des cartes MYO (Make Your Own) Yoto** — rep
 podcast adapté à l'âge, récupérer son flux RSS et l'ajouter sur une carte de son lecteur
 Yoto.
 
-[![CI](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/ci.yml/badge.svg)](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/ci.yml)
-[![Santé des flux](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/feed-health.yml/badge.svg)](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/feed-health.yml)
-[![Pages](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/pages.yml/badge.svg)](https://github.com/sgr-domo/yoto-podcast-catalog/actions/workflows/pages.yml)
+[![CI](https://github.com/yoto-community/podcast-catalogue/actions/workflows/ci.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/ci.yml)
+[![Santé des flux](https://github.com/yoto-community/podcast-catalogue/actions/workflows/feed-health.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/feed-health.yml)
+[![Pages](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > 133 podcasts · 2 langues · 4 tranches d'âge · 10 épisodes pré-extraits par podcast.
@@ -66,7 +66,7 @@ pnpm site:dev           # site en local → http://localhost:4321
    `podcast:ajout`, `podcast:flux`, `ci:skip-network`
    (`feed-health` est créé automatiquement par le premier contrôle hebdomadaire).
 3. Ajuster `REPOSITORY` dans `scripts/lib/config.ts` (+ `pnpm gen:types`) et
-   `.github/CODEOWNERS` si le dépôt n'est pas sous `sgr-domo/yoto-podcast-catalog`.
+   `.github/CODEOWNERS` si le dépôt n'est pas sous `yoto-community/podcast-catalogue`.
 4. (Optionnel) variable de dépôt `SITE_URL` / `BASE_PATH` pour un domaine Pages
    personnalisé — sinon l'URL est déduite automatiquement.
 

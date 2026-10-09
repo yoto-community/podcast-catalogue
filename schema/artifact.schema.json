@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sgr-domo/yoto-podcast-catalog/blob/main/schema/artifact.schema.json",
+  "$id": "https://github.com/yoto-community/podcast-catalogue/blob/main/schema/artifact.schema.json",
   "title": "Entrée publiée dans dist/",
   "description": "Contrat de sortie du build (schemaVersion 1) : toujours complet (imageUrl, description, publisher obligatoires).",
   "type": "object",

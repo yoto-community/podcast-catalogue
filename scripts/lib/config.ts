@@ -31,7 +31,7 @@ export const SCHEMA_VERSION = 1;
  * Dépôt public cible (`<owner>/<name>`), utilisé dans les `$id` des schémas, l'User-Agent
  * et les badges de la doc. À ajuster d'une ligne + `pnpm gen:types` si le dépôt change de compte.
  */
-export const REPOSITORY = "sgr-domo/yoto-podcast-catalog";
+export const REPOSITORY = "yoto-community/podcast-catalogue";
 
 export const USER_AGENT = `yoto-podcast-catalog/1.0 (+https://github.com/${REPOSITORY})`;
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sgr-domo/yoto-podcast-catalog/blob/main/schema/source-file.schema.json",
+  "$id": "https://github.com/yoto-community/podcast-catalogue/blob/main/schema/source-file.schema.json",
   "title": "Fichier source entries/<langue>/<tranche>.json",
   "description": "Tableau d’entrées triées par slug (croissant). Un fichier vide n’existe pas.",
   "type": "array",
