@@ -1,0 +1,178 @@
+# Formulaire d'issue → PR automatique (plan §6, voies B et C) :
+#   « Proposer un podcast »  → entries/<langue>/<tranche>.json + PR
+#   « Signaler un flux »     → correction d'une entrée + PR
+#
+# Le job est choisi d'après le CORPS du formulaire (le libellé peut manquer tant que
+# les labels du dépôt ne sont pas créés). La CI valide ensuite la PR comme une
+# contribution humaine.
+name: Issue → PR
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  add-podcast:
+    name: Ajouter le podcast proposé
+    if: >-
+      contains(github.event.issue.labels.*.name, 'podcast:ajout') ||
+      (contains(github.event.issue.body, 'Nom du podcast') && contains(github.event.issue.body, 'URL du flux RSS'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Générer l'entrée
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: pnpm issue-to-entry
+
+      - name: Valider (structure · doublons)
+        run: pnpm validate
+
+      - name: Ouvrir la PR
+        env:
+          GH_TOKEN: ${{ secrets.PA_TOKEN || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          set -euo pipefail
+          branch="auto/issue-${ISSUE_NUMBER}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add entries/
+          git commit -m "feat: ajoute « ${ISSUE_TITLE} » (issue #${ISSUE_NUMBER})"
+          git push --force origin "HEAD:refs/heads/${branch}"
+
+          cat > pr-body.md <<EOF
+          Closes #${ISSUE_NUMBER}
+
+          Entrée générée automatiquement depuis le formulaire de l'issue, puis validée
+          (structure, doublons, tri). Le niveau 3 (flux) sera vérifié par la CI de la PR.
+
+          - [ ] Le podcast correspond bien à la tranche d'âge annoncée
+          - [ ] Le podcast n'existe pas déjà sous un autre nom
+          - [ ] Le flux s'écoute (épisodes audio https)
+
+          _Relance possible : rouvrez l'issue avec les champs corrigés, la PR est écrasée._
+          EOF
+          if [ "$(gh pr list --head "$branch" --state open --json number --jq 'length')" = "0" ]; then
+            gh pr create --head "$branch" \
+              --title "Ajout : ${ISSUE_TITLE}" \
+              --body-file pr-body.md
+          else
+            echo "PR déjà ouverte pour $branch (push mis à jour)"
+          fi
+
+      - name: Expliquer l'échec sur l'issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu ouvrir la PR : le formulaire contient un champ manquant ou invalide.
+
+          Corrigez l'issue (nom, **flux https**, catégorie, langue, tranche) et **rouvrez-la**
+          en la commentant, ou ouvrez une nouvelle issue. Le détail est dans l'onglet Actions.
+          EOF
+          )" || true
+
+  fix-feed:
+    name: Corriger le flux signalé
+    if: >-
+      contains(github.event.issue.labels.*.name, 'podcast:flux') ||
+      contains(github.event.issue.body, 'Nouvelle URL du flux')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Appliquer la correction
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: pnpm issue-to-fix
+
+      - name: Valider (structure · doublons)
+        run: pnpm validate
+
+      - name: Ouvrir la PR
+        env:
+          GH_TOKEN: ${{ secrets.PA_TOKEN || secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          set -euo pipefail
+          branch="fix/issue-${ISSUE_NUMBER}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add entries/
+          if git diff --cached --quiet; then
+            gh issue comment "$ISSUE_NUMBER" --body "ℹ️ Aucun changement à appliquer : la correction proposée correspond déjà au contenu de l'entrée."
+            exit 0
+          fi
+          git commit -m "fix: corrige un flux (issue #${ISSUE_NUMBER})"
+          git push --force origin "HEAD:refs/heads/${branch}"
+
+          cat > pr-body.md <<EOF
+          Closes #${ISSUE_NUMBER}
+
+          Correction de flux proposée par l'issue. Le niveau 3 de la CI revalidera le
+          nouveau flux (accès https, épisodes audio, langue) avant merge.
+
+          - [ ] L'ancien flux est réellement mort ou changé d'URL
+          - [ ] Le nouveau flux contient les mêmes épisodes
+          EOF
+
+          if [ "$(gh pr list --head "$branch" --state open --json number --jq 'length')" = "0" ]; then
+            gh pr create --head "$branch" \
+              --title "Correction de flux : ${ISSUE_TITLE}" \
+              --body-file pr-body.md
+          else
+            echo "PR déjà ouverte pour $branch (push mis à jour)"
+          fi
+
+      - name: Expliquer l'échec sur l'issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "$(cat <<'EOF'
+          ❌ Je n'ai pas pu ouvrir la PR de correction : vérifiez que le **nom exact du podcast**
+          (ou son URL actuel) et la **nouvelle URL https** figurent dans l'issue.
+
+          Le détail est dans l'onglet Actions.
+          EOF
+          )" || true

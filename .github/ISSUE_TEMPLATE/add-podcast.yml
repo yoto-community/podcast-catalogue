@@ -1,0 +1,86 @@
+name: Proposer un podcast
+description: Ajouter un podcast au catalogue sans toucher à git (une PR est ouverte automatiquement)
+title: "[Ajout] "
+labels: ["podcast:ajout"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de proposer un podcast **déjà disponible publiquement** en RSS.
+        La PR sera ouverte automatiquement, puis contrôlée par la CI
+        (structure, doublons, flux) avant relecture humaine.
+
+        Les champs marqués *obligatoire* bloquent l'ouverture de la PR.
+  - type: input
+    id: name
+    attributes:
+      label: Nom du podcast
+      description: Nom public exact (200 caractères max).
+      placeholder: Les comptines du soir
+    validations:
+      required: true
+  - type: input
+    id: rss
+    attributes:
+      label: URL du flux RSS
+      description: Le flux du podcast, en **https** uniquement (adresse `…/feed`, `…/rss` ou `…/podcast.xml`).
+      placeholder: https://feeds.example.com/comptines.xml
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catégorie
+      options:
+        - Histoire
+        - Éducation
+        - Fiction
+        - Documentaire
+        - Musique
+        - Science
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Langue
+      description: Langue **déclarée par le flux** (les fichiers `entries/` sont rangés par langue).
+      options:
+        - Français
+        - English
+    validations:
+      required: true
+  - type: dropdown
+    id: group
+    attributes:
+      label: Tranche d'âge
+      description: À adapter au **contenu réel** des épisodes, pas à l'âge déclaré par l'éditeur.
+      options:
+        - Tout-petits
+        - Maternelle / CP
+        - Primaire
+        - Collège & +
+    validations:
+      required: true
+  - type: input
+    id: publisher
+    attributes:
+      label: Éditeur (optionnel)
+      description: Production / chaîne. Complété automatiquement depuis le flux s'il est vide.
+      placeholder: Radio Comptine
+  - type: textarea
+    id: description
+    attributes:
+      label: Description (optionnel)
+      description: Une à deux phrases, 1000 caractères max.
+  - type: input
+    id: image
+    attributes:
+      label: Image (URL https, optionnel)
+      description: Couverture carrée. Sinon elle est récupérée dans le flux.
+      placeholder: https://example.com/cover.jpg
+  - type: input
+    id: website
+    attributes:
+      label: Site de l'éditeur (URL https, optionnel)
+      placeholder: https://example.com

@@ -1,0 +1,54 @@
+# Audit hebdomadaire de TOUS les flux (plan §7.4) : c'est lui qui détecte les flux
+# devenus morts après contribution. Un seul rapport = une seule issue `feed-health`
+# (ouverte/mise à jour en cas d'erreur, fermée au retour au vert) — pas de spam.
+name: Santé des flux
+
+on:
+  schedule:
+    - cron: "0 4 * * 1" # lundi 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: feed-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Vérifier les 133 flux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache des flux
+        uses: actions/cache@v4
+        with:
+          path: .cache/feeds
+          key: feeds-${{ github.run_id }}
+          restore-keys: feeds-
+
+      - name: Vérifier tous les flux et tenir l'issue à jour
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm check-feeds
+
+      - name: Publier le rapport comme artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-flux
+          path: ${{ runner.temp }}/yoto-podcast-catalog-feed-health.md
+          if-no-files-found: ignore

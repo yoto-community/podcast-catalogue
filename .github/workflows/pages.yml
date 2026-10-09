@@ -1,0 +1,115 @@
+# Publication sur GitHub Pages (plan §5 et §7) : site statique + catalogue.
+#
+# Composition de l'artefact publié :
+#   _site/          ← site Astro (pages, recherche, écoute)
+#   _site/dist/*    ← catalogue (index.json, éclats, catalog.json, episodes/)
+#        → https://<user>.github.io/<repo>/          le site
+#        → https://<user>.github.io/<repo>/dist/…    le catalogue (app + tiers)
+#
+# Implémentation unique, réutilisée par `episodes.yml` (cron 6 h) via `workflow_call`.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - entries/**
+      - groups/**
+      - reference/**
+      - schema/**
+      - scripts/**
+      - site/**
+      - package.json
+      - pnpm-lock.yaml
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois : si un build échoue, le dernier valide reste en ligne.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Construire site + catalogue
+    runs-on: ubuntu-latest
+    env:
+      # Surchargables par des variables de dépôt (Pages personnalisé, sous-dossier…)
+      SITE_URL: ${{ vars.SITE_URL }}
+      BASE_PATH: ${{ vars.BASE_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache des flux (24 h)
+        uses: actions/cache@v4
+        with:
+          path: .cache/feeds
+          key: feeds-${{ github.run_id }}
+          restore-keys: feeds-
+
+      - name: Déterminer l'URL de publication
+        run: |
+          owner="${GITHUB_REPOSITORY%%/*}"
+          repo="${GITHUB_REPOSITORY#*/}"
+          if [ "$repo" = "${owner}.github.io" ]; then
+            default_base="/"
+          else
+            default_base="/${repo}/"
+          fi
+          {
+            echo "BASE_PATH=${BASE_PATH:-$default_base}"
+            echo "SITE_URL=${SITE_URL:-https://${owner}.github.io${default_base%/}}"
+          } >> "$GITHUB_ENV"
+          echo "base=$BASE_PATH site=$SITE_URL"
+
+      - name: Construire le catalogue
+        run: |
+          pnpm build
+          pnpm build:episodes
+
+      - name: Vérifier les artefacts (S8)
+        run: pnpm validate:dist
+
+      - name: Construire le site
+        run: pnpm site:build
+
+      - name: Composer l'artefact Pages
+        run: |
+          rm -rf _site
+          mkdir -p _site/dist
+          cp -R site/dist/. _site/
+          cp -R dist/. _site/dist/
+          test -f _site/index.html
+          test -f _site/dist/index.json
+          find _site -maxdepth 2 -type d | sort
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Déployer sur GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

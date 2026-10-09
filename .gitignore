@@ -1,0 +1,9 @@
+node_modules/
+dist/
+site/dist/
+.cache/
+.astro/
+_site/
+*.log
+.DS_Store
+.vscode/

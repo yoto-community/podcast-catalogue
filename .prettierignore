@@ -1,0 +1,15 @@
+node_modules/
+dist/
+site/dist/
+.cache/
+.astro/
+pnpm-lock.yaml
+
+# Données écrites par les scripts (format canonical `writeJson`) : contrôlées par
+# la validation (S7 tri/format, S9 schéma) plutôt que par Prettier, pour qu'une
+# édition faite dans l'UI GitHub ne casse jamais `pnpm lint`.
+entries/
+groups/
+reference/
+schema/*.json
+schema/*.d.ts
