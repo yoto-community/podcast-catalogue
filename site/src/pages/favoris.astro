@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogBrowser from "../components/CatalogBrowser.astro";
 import { getEntries } from "../lib/catalog";
 import { pageUrl } from "../lib/url";
-import { plural } from "../lib/format";
 
 const entries = getEntries();
 const path = "/favoris/";
@@ -60,7 +58,8 @@ const description = "Podcasts marqués comme favoris — stockés localement dan
     const emptyEl = document.querySelector(".favorites-empty");
     const items = list ? list.querySelectorAll("[data-fav-slug]") : [];
 
-    function render(favs: string[]) {
+    /** @param {string[]} favs */
+    function render(favs) {
       let visible = 0;
       items.forEach((item) => {
         const slug = item.dataset.favSlug;

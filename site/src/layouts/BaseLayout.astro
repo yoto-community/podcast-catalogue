@@ -252,10 +252,11 @@ const hreflangLinks = getHreflangLinks();
       <audio data-player-audio preload="metadata"></audio>
     </div>
 
-    <script>
+    <script type="module">
       import "../scripts/site";
     </script>
-    <script>
+    <script type="module">
+      import { registerSW } from "virtual:pwa-register";
       registerSW({ immediate: true });
     </script>
     <FavoritesInit />
