@@ -3,6 +3,3 @@ contact_links:
   - name: Contribuer directement (git)
     url: https://github.com/yoto-community/podcast-catalogue/blob/main/CONTRIBUTING.md
     about: Éditer entries/<langue>/<tranche>.json soi-même, ou améliorer le site — voir CONTRIBUTING.md.
-  - name: Un problème sur l'application Yoto Card Automator
-    url: https://gitlab.com/sgr-domo/yoto-card-creator/-/issues
-    about: Ce dépôt ne gère que le catalogue (données + site). Les bugs de l'app vont dans son dépôt.

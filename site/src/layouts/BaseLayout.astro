@@ -5,6 +5,7 @@ import { formatDateLong } from "../lib/format";
 import { serializeJsonLd } from "../lib/seo";
 import { pageUrl } from "../lib/url";
 import FavoritesInit from "../components/FavoritesInit.astro";
+import { registerSW } from "virtual:pwa-register";
 
 interface Props {
   title: string;
@@ -60,6 +61,13 @@ const hreflangLinks = getHreflangLinks();
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href={pageUrl("/favicon.svg")} type="image/svg+xml" />
+    <link rel="manifest" href={pageUrl("/manifest.webmanifest")} />
+    <link rel="apple-touch-icon" href={pageUrl("/icons/apple-icon-180.png")} sizes="180x180" />
+    <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101012" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Podcasts Enfants" />
     {canonical && <link rel="canonical" href={canonical} />}
     {hreflangLinks.map((link) => (
       <link rel="alternate" hreflang={link.hreflang} href={link.href} />
@@ -246,6 +254,9 @@ const hreflangLinks = getHreflangLinks();
 
     <script>
       import "../scripts/site";
+    </script>
+    <script>
+      registerSW({ immediate: true });
     </script>
     <FavoritesInit />
   </body>
