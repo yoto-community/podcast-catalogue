@@ -78,7 +78,11 @@ function buildEntrySchema(): Schema {
       description: DOC.publisher,
     },
     category: { type: "string", enum: categories, description: DOC.category },
-    tags: { type: "array", items: { type: "string", enum: tags }, description: "Tags thématiques — doivent exister dans `reference/tags.json`." },
+    tags: {
+      type: "array",
+      items: { type: "string", enum: tags },
+      description: "Tags thématiques — doivent exister dans `reference/tags.json`.",
+    },
     rssUrl: { type: "string", pattern: "^https://", description: DOC.rssUrl },
     description: {
       type: "string",
@@ -155,7 +159,11 @@ function buildArtifactSchema(): Schema {
         description: "Tranche d'âge affichable, dérivée de groups/groups.json (traduite).",
       },
       category: { type: "string", enum: categories },
-      tags: { type: "array", items: { type: "string", enum: tags }, description: "Tags thématiques." },
+      tags: {
+        type: "array",
+        items: { type: "string", enum: tags },
+        description: "Tags thématiques.",
+      },
       publisher: { type: "string", minLength: 1, maxLength: LIMITS.publisher },
       rssUrl: { type: "string", pattern: "^https://" },
       imageUrl: { type: "string", pattern: "^https://" },
@@ -166,7 +174,12 @@ function buildArtifactSchema(): Schema {
 }
 
 function tsType(prop: SchemaProperty): string {
-  if (prop.type === "array" && prop.items && typeof prop.items === "object" && "enum" in prop.items) {
+  if (
+    prop.type === "array" &&
+    prop.items &&
+    typeof prop.items === "object" &&
+    "enum" in prop.items
+  ) {
     const itemsEnum = (prop.items as { enum: string[] }).enum;
     return `${itemsEnum.map((v) => JSON.stringify(v)).join(" | ")}[]`;
   }
@@ -192,9 +205,7 @@ function generateDts(entrySchema: Schema, artifactSchema: Schema): string {
 
   const tagEnum = entrySchema.properties?.tags?.items?.enum ?? [];
   lines.push("/** Tags autorisés (source : reference/tags.json). */");
-  lines.push(
-    `export type SourceTag = ${tagEnum.map((v) => JSON.stringify(v)).join(" | ")};`,
-  );
+  lines.push(`export type SourceTag = ${tagEnum.map((v) => JSON.stringify(v)).join(" | ")};`);
   lines.push("");
 
   const emitInterface = (name: string, schema: Schema, doc: string): void => {

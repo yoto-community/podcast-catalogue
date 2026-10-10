@@ -47,8 +47,12 @@ const path = "/nouveautes/";
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
       <h1 id="titre-page">Nouveautés</h1>
-      <p class="catalog__intro">Les épisodes les plus récemment publiés, toutes langues et tranches d'âge confondues.</p>
-      <p class="catalog__count" role="status">{plural(recentEpisodes.length, "épisode")} récents</p>
+      <p class="catalog__intro">
+        Les épisodes les plus récemment publiés, toutes langues et tranches d'âge confondues.
+      </p>
+      <p class="catalog__count" role="status">
+        {plural(recentEpisodes.length, "épisode")} récents
+      </p>
     </header>
 
     <ul class="grid episodes-grid">
@@ -71,13 +75,17 @@ const path = "/nouveautes/";
                 />
                 <h2 class="episode-card__title">{ep.title}</h2>
               </a>
-              <p class="episode-card__podcast"><a href={ep.podcastUrl}>{ep.podcast.name}</a></p>
+              <p class="episode-card__podcast">
+                <a href={ep.podcastUrl}>{ep.podcast.name}</a>
+              </p>
               <p class="episode-card__meta">
                 {date && <time datetime={day ?? ep.pubDate}>{date}</time>}
                 {duration && <span>{duration}</span>}
               </p>
               <p class="episode-card__actions">
-                <a class="btn btn--ghost" href={ep.podcastUrl}>Voir le podcast</a>
+                <a class="btn btn--ghost" href={ep.podcastUrl}>
+                  Voir le podcast
+                </a>
               </p>
             </article>
           </li>

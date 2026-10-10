@@ -55,7 +55,13 @@ const description = `${plural(entries.length, "podcast")} en ${frenchName}, tout
 const path = `/${language.code}/`;
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang={language.code}>
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  lang={language.code}
+>
   <CatalogBrowser
     title={`Podcasts en ${frenchName}`}
     intro={`Feuilleter tous les podcasts en ${frenchName}. Utilisez la recherche et les filtres pour affiner la liste.`}

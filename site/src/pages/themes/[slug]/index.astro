@@ -43,9 +43,15 @@ const description = `${plural(entries.length, "podcast")} sur le thème « ${lab
 <BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
   <nav class="breadcrumb" aria-label="Fil d'ariane">
     <ol>
-      <li><a href={pageUrl("/")}>Catalogue</a></li>
-      <li><a href={pageUrl("/themes/")}>Thèmes</a></li>
-      <li><span aria-current="page">{label}</span></li>
+      <li>
+        <a href={pageUrl("/")}>Catalogue</a>
+      </li>
+      <li>
+        <a href={pageUrl("/themes/")}>Thèmes</a>
+      </li>
+      <li>
+        <span aria-current="page">{label}</span>
+      </li>
     </ol>
   </nav>
   <CatalogBrowser
@@ -59,7 +65,12 @@ const description = `${plural(entries.length, "podcast")} sur le thème « ${lab
     nav={{
       label: "Tous les thèmes",
       items: [
-        { href: pageUrl("/themes/"), label: "Tous les thèmes", count: getTags().length, active: false },
+        {
+          href: pageUrl("/themes/"),
+          label: "Tous les thèmes",
+          count: getTags().length,
+          active: false,
+        },
       ],
     }}
   />

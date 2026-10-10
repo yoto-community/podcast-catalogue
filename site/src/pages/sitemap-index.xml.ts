@@ -26,7 +26,9 @@ export async function GET({ site }: APIContext) {
   // Pages par langue + tranche
   for (const language of languages) {
     for (const group of groups) {
-      const count = entries.filter((e) => e.language === language.code && e.groupId === group.id).length;
+      const count = entries.filter(
+        (e) => e.language === language.code && e.groupId === group.id,
+      ).length;
       if (count > 0) {
         urls.push(new URL(pageUrl(`/${language.code}/${group.id}/`), site).href);
       }
@@ -65,7 +67,7 @@ ${urls
     <loc>${url}</loc>
     <changefreq>weekly</changefreq>
     <priority>${url === new URL(pageUrl("/"), site).href ? "1.0" : "0.8"}</priority>
-  </url>`
+  </url>`,
   )
   .join("\n")}
 </urlset>`;

@@ -56,7 +56,13 @@ const title = `${label} (${ageRange}) — podcasts en ${language.code === "fr" ?
 const description = `${plural(entries.length, "podcast")} pour la tranche ${label} (${ageRange}), avec écoute directe et lien vers le site de l’éditeur.`;
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang={language.code}>
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  lang={language.code}
+>
   <CatalogBrowser
     title={label}
     intro={`${plural(entries.length, "podcast")} pour la tranche « ${label} » — ${ageRange}.`}

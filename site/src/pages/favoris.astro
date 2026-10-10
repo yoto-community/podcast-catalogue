@@ -14,28 +14,64 @@ const jsonLd = {
 };
 
 const title = "Mes favoris";
-const description = "Podcasts marqués comme favoris — stockés localement dans votre navigateur, synchronisés entre onglets.";
+const description =
+  "Podcasts marqués comme favoris — stockés localement dans votre navigateur, synchronisés entre onglets.";
 ---
 
 <BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
       <h1 id="titre-page">Mes favoris</h1>
-      <p class="catalog__intro">Vos podcasts préférés, sauvegardés localement. Cliquez sur le cœur sur n'importe quelle fiche pour ajouter/retirer.</p>
-      <p class="catalog__count" role="status" data-fav-count>0 podcasts</p>
+      <p class="catalog__intro">
+        Vos podcasts préférés, sauvegardés localement. Cliquez sur le cœur sur n'importe quelle
+        fiche pour ajouter/retirer.
+      </p>
+      <p class="catalog__count" role="status" data-fav-count>
+        0 podcasts
+      </p>
     </header>
 
     <div class="favorites-empty" hidden>
       <p class="empty-title">Aucun favori pour l'instant</p>
-      <p class="empty-text">Parcourez le <a href={pageUrl("/")}>catalogue</a> et cliquez sur le cœur <svg class="inline-heart" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="currentColor" stroke-width="2"></path></svg> sur une fiche pour l'ajouter ici.</p>
+      <p class="empty-text">
+        Parcourez le <a href={pageUrl("/")}>catalogue</a> et cliquez sur le cœur{" "}
+        <svg class="inline-heart" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          ></path>
+        </svg>{" "}
+        sur une fiche pour l'ajouter ici.
+      </p>
     </div>
 
     <ul class="grid" data-fav-list>
       {entries.map((entry) => (
-        <li class="card" data-entry data-language={entry.language} data-group={entry.groupId} data-category={entry.category} data-fav-slug={entry.slug} hidden>
+        <li
+          class="card"
+          data-entry
+          data-language={entry.language}
+          data-group={entry.groupId}
+          data-category={entry.category}
+          data-fav-slug={entry.slug}
+          hidden
+        >
           <article class="card__body">
-            <a class="card__link" href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}>
-              <img class="card__image" src={entry.imageUrl || pageUrl("/placeholder.svg")} alt={entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : ""} width="300" height="300" loading="lazy" decoding="async" />
+            <a
+              class="card__link"
+              href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
+            >
+              <img
+                class="card__image"
+                src={entry.imageUrl || pageUrl("/placeholder.svg")}
+                alt={entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : ""}
+                width="300"
+                height="300"
+                loading="lazy"
+                decoding="async"
+              />
               <h2 class="card__title">{entry.name}</h2>
             </a>
             <p class="card__publisher">{entry.publisher}</p>
@@ -80,7 +116,6 @@ const description = "Podcasts marqués comme favoris — stockés localement dan
     // Nettoyage (page statique, pas vital)
     document.addEventListener("astro:page-load", cleanup, { once: true });
   </script>
-
   <style>
     .inline-heart {
       display: inline-block;
