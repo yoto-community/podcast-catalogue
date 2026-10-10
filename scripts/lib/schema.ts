@@ -21,7 +21,7 @@ export interface SchemaProperty {
   pattern?: string;
   enum?: string[];
   description?: string;
-  items?: unknown;
+  items?: SchemaProperty;
   $ref?: string;
 }
 
