@@ -16,9 +16,12 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: false
+# ⚠️ Aucun `concurrency` ici : `pages.yml` (workflow appelé) en définit déjà un
+# (groupe `pages`). Les deux blocs au même niveau formeraient le même groupe et
+# GitHub détecterait un deadlock (« Canceling since a deadlock was detected for
+# concurrency group: 'pages' between a top level workflow and ... ») en annulant
+# l'exécution avant même le premier job. La file d'attente unique des déploiements
+# est portée par `pages.yml`, seule source de vérité.
 
 jobs:
   refresh:
