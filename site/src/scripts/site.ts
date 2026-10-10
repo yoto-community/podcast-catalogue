@@ -282,6 +282,47 @@ function playEpisode(data: PlayerState): void {
   if (attempt) void attempt.play().catch(() => showError());
 }
 
+function playNextEpisode(): void {
+  const dom = getPlayerDom();
+  if (!dom || !playerState) return;
+
+  // Find all play buttons in the current episode list
+  const playButtons = qsa<HTMLButtonElement>("[data-play]");
+  if (playButtons.length === 0) return;
+
+  // Find the index of the currently playing episode
+  let currentIndex = -1;
+  for (let i = 0; i < playButtons.length; i++) {
+    const btn = playButtons[i];
+    if (
+      btn.dataset.audio === playerState.audioUrl &&
+      btn.dataset.episode === playerState.episodeId
+    ) {
+      currentIndex = i;
+      break;
+    }
+  }
+
+  // If current episode not found or it's the last one, stop
+  if (currentIndex === -1 || currentIndex >= playButtons.length - 1) return;
+
+  // Get the next episode's button
+  const nextButton = playButtons[currentIndex + 1];
+  const nextAudioUrl = nextButton.dataset.audio;
+  if (!nextAudioUrl) return;
+
+  // Play the next episode
+  playEpisode({
+    audioUrl: nextAudioUrl,
+    title: nextButton.dataset.title ?? "Épisode",
+    artist: nextButton.dataset.artist ?? "Podcast",
+    album: nextButton.dataset.album ?? "",
+    externalUrl: nextButton.dataset.external ?? nextAudioUrl,
+    image: nextButton.dataset.image || undefined,
+    episodeId: nextButton.dataset.episode,
+  });
+}
+
 function bindPlayer(): void {
   const dom = getPlayerDom();
   if (!dom) return;
@@ -349,6 +390,7 @@ function bindPlayer(): void {
   audio.addEventListener("ended", () => {
     updateToggleState();
     refreshPressedStates();
+    playNextEpisode();
   });
   audio.addEventListener("error", () => {
     if (!playerState) return;
