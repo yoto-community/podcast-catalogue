@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
-import { entriesOfTag, getEntries, getTags, tagLabel } from "../../../lib/catalog";
+import { entriesOfTag, getTags, tagLabel } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
-import type { StaticPath, TagDef } from "../../../../lib/types";
+import type { StaticPath, TagDef } from "../../../lib/types";
 
 export function getStaticPaths(): Array<StaticPath<ThemeProps>> {
   return getTags()

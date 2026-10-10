@@ -152,8 +152,9 @@ const jsonLd = podcastSeriesJsonLd(full, {
   <script>
     // Copier le flux RSS
     document.querySelector('[data-copy-rss]')?.addEventListener('click', async (e) => {
-      const btn = e.currentTarget;
-      const rssUrl = btn.dataset.rssUrl;
+      const btn = e.currentTarget as HTMLElement;
+      const rssUrl = btn.dataset.rssUrl ?? "";
+      if (!rssUrl) return;
       try {
         await navigator.clipboard.writeText(rssUrl);
         const original = btn.innerHTML;
@@ -176,10 +177,11 @@ const jsonLd = podcastSeriesJsonLd(full, {
 
     // Partager (Web Share API + fallback)
     document.querySelector('[data-share]')?.addEventListener('click', async (e) => {
-      const btn = e.currentTarget;
-      const url = btn.dataset.url;
-      const title = btn.dataset.title;
-      const text = btn.dataset.text;
+      const btn = e.currentTarget as HTMLElement;
+      const url = btn.dataset.url ?? "";
+      const title = btn.dataset.title ?? "";
+      const text = btn.dataset.text ?? "";
+      if (!url) return;
       if (navigator.share) {
         try {
           await navigator.share({ title, text, url });

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
-import { entriesOfPublisher, getEntries, getPublishers, slugifyPublisher } from "../../../lib/catalog";
+import { entriesOfPublisher, getPublishers } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
-import type { StaticPath } from "../../../../lib/types";
+import type { StaticPath } from "../../../lib/types";
 
 export function getStaticPaths(): Array<StaticPath<PublisherProps>> {
   return getPublishers()

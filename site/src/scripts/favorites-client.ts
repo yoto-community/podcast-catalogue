@@ -59,7 +59,7 @@ function dispatchFavoritesChange(favs: string[]): void {
 
 /** Écoute les changements de favoris (depuis un autre onglet ou même page). */
 export function onFavoritesChange(cb: (favs: string[]) => void): () => void {
-  const handler = (e: CustomEvent<string[]>) => cb(e.detail.favorites);
+  const handler = (e: CustomEvent<{ favorites: string[] }>) => cb(e.detail.favorites);
   window.addEventListener("yoto-favorites-change", handler as EventListener);
   const storageHandler = (e: StorageEvent) => {
     if (e.key === FAV_KEY) cb(getFavorites());

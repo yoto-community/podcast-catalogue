@@ -31,7 +31,7 @@ const recentEpisodes = episodesWithMeta.slice(0, 50);
 
 const jsonLd = itemListJsonLd(
   "Nouveaux épisodes — Catalogue de podcasts",
-  recentEpisodes.map((ep, i) => ({
+  recentEpisodes.map((ep) => ({
     name: `${ep.podcast.name} — ${ep.title}`,
     path: ep.podcastUrl,
   })),
