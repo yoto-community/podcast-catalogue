@@ -64,7 +64,7 @@ const hreflangLinks = getHreflangLinks();
     <link rel="apple-touch-icon" href={pageUrl("/icons/apple-icon-180.png")} sizes="180x180" />
     <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#101012" media="(prefers-color-scheme: dark)" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Podcasts Enfants" />
     {canonical && <link rel="canonical" href={canonical} />}
@@ -252,7 +252,7 @@ const hreflangLinks = getHreflangLinks();
     </div>
 
     <script type="module">
-      import "../scripts/site";
+      import "../scripts/site.ts";
     </script>
     <script type="module">
       import { registerSW } from "virtual:pwa-register";
