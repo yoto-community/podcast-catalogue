@@ -54,7 +54,11 @@ body:
     id: group
     attributes:
       label: Tranche d'âge
-      description: À adapter au **contenu réel** des épisodes, pas à l'âge déclaré par l'éditeur.
+      description: >-
+        À adapter au **contenu réel** des épisodes, pas à l'âge déclaré par
+        l'éditeur. Bornes inclusives : Tout-petits 2–5 ans · Maternelle / CP
+        5–7 ans · Primaire 7–10 ans · Collège & + 11 ans et plus (5 et 7 ans
+        appartiennent aux deux tranches voisines).
       options:
         - Tout-petits
         - Maternelle / CP

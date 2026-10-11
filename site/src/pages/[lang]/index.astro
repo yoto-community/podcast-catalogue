@@ -6,6 +6,7 @@ import {
   entriesOfLanguage,
   getGroups,
   getLanguages,
+  groupAgeRange,
   groupLabel,
   groupOptions,
   languageFrenchName,
@@ -35,7 +36,7 @@ const frenchName = languageFrenchName(language.code);
 const groupNav = getGroups()
   .map((group) => ({
     href: pageUrl(`/${language.code}/${group.id}/`),
-    label: groupLabel(group, language.code),
+    label: `${groupLabel(group, language.code)} · ${groupAgeRange(group, language.code)}`,
     count: entries.filter((entry) => entry.groupId === group.id).length,
     active: false,
   }))

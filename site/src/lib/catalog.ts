@@ -20,6 +20,8 @@ import type {
   TagDef,
 } from "./types";
 import { normalizeText } from "./text";
+import { ageChoices, coversAge } from "./ages";
+import type { AgeChoice } from "./ages";
 import { slugifyPublisher } from "./url";
 
 const MISSING_DIST_MESSAGE = [
@@ -286,6 +288,28 @@ export function groupOptions(entries: DistEntry[], language?: string): FilterOpt
       value: group.id,
       label: groupLabel(group, language),
       count: optionCount(entries, (entry) => entry.groupId === group.id),
+    }))
+    .filter((option) => option.count > 0);
+}
+
+/** Case à cocher du filtre « âge », avec son compteur. */
+export type AgeOption = AgeChoice & { count: number };
+
+/**
+ * Pastilles d'âge exact à afficher : chaque âge compte les podcasts des tranches
+ * qui le couvrent (bornes inclusives → les âges de frontière comptent deux fois).
+ * Les âges sans podcast dans la page sont masqués, comme pour les autres filtres.
+ */
+export function ageOptions(entries: DistEntry[]): AgeOption[] {
+  const groups = getGroups();
+  const byId = new Map(groups.map((group) => [group.id, group]));
+  return ageChoices(groups)
+    .map((choice) => ({
+      ...choice,
+      count: optionCount(entries, (entry) => {
+        const group = byId.get(entry.groupId);
+        return group ? coversAge(group, choice.age) : false;
+      }),
     }))
     .filter((option) => option.count > 0);
 }

@@ -16,6 +16,9 @@ export const paths = {
   site: path.join(ROOT, "site"),
 };
 
+/** Âge minimum du catalogue (une tranche ne peut pas commencer en dessous). */
+export const MIN_AGE = 2;
+
 /** Seuil d'entrée pour découper une tranche (≥ → fichier par tranche, sinon fichier par langue). */
 export const SHARD_MIN_ENTRIES = 15;
 /** Seuil de re-découpage à la hausse : un éclat plus gros doit être re-fractionné. */

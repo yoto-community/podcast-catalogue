@@ -33,6 +33,10 @@ export interface GroupDef {
   /** Libellés français (langue de référence). */
   label: string;
   ageRange: string;
+  /** Premier âge couvert (inclus), entier ≥ 2 — validé par `validate.ts` (S10). */
+  ageMin: number;
+  /** Dernier âge couvert (inclus), ou `null` = ouvert vers le haut (dernière tranche). */
+  ageMax: number | null;
   /** Traductions optionnelles, ex. `{ "en": { "label": "Toddlers", "ageRange": "2–5 years" } }`. */
   translations?: Record<string, GroupTranslation>;
 }
@@ -94,6 +98,10 @@ export interface Manifest {
     order: number;
     label: string;
     ageRange: string;
+    /** Premier âge couvert (inclus). */
+    ageMin: number;
+    /** Dernier âge couvert (inclus), `null` = ouvert (11 ans et plus). */
+    ageMax: number | null;
     translations?: Record<string, GroupTranslation>;
   }>;
   languages: LanguageDef[];

@@ -7,8 +7,9 @@
  *     (la lecture ne redémarre jamais au changement de page) ;
  *  2. une **micro-routerisation** interne (fetch + remplacement de `<main>`) pour que
  *     la navigation n'interrompe pas la lecture ; sans JS, la navigation est classique ;
- *  3. les **filtres / recherche / tri** du catalogue (état `?q=` dans l'URL).
+ *  3. les **filtres / recherche / tri** du catalogue (état `?q=` et `?ages=` dans l'URL).
  */
+import { matchesAnyAge, parseAges, serializeAges } from "../lib/ages";
 import { normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
 
@@ -475,11 +476,27 @@ function adoptHead(doc: Document): void {
   adoptHeadAssets(doc);
 }
 
+/** Préfixe de déploiement (`base` d'Astro, ex. `/mon-depot/`) — `""` à la racine. */
+const BASE_PATH = (import.meta.env.BASE_URL ?? "/").replace(/\/+$/, "");
+
+/**
+ * Retire le préfixe de déploiement d'un chemin pour le comparer à `path`,
+ * qui est toujours fourni sans `base` (voir `BaseLayout`).
+ * `/mon-depot/favoris/` → `/favoris/` ; `/mon-depot/` → `/`.
+ */
+function withoutBase(pathname: string): string {
+  if (!BASE_PATH) return pathname;
+  if (pathname === BASE_PATH) return "/";
+  if (pathname.startsWith(`${BASE_PATH}/`)) return pathname.slice(BASE_PATH.length);
+  return pathname;
+}
+
 function syncNavCurrent(): void {
-  const clean = location.pathname.replace(/\/+$/, "") || "/";
+  const clean = withoutBase(location.pathname).replace(/\/+$/, "") || "/";
   for (const link of qsa<HTMLAnchorElement>(".site-nav a")) {
     if (link.hasAttribute("data-search-link")) continue;
-    const target = new URL(link.href, location.origin).pathname.replace(/\/+$/, "") || "/";
+    const hrefPath = withoutBase(new URL(link.href, location.origin).pathname);
+    const target = hrefPath.replace(/\/+$/, "") || "/";
     const active =
       target === "/" ? clean === "/" : clean === target || clean.startsWith(`${target}/`);
     if (active) link.setAttribute("aria-current", "page");
@@ -543,7 +560,8 @@ interface CatalogRuntime {
   count: HTMLElement;
   empty: HTMLElement;
   language?: HTMLSelectElement;
-  group?: HTMLSelectElement;
+  /** Cases à cocher « âge » (`data-age`), multi-sélection. */
+  ages: HTMLInputElement[];
   category?: HTMLSelectElement;
   sortButtons: HTMLButtonElement[];
 }
@@ -562,7 +580,7 @@ function readCatalog(root: HTMLElement): CatalogRuntime | null {
     count,
     empty,
     language: qs<HTMLSelectElement>('[data-filter="language"]', root) ?? undefined,
-    group: qs<HTMLSelectElement>('[data-filter="group"]', root) ?? undefined,
+    ages: qsa<HTMLInputElement>("[data-age]", root),
     category: qs<HTMLSelectElement>('[data-filter="category"]', root) ?? undefined,
     sortButtons: qsa<HTMLButtonElement>("[data-sort]", root),
   };
@@ -576,18 +594,41 @@ function syncSearchUrl(value: string): void {
   history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+/** Âges actuellement cochés dans le filtre du catalogue. */
+function selectedAges(runtime: CatalogRuntime): Set<number> {
+  const selected = new Set<number>();
+  for (const box of runtime.ages) {
+    if (!box.checked) continue;
+    const age = Number(box.value);
+    if (Number.isInteger(age)) selected.add(age);
+  }
+  return selected;
+}
+
+/** Écrit (ou retire, si vide) `?ages=` — l'état du filtre devient partageable. */
+function syncAgesUrl(selected: Set<number>): void {
+  const url = new URL(location.href);
+  if (selected.size > 0) url.searchParams.set("ages", serializeAges(selected));
+  else url.searchParams.delete("ages");
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+/**
+ * Union des âges cochés — logique pure dans `lib/ages.ts` (`matchesAnyAge`) :
+ * sans âge coché, le filtre est inactif.
+ */
 function applyFilters(runtime: CatalogRuntime): void {
   const query = normalizeText(runtime.search.value);
   const language = runtime.language?.value ?? "";
-  const group = runtime.group?.value ?? "";
   const category = runtime.category?.value ?? "";
+  const ages = selectedAges(runtime);
   let visible = 0;
   for (const item of runtime.items) {
     const data = item.dataset;
     const matches =
       (!language || data.language === language) &&
-      (!group || data.group === group) &&
       (!category || data.category === category) &&
+      matchesAnyAge(data.ages, ages) &&
       (!query || (data.search ?? "").includes(query));
     item.hidden = !matches;
     if (matches) visible += 1;
@@ -609,10 +650,42 @@ function sortList(runtime: CatalogRuntime, key: string): void {
   }
 }
 
+function bindFiltersToggle(root: HTMLElement): void {
+  const toggle = qs<HTMLButtonElement>("[data-filters-toggle]", root);
+  const content = qs<HTMLElement>("#filters-content", root);
+  const label = qs<HTMLElement>("[data-toggle-label]", root);
+  const count = qs<HTMLElement>("[data-toggle-count]", root);
+
+  if (!toggle || !content || !label || !count) return;
+
+  toggle.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    content.hidden = expanded;
+
+    if (!expanded) {
+      // Focus the search input when expanding
+      const search = qs<HTMLInputElement>("[data-search]", root);
+      search?.focus();
+    }
+  });
+
+  // Update the count when filters are applied
+  const runtime = readCatalog(root);
+  if (runtime) {
+    const observer = new MutationObserver(() => {
+      const visible = runtime.items.filter((item) => !item.hidden).length;
+      count.textContent = `${visible} podcast${visible > 1 ? "s" : ""}`;
+    });
+    observer.observe(runtime.list, { attributes: true, attributeFilter: ["hidden"], subtree: true });
+  }
+}
+
 function bindCatalog(root: HTMLElement): void {
   const runtime = readCatalog(root);
   if (!runtime) return;
 
+  bindFiltersToggle(root);
   applyFilters(runtime);
 
   const form = qs<HTMLFormElement>("[data-search-form]", root);
@@ -627,8 +700,15 @@ function bindCatalog(root: HTMLElement): void {
     }, 150);
   });
 
-  for (const select of [runtime.language, runtime.group, runtime.category]) {
+  for (const select of [runtime.language, runtime.category]) {
     select?.addEventListener("change", () => applyFilters(runtime));
+  }
+
+  for (const box of runtime.ages) {
+    box.addEventListener("change", () => {
+      applyFilters(runtime);
+      syncAgesUrl(selectedAges(runtime));
+    });
   }
 
   for (const button of runtime.sortButtons) {
@@ -639,11 +719,12 @@ function bindCatalog(root: HTMLElement): void {
     reset.addEventListener("click", () => {
       runtime.search.value = "";
       if (runtime.language) runtime.language.value = "";
-      if (runtime.group) runtime.group.value = "";
+      for (const box of runtime.ages) box.checked = false;
       if (runtime.category) runtime.category.value = "";
       sortList(runtime, "name");
       applyFilters(runtime);
       syncSearchUrl("");
+      syncAgesUrl(new Set());
       runtime.search.focus();
     });
   }
@@ -655,9 +736,16 @@ function applyUrlState(): void {
   const params = new URLSearchParams(location.search);
   const search = qs<HTMLInputElement>("[data-search]");
   const query = params.get("q");
-  if (search && query) {
-    search.value = query;
+  const ages = parseAges(params.get("ages"));
+  if (search && (query || ages.length > 0)) {
+    if (query) search.value = query;
     const root = search.closest<HTMLElement>("[data-catalog]");
+    if (root && ages.length > 0) {
+      const wanted = new Set(ages);
+      for (const box of qsa<HTMLInputElement>("[data-age]", root)) {
+        box.checked = wanted.has(Number(box.value));
+      }
+    }
     const runtime = root ? readCatalog(root) : null;
     if (runtime) applyFilters(runtime);
   }

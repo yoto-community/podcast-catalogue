@@ -1,5 +1,6 @@
 ---
 import { categoryLabel, getGroups, languageLabel } from "../lib/catalog";
+import { agesOfGroup, formatAges } from "../lib/ages";
 import { searchIndex, normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
 import FavoriteButton from "./FavoriteButton.astro";
@@ -14,7 +15,11 @@ const { entry } = Astro.props;
 const href = pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`);
 const image = entry.imageUrl || pageUrl("/placeholder.svg");
 const alt = entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : "";
-const group = getGroups().find((candidate) => candidate.id === entry.groupId);
+const groups = getGroups();
+const group = groups.find((candidate) => candidate.id === entry.groupId);
+/** Âges exacts couverts (bornes inclusives) — lus par le filtre « âge ». */
+const ages = group ? agesOfGroup(group, groups) : [];
+const agesText = formatAges(ages);
 const searchText = searchIndex(
   entry.name,
   entry.publisher,
@@ -30,6 +35,7 @@ const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.langua
   data-entry
   data-language={entry.language}
   data-group={entry.groupId}
+  data-ages={ages.join(",")}
   data-category={entry.category}
   data-search={searchText}
   data-sort-name={sortName}
@@ -52,7 +58,10 @@ const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.langua
     <ul class="badges" aria-label={`Caractéristiques de ${entry.name}`}>
       <li class="badge">{languageLabel(entry.language)}</li>
       {group && <li class="badge">{group.label}</li>}
-      <li class="badge">{entry.ageRange}</li>
+      <li class="badge" title={agesText ? `Âges couverts : ${agesText}` : undefined}>
+        {entry.ageRange}
+        {agesText && <span class="sr-only"> — âges {agesText}</span>}
+      </li>
       <li class="badge badge--category">{categoryLabel(entry.category, entry.language)}</li>
     </ul>
     <FavoriteButton slug={entry.slug} size="sm" />

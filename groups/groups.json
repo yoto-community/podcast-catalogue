@@ -4,6 +4,8 @@
     "order": 1,
     "label": "Tout-petits",
     "ageRange": "2 – 5 ans",
+    "ageMin": 2,
+    "ageMax": 5,
     "translations": {
       "en": { "label": "Toddlers", "ageRange": "2 – 5 years" }
     }
@@ -13,6 +15,8 @@
     "order": 2,
     "label": "Maternelle / CP",
     "ageRange": "5 – 7 ans",
+    "ageMin": 5,
+    "ageMax": 7,
     "translations": {
       "en": { "label": "Preschool & K", "ageRange": "5 – 7 years" }
     }
@@ -22,6 +26,8 @@
     "order": 3,
     "label": "Primaire",
     "ageRange": "7 – 10 ans",
+    "ageMin": 7,
+    "ageMax": 10,
     "translations": {
       "en": { "label": "Elementary", "ageRange": "7 – 10 years" }
     }
@@ -31,6 +37,8 @@
     "order": 4,
     "label": "Collège & +",
     "ageRange": "11 ans et plus",
+    "ageMin": 11,
+    "ageMax": null,
     "translations": {
       "en": { "label": "Middle school & up", "ageRange": "11 years and up" }
     }

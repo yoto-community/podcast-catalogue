@@ -96,7 +96,9 @@ git commit -m "feat: …"
 - un slug ou un flux déjà présent ailleurs (doublon) ;
 - fichier non trié, formatage non canonical ;
 - `schema/` édité à la main (S9) — corriger par `pnpm gen:types`, jamais à la main ;
-- `dist/` non conforme à `artifact.schema.json` (S8).
+- `dist/` non conforme à `artifact.schema.json` (S8) ;
+- tranches d'âge incohérentes (S10) : `ageMin`/`ageMax` invalides, trou dans la
+  couverture des âges, plus d'une tranche ouverte, `ageRange` ≠ bornes.
 
 ### Ce qui n'est bloquant que
 
@@ -147,3 +149,10 @@ git add reference/ schema/
 Sans cette étape, `pnpm validate` échoue sur **S9** et la CI refuse le push. Ne renommez
 pas un identifiant existant sans migration : il est référencé par chaque entrée et par
 `dist/` (consommé par l'application qui épingle un tag).
+
+**Bornes d'âge** : chaque tranche porte `ageMin` / `ageMax` (bornes **inclusives** ;
+`ageMax: null` pour la dernière tranche ouverte, « 11 ans et plus »). Elles pilotent le
+filtre « un ou plusieurs âges » du site et sont contrôlées par **S10** : couverture
+continue des âges (aucun trou), pas de recouvrement d'un an ou plus, `ageRange` affiché
+aligné sur les bornes. Une **borne partagée** (5 ans, 7 ans) est normale et voulue :
+ces âges relèvent des deux tranches, le filtre fait l'union.

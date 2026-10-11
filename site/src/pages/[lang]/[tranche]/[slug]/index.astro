@@ -93,6 +93,11 @@ const jsonLd = podcastSeriesJsonLd(full, {
           {group && <li class="badge">{group.label}</li>}
           <li class="badge">{full.ageRange}</li>
           <li class="badge badge--category">{categoryLabel(full.category, full.language)}</li>
+          {episodes && (
+            <li class="badge badge--episodes" aria-label={`Nombre total d'épisodes dans le flux`}>
+              {episodes.count} épisode{episodes.count > 1 ? "s" : ""}
+            </li>
+          )}
         </ul>
         <p class="detail__links">
           <a class="btn btn--primary" href={external} target="_blank" rel="noopener noreferrer">

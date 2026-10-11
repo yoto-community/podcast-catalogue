@@ -1,4 +1,6 @@
 /**
+ * Régénère `schema/*.json` + `entry.schema.d.ts` depuis `reference/` et `groups/`.
+ *
  * Écrit les JSON Schema + le `.d.ts` générés :
  *
  *   schema/entry.schema.json       → une entrée source (entries/<langue>/<tranche>.json)
