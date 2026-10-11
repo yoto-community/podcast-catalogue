@@ -6,7 +6,9 @@
     "description": "Diverse short stories originating in Africa, originally passed down through generations by word of mouth. These traditional tales told with a new twist, are not only entertaining but serve to teach a lesson as well. Sometimes of a moral value and other times of survival.",
     "tags": [
       "contes-classiques"
-    ]
+    ],
+    "publisher": "ABF Creative",
+    "imageUrl": "https://megaphone.imgix.net/podcasts/dd7b741a-a1f8-11ea-bf3b-1fb979c3406a/image/af_cover_4.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
   },
   {
     "name": "Big Life Kids Podcast",
@@ -15,11 +17,7 @@
     "rssUrl": "https://feeds.acast.com/public/shows/5cb71b81fe324a2e6bebb634",
     "description": "The *Big Life Kids podcas*t teaches children to stay resilient, believe in themselves, and face life's challenges with confidence! In each episode, Zara and Leo travel the world to discover the living heroes that are making a difference in the world today.",
     "websiteUrl": "https://biglifejournal.com/podcast",
-    "tags": [
-      "emotions-bienetre",
-      "geographie-voyages",
-      "heros-filles"
-    ]
+    "imageUrl": "https://assets.pippa.io/shows/5cb71b81fe324a2e6bebb634/1592594231004-0ffb2e624b9d1b31f7989fc2b451ccdd.jpeg"
   },
   {
     "name": "Keyshawn Solves It",
@@ -28,10 +26,7 @@
     "rssUrl": "https://feeds.wgbh.org/3822/feed-rss.xml",
     "description": "8-episode serialized mystery about a 10-year-old African-American boy who inherits a set of keys that can unlock almost any door. With help from his friend Kiki, Keyshawn uses these keys to help solve a mystery.",
     "websiteUrl": "https://play.prx.org/listen?uf=https%3A%2F%2Ffeeds.wgbh.org%2F3822%2Ffeed-rss.xml",
-    "tags": [
-      "animaux",
-      "technologie"
-    ]
+    "imageUrl": "https://f.prxu.org/3822/images/ccdfd73b-bca3-4523-92c2-a8984229657a/Keyshawn3000x3000_PBS.jpg"
   },
   {
     "name": "The holidays",
@@ -39,11 +34,8 @@
     "category": "histoire",
     "rssUrl": "https://feeds.megaphone.fm/SBP4218457195",
     "websiteUrl": "https://www.spreaker.com/show/the-holidays",
-    "tags": [
-      "humour",
-      "geographie-voyages",
-      "arts-culture"
-    ]
+    "description": "Introducing a family called the Holidays. Yup, you guessed it - they run a party planning store. And they celebrate a different holiday every day. It’s their thing. There’s shoe day, the day of the banana, karaoke day, talk like a pirate day, and more! The Holidays are the coolest family ever when you’re in grade school. Every day is a party! But when you’re about to turn 12, it becomes totally embarrassing. Enter Clementine Holiday. It’s an awkward family to be a part of when you want to be a kid, but you also want to grow up. For ages 7-12",
+    "imageUrl": "https://megaphone.imgix.net/podcasts/c52519aa-4cd8-11ee-9871-973f540962a6/image/add8ac54ad0a1ad0d4d872f312491552.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
   },
   {
     "name": "The Plate Show",
@@ -54,6 +46,7 @@
     "websiteUrl": "https://www.pbslearningmedia.org/collection/theplateshowpodcast/",
     "tags": [
       "arts-culture"
-    ]
+    ],
+    "imageUrl": "https://f.prxu.org/4977/images/0901e929-feea-40b4-b6ba-ba113b06d986/Show_Cover_ThePlateShow_3.jpg"
   }
 ]
