@@ -59,6 +59,14 @@ pnpm build:episodes     # dist/episodes/ (10 épisodes par podcast)
 pnpm site:dev           # site en local → http://localhost:4321
 ```
 
+### Import initial (une fois)
+
+```bash
+pnpm import-legacy <chemin/podcast-catalog.json> [--write-publishers]
+# exporte l'ancien JSON de l'application → entries/<langue>/<tranche>.json
+# supprime les champs dérivés (language, groupId, ageRange) qui viennent du chemin
+```
+
 ### À faire une fois après la création du dépôt
 
 1. **Settings → Pages → Source : GitHub Actions** (sinon `deploy-pages` est refusé).
@@ -83,6 +91,22 @@ scripts/                           build, validation, vérification des flux, is
 site/                              site Astro statique (GitHub Pages)
 dist/                              ⚠ GÉNÉRÉ par la CI — gitignoré, jamais édité
 .github/workflows/                 ci · pages · episodes · feed-health · release · issue-to-pr
+```
+
+### Flux de données
+
+```mermaid
+flowchart LR
+  A[entries/] -->|pnpm build| B[dist/]
+  B -->|pnpm site:build| C[site/dist/]
+  C -->|GitHub Pages| D[https://…/]
+  B -->|tag v*| E[GitHub Release]
+  E -->|catalog.json| F[App Yoto MYO]
+  B -.->|pnpm build:episodes| G[dist/episodes/]
+  G --> C
+  A -->|pnpm validate| H[(CI)]
+  B --> H
+  C --> H
 ```
 
 ---

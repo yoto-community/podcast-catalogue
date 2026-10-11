@@ -9,7 +9,7 @@
  *   pnpm validate                     structure + doublons
  *   pnpm validate --fix               + répare le tri/format des fichiers source
  *   pnpm validate:changed             + niveau 3 sur les flux modifiés vs origin/main
- *   pnpm validate:all                 + niveau 3 sur les 141 flux
+ *   pnpm validate:all                 + niveau 3 sur les 198 flux
  *   pnpm validate:dist                + S8 (artefacts dist/)
  *   options : --no-network (bypass `ci:skip-network`) · --report <fichier.md> · --json · --limit <n>
  */
