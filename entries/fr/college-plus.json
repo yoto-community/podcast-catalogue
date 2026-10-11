@@ -12,7 +12,8 @@
       "geographie-voyages",
       "arts-culture",
       "langues"
-    ]
+    ],
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/e2e4eb85-ff12-4472-9f0b-222af7a6719c.jpg"
   },
   {
     "name": "Ma vie d'ado",
@@ -22,8 +23,27 @@
     "tags": [
       "histoire-france",
       "emotions-bienetre",
-      "arts-culture",
       "humour"
+    ],
+    "publisher": "OKAPI - Bayard Jeunesse",
+    "imageUrl": "https://image.ausha.co/kHVJbtLiX93ieSjcmm3kTPlzQezxvRspxm0UVXlq_1400x1400.jpeg?t=1720527049",
+    "websiteUrl": "https://podcast.ausha.co/ma-vie-d-ado"
+  },
+  {
+    "name": "Nature et Zoo - Le Podcast",
+    "category": "documentaire",
+    "rssUrl": "https://feed.ausha.co/YPmM3sGXx9Om",
+    "description": "Dans ce podcast, nous abordons l'actualité des zoos et parcs animaliers en France et évoquons tout un tas de sujets autour de ces derniers. Nous parlons des naissances, des nouveautés, des travaux en cours, des transferts, des espèces menacées et nous mettons l'accent sur les actions de conservation menées par les zoos. Retrouvez-nous au moins une fois par mois pour un épisode retraçant les actualités les plus récentes. Rendez-vous également sur notre site internet, www.natureetzoo.fr (https://natureetzoo.fr) pour suivre toute l'actualité des zoos en France ainsi que sur nos différents réseaux sociaux, Facebook, Instagram et Twitter via @natureetzoo. Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
+    "publisher": "Nature et Zoo - Le Podcast",
+    "imageUrl": "https://image.ausha.co/6yI594vplDhv6S6dyT3dsyOIJ4JQc7VBbDVQMxj4_1400x1400.jpeg?t=1671491868",
+    "websiteUrl": "https://podcast.ausha.co/nature-et-zoo-le-podcast",
+    "tags": [
+      "animaux",
+      "histoire-france",
+      "apprentissages",
+      "nature-environnement",
+      "sante-corps",
+      "politique-societe"
     ]
   },
   {
@@ -32,9 +52,11 @@
     "rssUrl": "https://feeds.acast.com/public/shows/b23d0069-4ee8-54aa-b64c-02bbad04cad9?fbclid=IwY2xjawUTvxxwZG9mBWV4dG4DYWVtAjEwAGJyaWQRMDZkaTFxaWNJbzVPdmhZVmFzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEejA3V3H1CBh9KWC4XjOBuqe-0Q-jmgPT7KTWBPmZExYgkFax05Sya5PbR6mU_aem_cyBiv-mVJKibwurQNyfaQw",
     "description": "Un podcast immersif pour découvrir chaque mois une nouvelle anecdote surprenante, croustillante et toujours passionnante de l'Histoire. Que vous soyez fan des récits de Nota Bene, de Franck Ferrand, de Richard Fremder ou encore de Stéphane Bern, laissez-vous tenter, écoutez quelques Perles d'Histoire",
     "tags": [
-      "animaux",
       "apprentissages"
-    ]
+    ],
+    "publisher": "Studio Biloba",
+    "imageUrl": "https://assets.pippa.io/shows/6166b14186d7b1241720b571/1720848966351-538f136556b251baae8ba10cd974ffcd.jpeg",
+    "websiteUrl": "https://www.studiobiloba.fr/pepitesdhistoire"
   },
   {
     "name": "Une autre histoire",
@@ -46,6 +68,7 @@
     "tags": [
       "contes-classiques",
       "heros-filles"
-    ]
+    ],
+    "imageUrl": "https://assets.pippa.io/shows/6166bd6786d7b1f6ed20b5c1/1656412620879-ba19ce139ee6e2580ea192f6e222610d.jpeg"
   }
 ]
