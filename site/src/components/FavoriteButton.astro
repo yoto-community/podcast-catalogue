@@ -41,7 +41,6 @@ const { slug, size = "normal", variant = "icon" } = Astro.props;
     aria-hidden="true"
     focusable="false"
     data-icon="filled"
-    style="display:none"
   >
     <path
       d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
@@ -89,6 +88,23 @@ const { slug, size = "normal", variant = "icon" } = Astro.props;
   }
   .favorite-btn--sm {
     padding: 0.25rem 0.4rem;
+  }
+  /* Variante icône seule : à peine plus grande que le cœur */
+  .favorite-btn--icon {
+    padding: 0.15rem;
+    border-color: transparent;
+    background: transparent;
+  }
+  .favorite-btn--icon:hover {
+    border-color: var(--border);
+    background: var(--accent-soft);
+    color: var(--danger);
+  }
+  .favorite-btn--icon[aria-pressed="true"],
+  .favorite-btn--icon[aria-pressed="true"]:hover {
+    border-color: transparent;
+    background: transparent;
+    color: var(--danger);
   }
   .favorite-btn--icon-text .favorite-text {
     font-size: 0.85rem;

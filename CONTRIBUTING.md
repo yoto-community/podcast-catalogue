@@ -28,6 +28,10 @@ ce document détaille les gestes.
 3. **Commit directly to `main`** si vous avez les droits, sinon proposer une PR.
 4. Attendre la CI : elle valide les 3 niveaux et commentaire le rapport dans la PR.
 
+> Les champs optionnels (`publisher`, `description`, `imageUrl`, `websiteUrl`, `tags`)
+> peuvent rester vides : le build les complète depuis le flux. `pnpm enrich --new --write`
+> puis `pnpm auto-tag --write` rapportent ensuite ces compléments dans la source.
+>
 > L'UI GitHub n'applique pas notre format : la CI le signale (S7) et
 > `pnpm validate --fix` le répare (tri + mise en forme).
 
@@ -39,6 +43,9 @@ ouvre **automatiquement** une PR avec l'entrée triée à la bonne place.
 
 - Si un champ est manquant ou invalide, une explication est postée en commentaire de
   l'issue : corrigez l'issue et **rouvrez-la en la commentant** (la PR est réécrite).
+- L'entrée générée est **complétée depuis le flux** (`description`, `publisher`,
+  `imageUrl`, `websiteUrl`) et reçoit une proposition de `tags` avant l'ouverture de la
+  PR. Un flux injoignable ne bloque pas : la PR s'ouvre avec une entrée minimale.
 - La PR passe ensuite exactement les mêmes contrôles qu'une contribution humaine.
 
 ### C — Signaler un flux défaillant
@@ -72,6 +79,8 @@ git commit -m "feat: …"
 | ---------------------------------- | ---------------------------------------- |
 | `pnpm validate`                    | **toujours** (structure + doublons)      |
 | `pnpm validate:changed`            | si un `rssUrl` a bougé (vérifie le flux) |
+| `pnpm enrich --new --write`        | si des champs ➖ sont restés vides       |
+| `pnpm auto-tag --write`            | si les `tags` ont été ajoutés/recalculés |
 | `pnpm typecheck`                   | si un fichier `.ts` a bougé              |
 | `pnpm lint`                        | si un fichier formatable a bougé         |
 | `pnpm build && pnpm validate:dist` | si `scripts/` ou `reference/` a bougé    |

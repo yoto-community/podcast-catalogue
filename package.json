@@ -19,6 +19,8 @@
     "check-feeds": "tsx scripts/check-feeds.ts",
     "issue-to-entry": "tsx scripts/issue-to-entry.ts",
     "issue-to-fix": "tsx scripts/issue-to-fix.ts",
+    "enrich": "tsx scripts/enrich.ts",
+    "auto-tag": "tsx scripts/auto-tag.ts",
     "import-legacy": "tsx scripts/import-legacy.ts",
     "gen:types": "tsx scripts/gen-types.ts",
     "site:dev": "pnpm --filter site dev",

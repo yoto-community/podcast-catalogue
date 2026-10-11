@@ -86,20 +86,21 @@ const description =
     </ul>
   </section>
 
-  <script is:inline>
+  <script>
     import { getFavorites, onFavoritesChange } from "../scripts/favorites.ts";
 
-    const list = document.querySelector("[data-fav-list]");
-    const countEl = document.querySelector("[data-fav-count]");
-    const emptyEl = document.querySelector(".favorites-empty");
-    const items = list ? list.querySelectorAll("[data-fav-slug]") : [];
+    function render(favs: string[]): void {
+      // Les références sont relues à chaque rendu : après une navigation interne,
+      // <main> contient un DOM neuf (micro-routeur, voir site.ts).
+      const list = document.querySelector<HTMLElement>("[data-fav-list]");
+      const countEl = document.querySelector<HTMLElement>("[data-fav-count]");
+      const emptyEl = document.querySelector<HTMLElement>(".favorites-empty");
+      const items = list ? Array.from(list.querySelectorAll<HTMLElement>("[data-fav-slug]")) : [];
 
-    /** @param {string[]} favs */
-    function render(favs) {
       let visible = 0;
       items.forEach((item) => {
         const slug = item.dataset.favSlug;
-        const isFav = favs.includes(slug);
+        const isFav = !!slug && favs.includes(slug);
         item.hidden = !isFav;
         if (isFav) visible++;
       });
@@ -110,11 +111,11 @@ const description =
     // Initial
     render(getFavorites());
 
-    // Écoute changements
-    const cleanup = onFavoritesChange(render);
+    // Écoute changements (favoris cochés ailleurs, multi-onglets)
+    onFavoritesChange(render);
 
-    // Nettoyage (page statique, pas vital)
-    document.addEventListener("astro:page-load", cleanup, { once: true });
+    // Navigation interne : le micro-routeur a remplacé <main>
+    document.addEventListener("yoto:page-ready", () => render(getFavorites()));
   </script>
   <style>
     .inline-heart {

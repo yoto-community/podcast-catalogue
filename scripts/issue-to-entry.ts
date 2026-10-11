@@ -2,8 +2,10 @@
  * Issue « Ajouter un podcast » → entrée dans `entries/<langue>/<tranche>.json`.
  *
  * Lit le corps de l'issue (env `ISSUE_BODY`), contrôle les champs obligatoires (nom, flux https,
- * catégorie, langue, tranche), détecte les doublons, puis écrit l'entrée **triée** dans le fichier
- * dérivé. La CI revalide ensuite le résultat comme n'importe quelle contribution (`pnpm validate:changed`).
+ * catégorie, langue, tranche), détecte les doublons, complète l'entrée depuis le flux RSS
+ * (`description`, `publisher`, `imageUrl`, `websiteUrl` — `--no-network` pour sauter) et propose
+ * des `tags`, puis écrit l'entrée **triée** dans le fichier dérivé. La CI revalide ensuite le
+ * résultat comme n'importe quelle contribution (`pnpm validate:changed`).
  *
  * Usage :
  *   ISSUE_BODY='…' pnpm issue-to-entry [--dry-run] [--json]
@@ -13,8 +15,10 @@ import path from "node:path";
 import { LIMITS, paths } from "./lib/config.ts";
 import { loadCategories, loadEntries, loadGroups, loadLanguages } from "./lib/catalog.ts";
 import { readJsonIfExists, writeJson } from "./lib/io.ts";
+import { enrichFromFeed } from "./lib/enrich.ts";
 import { parseIssueFields, resolveId, resolveLanguage } from "./lib/issue.ts";
 import { normalizeUrl, slugify } from "./lib/norm.ts";
+import { suggestTags } from "./lib/tag.ts";
 import { urlProblem } from "./lib/url.ts";
 import type { SourceCategory, SourceEntry } from "./lib/types.ts";
 
@@ -67,7 +71,7 @@ function fieldValue(fields: Record<string, string>, field: Field): string | unde
   return key ? fields[key] : undefined;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const body = process.env.ISSUE_BODY ?? "";
   const dryRun = process.argv.includes("--dry-run");
   const asJson = process.argv.includes("--json");
@@ -168,6 +172,23 @@ function main(): void {
     process.exit(1);
   }
 
+  // Auto-complétion depuis le flux : la source gagne, seuls les champs absents sont remplis.
+  // Un flux injoignable ne bloque pas la PR — le niveau 3 de la CI le signalera.
+  if (!process.argv.includes("--no-network")) {
+    try {
+      const fill = await enrichFromFeed(entry);
+      Object.assign(entry, fill);
+    } catch (err) {
+      console.warn(
+        `⚠️ auto-complétion impossible (${err instanceof Error ? err.message : String(err)}) — entrée créée sans description/site.`,
+      );
+    }
+  }
+
+  // Tags : mot-clés sur nom + description (flux) + catégorie.
+  const proposed = suggestTags(entry);
+  if (proposed.length > 0) entry.tags = proposed;
+
   const file = path.join("entries", language ?? "", `${groupId}.json`);
   const abs = path.join(paths.root, file);
   const existing = readJsonIfExists<SourceEntry[]>(abs) ?? [];
@@ -191,4 +212,7 @@ function main(): void {
   console.log("→ La CI validera (structure + doublons + flux) avant ouverture de la PR.");
 }
 
-main();
+main().catch((err: unknown) => {
+  console.error("❌ échec de la génération :", err instanceof Error ? err.message : String(err));
+  process.exit(1);
+});

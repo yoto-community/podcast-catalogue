@@ -1,7 +1,10 @@
 ---
 ---
 
-<script type="module">
+<script>
   import { initAllFavoriteButtons } from "../scripts/favorites-client.ts";
+
   initAllFavoriteButtons();
+  // Navigation interne (micro-routeur) : <main> est remplacé par un DOM neuf.
+  document.addEventListener("yoto:page-ready", initAllFavoriteButtons);
 </script>

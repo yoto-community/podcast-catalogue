@@ -76,8 +76,6 @@ export function onFavoritesChange(cb: (favs: string[]) => void): () => void {
 export function updateFavoriteButton(btn: HTMLButtonElement, isFav: boolean): void {
   btn.setAttribute("aria-pressed", String(isFav));
   btn.setAttribute("aria-label", isFav ? "Retirer des favoris" : "Ajouter aux favoris");
-  const icon = btn.querySelector("svg");
-  if (icon) {
-    icon.setAttribute("data-icon", isFav ? "filled" : "outline");
-  }
+  const label = btn.querySelector(".favorite-text");
+  if (label) label.textContent = isFav ? "Retirer" : "Favori";
 }

@@ -13,7 +13,7 @@ Yoto.
 [![Pages](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> 133 podcasts · 2 langues · 4 tranches d'âge · 10 épisodes pré-extraits par podcast.
+> 198 podcasts · 2 langues · 4 tranches d'âge · 10 épisodes pré-extraits par podcast.
 
 ---
 
@@ -101,11 +101,22 @@ podcast.
 | `description` | ➖     | ≤ 1000 caractères, auto-proposée depuis le flux                               |
 | `imageUrl`    | ➖     | `https://`, auto-complétée depuis `itunes:image`                              |
 | `websiteUrl`  | ➖     | `https://`, auto-complétée depuis `<link>` du canal                           |
+| `tags`        | ➖     | ≤ 10 tags de `reference/tags.json`, auto-proposés (`pnpm auto-tag`)           |
 
 **Champs dérivés interdits** dans la source : `language`, `groupId`, `ageRange` (+ `id`,
 `slug`, `isActive`, `createdBy`). Ils viennent du **chemin du fichier** :
 `entries/fr/primaire.json` → `language: "fr"`, `groupId: "primaire"`, `ageRange` lu dans
 `groups/groups.json` (traduit selon la langue).
+
+Les champs ➖ encore vides sont complétés **à la construction** depuis le flux (voir
+[Ce que produit le build](#ce-que-produit-le-build)) ; ces compléments sont reportés dans
+`entries/` par :
+
+```bash
+pnpm enrich --new --write   # les entrées pas encore commitées
+pnpm enrich --all --write   # tout ce qui reste incomplet (dry-run sans --write)
+pnpm auto-tag --dry-run     # simuler le recalcul des tags (--write pour l'appliquer)
+```
 
 Un fichier vide n'existe pas.
 
@@ -140,7 +151,7 @@ pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 | 1      | `pnpm validate`         | structure S1…S9 (champs, limites, tri, schéma)               | < 5 s  |
 | 2      | `pnpm validate`         | doublons D1…D4 (slug, flux, noms proches)                    | < 5 s  |
 | 3      | `pnpm validate:changed` | flux modifiés vs `main` : https, épisodes https, langue, âge | réseau |
-| —      | `pnpm validate:all`     | les 133 flux (audit hebdomadaire)                            | réseau |
+| —      | `pnpm validate:all`     | les 198 flux (audit hebdomadaire)                            | réseau |
 | —      | `pnpm validate:dist`    | artefacts `dist/` (S8)                                       | < 1 s  |
 
 Autres contrôles :
@@ -197,7 +208,7 @@ pnpm site:build    # 142 pages pré-rendues → site/dist/
 | `ci.yml`          | PR + push `main`                | validation bloquante (niveaux 1 à 3) + commentaire de PR |
 | `pages.yml`       | push `main` (chemins concernés) | `build` + `build:episodes` + site → GitHub Pages         |
 | `episodes.yml`    | cron 6 h                        | appelle `pages.yml` (fraîcheur des épisodes)             |
-| `feed-health.yml` | cron hebdo + manuel             | vérifie les 133 flux, tient l'issue `feed-health` à jour |
+| `feed-health.yml` | cron hebdo + manuel             | vérifie les 198 flux, tient l'issue `feed-health` à jour |
 | `release.yml`     | tag `v*`                        | Release avec `catalog.json`, manifeste, tar `dist/`      |
 | `issue-to-pr.yml` | issue ouverte                   | formulaire → PR (ajout ou correction de flux)            |
 

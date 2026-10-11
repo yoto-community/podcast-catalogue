@@ -21,7 +21,7 @@ export interface CatalogEntry {
   /** Catégorie — doit exister dans `reference/categories.json`. */
   category: SourceCategory;
   /** Tags thématiques — doivent exister dans `reference/tags.json`. */
-  tags?: "animaux" | "dinosaures" | "espace" | "sciences" | "histoires-soir" | "contes-classiques" | "histoires-originales" | "enquetes-mysteres" | "personnages-recurrents" | "musique" | "histoire-france" | "geographie-voyages" | "emotions-bienetre" | "apprentissages" | "nature-environnement" | "philosophie" | "arts-culture" | "langues" | "heros-filles" | "humour" | "sante-corps" | "technologie" | "politique-societe" | "cuisine-alimentation"[];
+  tags?: ("animaux" | "dinosaures" | "espace" | "sciences" | "histoires-soir" | "contes-classiques" | "histoires-originales" | "enquetes-mysteres" | "personnages-recurrents" | "musique" | "histoire-france" | "geographie-voyages" | "emotions-bienetre" | "apprentissages" | "nature-environnement" | "philosophie" | "arts-culture" | "langues" | "heros-filles" | "humour" | "sante-corps" | "technologie" | "politique-societe" | "cuisine-alimentation")[];
   /** URL du flux RSS/Atom (https, hôte public — règles anti-SSRF). */
   rssUrl: string;
   /** Description éditoriale (≤ 1000 caractères). Auto-proposée depuis `<description>` du flux si absente. */
@@ -49,7 +49,7 @@ export interface PublishedEntry {
   /** category */
   category: SourceCategory;
   /** Tags thématiques. */
-  tags?: "animaux" | "dinosaures" | "espace" | "sciences" | "histoires-soir" | "contes-classiques" | "histoires-originales" | "enquetes-mysteres" | "personnages-recurrents" | "musique" | "histoire-france" | "geographie-voyages" | "emotions-bienetre" | "apprentissages" | "nature-environnement" | "philosophie" | "arts-culture" | "langues" | "heros-filles" | "humour" | "sante-corps" | "technologie" | "politique-societe" | "cuisine-alimentation"[];
+  tags?: ("animaux" | "dinosaures" | "espace" | "sciences" | "histoires-soir" | "contes-classiques" | "histoires-originales" | "enquetes-mysteres" | "personnages-recurrents" | "musique" | "histoire-france" | "geographie-voyages" | "emotions-bienetre" | "apprentissages" | "nature-environnement" | "philosophie" | "arts-culture" | "langues" | "heros-filles" | "humour" | "sante-corps" | "technologie" | "politique-societe" | "cuisine-alimentation")[];
   /** publisher */
   publisher: string;
   /** rssUrl */

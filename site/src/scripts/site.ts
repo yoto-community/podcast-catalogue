@@ -681,10 +681,85 @@ function initPage(navigated: boolean): void {
     const main = document.querySelector<HTMLElement>("main");
     main?.focus({ preventScroll: true });
   }
+  // Signale qu'un nouveau `<main>` est en place : les scripts qui pilotent des
+  // éléments de celui-ci (favoris, etc.) doivent resynchroniser leur état.
+  document.dispatchEvent(new CustomEvent("yoto:page-ready"));
+}
+
+/* ------------------------------------------------------------- copier une URL */
+
+const CHECK_ICON =
+  '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"></path></svg> ';
+const ERROR_ICON =
+  '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 15h2v-2h-2v2zm0-4h2V7h-2v6z" fill="currentColor"></path></svg> ';
+
+/** Libellé d'origine de chaque bouton, mémorisé pour pouvoir le restaurer. */
+const originalLabels = new WeakMap<HTMLElement, string>();
+
+/**
+ * Copie un texte dans le presse-papiers.
+ *
+ * L'Async Clipboard API échoue hors contexte sécurisé, sans permission ou sans
+ * focus : on retombe alors sur `document.execCommand` et on renvoie `false`
+ * quand tout a échoué, pour ne jamais annoncer un succès faux.
+ */
+async function copyToClipboard(text: string): Promise<boolean> {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // on tente l'ancienne API ci-dessous
+    }
+  }
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.setAttribute("readonly", "");
+  field.style.position = "fixed";
+  field.style.top = "-1000px";
+  document.body.appendChild(field);
+  field.select();
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch {
+    copied = false;
+  }
+  document.body.removeChild(field);
+  return copied;
+}
+
+/** Copie `text` puis affiche le résultat sur `button` pendant 2 secondes. */
+async function copyWithFeedback(button: HTMLElement, text: string): Promise<void> {
+  if (!text || button.dataset.copyPending === "1") return;
+  const original = originalLabels.get(button) ?? button.innerHTML;
+  originalLabels.set(button, original);
+  button.dataset.copyPending = "1";
+  const copied = await copyToClipboard(text);
+  button.innerHTML = `${copied ? CHECK_ICON : ERROR_ICON} ${copied ? "Copié !" : "Copie impossible"}`;
+  button.classList.toggle("copied", copied);
+  window.setTimeout(() => {
+    button.innerHTML = original;
+    button.classList.remove("copied");
+    delete button.dataset.copyPending;
+  }, 2000);
 }
 
 function bindGlobalListeners(): void {
   document.addEventListener("click", interceptClick);
+
+  // Délégation au niveau du document : le micro-routeur remplace `<main>` à
+  // chaque navigation, les `<script>` du DOM récupéré ne s'exécutent jamais,
+  // donc les boutons doivent être gérés ici et non dans le script de la page.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const copyButton = target.closest<HTMLElement>("[data-copy-rss]");
+    if (!copyButton) return;
+    event.preventDefault();
+    void copyWithFeedback(copyButton, copyButton.dataset.rssUrl ?? "");
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
     const target = event.target;

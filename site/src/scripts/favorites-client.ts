@@ -1,5 +1,8 @@
 /**
- * Client-side favorites API — bundlé par Vite, utilisable dans <script type="module">
+ * Client-side favorites API — bundlé par Vite.
+ * À importer depuis un `<script>` traité par Astro (jamais `is:inline`
+ * ni `<script type="module">` brut : ces variantes restent telles quelles
+ * dans le HTML et leurs imports relatifs renvoient un 404).
  * Re-export de la logique depuis favorites.ts mais compatible navigateur.
  */
 
@@ -75,56 +78,46 @@ export function onFavoritesChange(cb: (favs: string[]) => void): () => void {
 export function updateFavoriteButton(btn: HTMLButtonElement, isFav: boolean): void {
   btn.setAttribute("aria-pressed", String(isFav));
   btn.setAttribute("aria-label", isFav ? "Retirer des favoris" : "Ajouter aux favoris");
+  const label = btn.querySelector(".favorite-text");
+  if (label) label.textContent = isFav ? "Retirer" : "Favori";
 }
 
-/** Initialise un bouton favori donné (slug). */
-export function initFavoriteButton(slug: string): void {
-  const btn = document.querySelector<HTMLButtonElement>(`[data-favorite][data-slug="${slug}"]`);
-  if (!btn) return;
-
-  // État initial
-  const fav = isFavorite(slug);
-  updateFavoriteButton(btn, fav);
-
-  // Clic
-  btn.addEventListener("click", () => {
-    const added = toggleFavorite(slug);
-    updateFavoriteButton(btn, added);
-  });
-
-  // Sync multi-onglets / même page
-  const cleanup = onFavoritesChange((favs) => {
-    const isFav = favs.includes(slug);
-    updateFavoriteButton(btn, isFav);
-  });
-
-  // Nettoyage (page statique, pas vital)
-  document.addEventListener("astro:page-load", cleanup, { once: true });
-}
-
-/** Initialise tous les boutons favoris de la page. */
-export function initAllFavoriteButtons(): void {
+/** Synchronise l'état (favori ou non) de tous les boutons présents dans le DOM. */
+export function syncAllFavoriteButtons(): void {
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-favorite][data-slug]");
-  buttons.forEach((btn) => {
+  for (const btn of buttons) {
     const slug = btn.dataset.slug;
-    if (!slug) return;
-    const fav = isFavorite(slug);
-    updateFavoriteButton(btn, fav);
+    if (!slug) continue;
+    updateFavoriteButton(btn, isFavorite(slug));
+  }
+}
 
-    btn.addEventListener("click", () => {
-      const added = toggleFavorite(slug);
-      updateFavoriteButton(btn, added);
-    });
-  });
+let delegated = false;
 
-  // Sync global
-  const cleanup = onFavoritesChange((favs) => {
-    buttons.forEach((btn) => {
-      const slug = btn.dataset.slug;
-      if (!slug) return;
-      const isFav = favs.includes(slug);
-      updateFavoriteButton(btn, isFav);
+/**
+ * Initialise les boutons favoris.
+ *
+ * Le site utilise un micro-routeur (fetch + remplacement de `<main>`, voir site.ts) :
+ * après une navigation interne, les boutons sont un DOM neuf, sans écouteur attaché.
+ * On délègue donc le clic sur `document` (aucune liaison par nœud) et on
+ * resynchronise l'état depuis le localStorage à chaque appel — idempotent.
+ */
+export function initAllFavoriteButtons(): void {
+  if (!delegated) {
+    delegated = true;
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const btn = target.closest<HTMLButtonElement>("[data-favorite][data-slug]");
+      const slug = btn?.dataset.slug;
+      if (!btn || !slug) return;
+      updateFavoriteButton(btn, toggleFavorite(slug));
     });
-  });
-  document.addEventListener("astro:page-load", cleanup, { once: true });
+
+    // Multi-onglets / même page
+    onFavoritesChange(() => syncAllFavoriteButtons());
+  }
+
+  syncAllFavoriteButtons();
 }

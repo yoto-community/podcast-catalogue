@@ -181,7 +181,9 @@ function tsType(prop: SchemaProperty): string {
     "enum" in prop.items
   ) {
     const itemsEnum = (prop.items as { enum: string[] }).enum;
-    return `${itemsEnum.map((v) => JSON.stringify(v)).join(" | ")}[]`;
+    const union = itemsEnum.map((v) => JSON.stringify(v)).join(" | ");
+    // Parenthèses obligatoires : sans elles `A | B[]` signifie `A | (B[])`.
+    return itemsEnum.length > 1 ? `(${union})[]` : `${union}[]`;
   }
   if (prop.enum) return prop.enum.map((v) => JSON.stringify(v)).join(" | ");
   return "string";

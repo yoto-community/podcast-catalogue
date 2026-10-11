@@ -24,9 +24,8 @@ import {
   loadGroups,
   loadLanguages,
   resolveGroupLabel,
-  truncate,
 } from "./lib/catalog.ts";
-import { fetchFeed, parseFeed, stripHtml } from "./lib/rss.ts";
+import { enrichFromFeed, type FeedFill } from "./lib/enrich.ts";
 import { mapConcurrent } from "./lib/concurrent.ts";
 import { catalogVersion, gitInfo } from "./lib/version.ts";
 import type {
@@ -44,13 +43,6 @@ interface Options {
   network: boolean;
   allowIncomplete: boolean;
   refresh: boolean;
-}
-
-interface FeedFill {
-  imageUrl?: string;
-  publisher?: string;
-  description?: string;
-  websiteUrl?: string;
 }
 
 function parseArgs(argv: string[]): Options {
@@ -98,18 +90,7 @@ async function enrich(
 
   await mapConcurrent(missing, CONCURRENCY, async (entry) => {
     try {
-      const feed = await fetchFeed(entry.source.rssUrl, {
-        cacheDir: paths.cache,
-        refresh: opts.refresh,
-      });
-      const parsed = parseFeed(feed.xml);
-      const fill: FeedFill = {};
-      if (!entry.source.imageUrl) fill.imageUrl = parsed.imageUrl;
-      if (!entry.source.publisher) fill.publisher = parsed.author;
-      if (!entry.source.description && parsed.description) {
-        fill.description = truncate(stripHtml(parsed.description));
-      }
-      if (!entry.source.websiteUrl) fill.websiteUrl = parsed.link;
+      const fill = await enrichFromFeed(entry.source, { refresh: opts.refresh });
       fills.set(entry.slug, fill);
     } catch (err) {
       findings.push({
