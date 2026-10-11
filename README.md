@@ -76,7 +76,7 @@ pnpm site:dev           # site en local → http://localhost:4321
 
 ```
 entries/<langue>/<tranche>.json   ⚠ source unique — éditée à la main (ou via une issue)
-groups/groups.json                 tranches d'âge (id, libellés fr/en, âges)
+groups/groups.json                 tranches d'âge (id, libellés fr/en, bornes âge inclusives)
 reference/                         catégories, langues, éditeurs connus
 schema/*.json + entry.schema.d.ts  ⚠ GÉNÉRÉS par `pnpm gen:types` (anti-dérive : S9)
 scripts/                           build, validation, vérification des flux, issue → PR
@@ -148,7 +148,7 @@ pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 
 | Niveau | Commande                | Ce que contrôle                                              | Durée  |
 | ------ | ----------------------- | ------------------------------------------------------------ | ------ |
-| 1      | `pnpm validate`         | structure S1…S9 (champs, limites, tri, schéma)               | < 5 s  |
+| 1      | `pnpm validate`         | structure S1…S10 (champs, limites, tri, schéma, tranches)    | < 5 s  |
 | 2      | `pnpm validate`         | doublons D1…D4 (slug, flux, noms proches)                    | < 5 s  |
 | 3      | `pnpm validate:changed` | flux modifiés vs `main` : https, épisodes https, langue, âge | réseau |
 | —      | `pnpm validate:all`     | les 198 flux (audit hebdomadaire)                            | réseau |
@@ -159,6 +159,11 @@ Autres contrôles :
 - **S9 — anti-dérive du schéma** : `schema/*.json` et `entry.schema.d.ts` doivent être
   _exactement_ ce que le code calcule. Éditer un schéma à la main = échec de `pnpm validate`
   et de la CI. Le bon réflexe : `pnpm gen:types` puis commit.
+- **S10 — tranches d'âge** : `ageMin` / `ageMax` de `groups/groups.json` doivent couvrir
+  les âges **continûment** (aucun trou), sans recouvrement d'un an ou plus, avec au plus
+  une tranche ouverte (`ageMax: null`, la dernière) ; `ageRange` affiché doit dire
+  exactement les bornes. Les bornes sont **inclusives** et une **borne partagée est
+  voulue** : 5 et 7 ans relèvent de deux tranches, le filtre « âge » du site fait l'union.
 - **CI** : `pnpm gen:types && git diff --exit-code schema/` en plus de S9, `typecheck`,
   `prettier --check`, `build` + `validate:dist`, niveau 3 sur les flux modifiés.
 - **Échappatoire mainteneur** : libellé `ci:skip-network` sur la PR → saute le niveau 3 et
@@ -192,6 +197,9 @@ pnpm site:build    # 142 pages pré-rendues → site/dist/
 
 - **Parcours** : `/` (catalogue + recherche instantanée) → `/{langue}/` →
   `/{langue}/{tranche}/` → `/{langue}/{tranche}/{slug}/` (10 épisodes, JSON-LD).
+- **Filtres** : recherche instantanée (`?q=`), langue, **un ou plusieurs âges exacts**
+  (`?ages=`, union des tranches : cocher 5 ans remonte les podcasts _Tout-petits_ **et**
+  _Maternelle / CP_) et catégorie.
 - **Écoute** : mini-player persistant — la lecture **survit à la navigation** grâce à un
   micro-routeur côté serveur (le `<audio>` n'est jamais recréé).
 - **Sans framework client** : ~45 Ko chargés au premier rendu (HTML 38 Ko gzip, JS 3,9 Ko,

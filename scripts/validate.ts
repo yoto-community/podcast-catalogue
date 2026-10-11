@@ -20,6 +20,7 @@ import { execSync } from "node:child_process";
 import {
   FORBIDDEN_SOURCE_FIELDS,
   LIMITS,
+  MIN_AGE,
   OPTIONAL_SOURCE_FIELDS,
   REQUIRED_SOURCE_FIELDS,
   SCHEMA_VERSION,
@@ -41,7 +42,7 @@ import { FeedFetchError, fetchFeed, parseFeed } from "./lib/rss.ts";
 import { mapConcurrent } from "./lib/concurrent.ts";
 import { renderSchemas } from "./lib/schema.ts";
 import { urlProblem } from "./lib/url.ts";
-import type { Finding, LoadedEntry, SourceEntry } from "./lib/types.ts";
+import type { Finding, GroupDef, LoadedEntry, SourceEntry } from "./lib/types.ts";
 
 const RSS_CONCURRENCY = 8;
 const KNOWN_FIELDS = new Set<string>([...REQUIRED_SOURCE_FIELDS, ...OPTIONAL_SOURCE_FIELDS]);
@@ -181,6 +182,123 @@ function checkSchemaDrift(): void {
       file: relDts,
       message: `types générés dérivés — ${regenerate}`,
     });
+  }
+}
+
+/**
+ * S10 — tranches d'âge (`groups/groups.json`) : bornes `ageMin` / `ageMax` cohérentes.
+ *
+ * Le site filtre par **âge exact** en prenant l'union des tranches qui couvrent chaque
+ * âge sélectionné. Il faut donc :
+ *   - des bornes inclusives valides (`ageMin ≥ MIN_AGE`, `ageMax ≥ ageMin` ou `null`) ;
+ *   - une couverture **continue** : aucun âge ne doit rester orphelin entre deux tranches ;
+ *   - un seul repli ouvert (`ageMax: null`), sur la dernière tranche (`order`) ;
+ *   - un `ageRange` affiché qui reflète les bornes — c'est lui que lisent les parents.
+ *
+ * Une borne **partagée** (5 ans, 7 ans) est voulue : un âge de frontière appartient aux
+ * deux tranches, le filtre en union gère le chevauchement.
+ */
+function checkGroups(): void {
+  const at = path.relative(paths.root, paths.groups);
+  const groups = [...loadGroups()].sort((a, b) => a.order - b.order);
+  if (groups.length === 0) {
+    add({ severity: "error", rule: "S10", file: at, message: "aucune tranche définie" });
+    return;
+  }
+
+  const openEnded: GroupDef[] = [];
+  const bounds = new Map<string, GroupDef>();
+  /** Plage lisible d'une tranche, ex. `5 – 7 ans` ou `11 ans et plus`. */
+  const span = (group: GroupDef): string =>
+    group.ageMax === null ? `${group.ageMin} ans et plus` : `${group.ageMin} – ${group.ageMax} ans`;
+
+  for (const group of groups) {
+    const where = `« ${group.id} »`;
+    if (!Number.isInteger(group.ageMin) || (group.ageMin as number) < MIN_AGE) {
+      add({
+        severity: "error",
+        rule: "S10",
+        file: at,
+        message: `${where} : ageMin invalide (${JSON.stringify(group.ageMin)}) — entier ≥ ${MIN_AGE} attendu`,
+      });
+    }
+    if (group.ageMax === null) {
+      openEnded.push(group);
+    } else if (!Number.isInteger(group.ageMax) || (group.ageMax as number) < group.ageMin) {
+      add({
+        severity: "error",
+        rule: "S10",
+        file: at,
+        message: `${where} : ageMax invalide (${JSON.stringify(group.ageMax)}) — entier ≥ ageMin, ou null pour une tranche ouverte`,
+      });
+    }
+
+    // Le libellé affiché doit dire exactement ce que disent les bornes.
+    const expected = span(group);
+    if (group.ageRange !== expected) {
+      add({
+        severity: "warning",
+        rule: "S10",
+        file: at,
+        message: `${where} : ageRange « ${group.ageRange} » ≠ bornes « ${expected} » — l'affichage et les bornes divergent`,
+      });
+    }
+
+    const key = `${group.ageMin}-${group.ageMax}`;
+    const twin = bounds.get(key);
+    if (twin) {
+      add({
+        severity: "warning",
+        rule: "S10",
+        file: at,
+        message: `${where} et « ${twin.id} » couvrent la même plage (${key})`,
+      });
+    } else {
+      bounds.set(key, group);
+    }
+  }
+
+  if (openEnded.length > 1) {
+    add({
+      severity: "error",
+      rule: "S10",
+      file: at,
+      message: `tranches ouvertes (ageMax null) : ${openEnded.map((g) => `« ${g.id} »`).join(", ")} — une seule est admise`,
+    });
+  } else if (openEnded.length === 1) {
+    const open = openEnded[0] as GroupDef;
+    const last = groups[groups.length - 1] as GroupDef;
+    if (open !== last) {
+      add({
+        severity: "error",
+        rule: "S10",
+        file: at,
+        message: `« ${open.id} » est ouverte (ageMax null) mais n'est pas la dernière tranche (order)`,
+      });
+    }
+  }
+
+  const pairs = groups.slice(1).map((next, index) => ({ prev: groups[index] as GroupDef, next }));
+  for (const { prev, next } of pairs) {
+    if (prev.ageMax === null || !Number.isInteger(prev.ageMax) || !Number.isInteger(next.ageMin)) {
+      continue;
+    }
+    const prevMax: number = prev.ageMax;
+    if (next.ageMin > prevMax + 1) {
+      add({
+        severity: "error",
+        rule: "S10",
+        file: at,
+        message: `trou : « ${prev.id} » s'arrête à ${prevMax} ans et « ${next.id} » commence à ${next.ageMin} — l'âge ${prevMax + 1} ne relève d'aucune tranche`,
+      });
+    } else if (next.ageMin < prevMax) {
+      add({
+        severity: "warning",
+        rule: "S10",
+        file: at,
+        message: `« ${next.id} » (${span(next)}) recouvre « ${prev.id} » (${span(prev)}) de plus d'un an — seules les bornes partagées sont attendues`,
+      });
+    }
   }
 }
 
@@ -1052,6 +1170,7 @@ async function main(): Promise<void> {
   for (const message of loadErrors) add({ severity: "error", rule: "S4", message });
 
   checkSchemaDrift();
+  checkGroups();
   checkStructure(entries, opts.fix);
   checkDuplicates(entries);
 

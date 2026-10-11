@@ -13,6 +13,10 @@ export interface ManifestGroup {
   order: number;
   label: string;
   ageRange: string;
+  /** Premier âge couvert (inclus) — bornes inclusives, deux tranches peuvent partager une borne. */
+  ageMin: number;
+  /** Dernier âge couvert (inclus), `null` = ouvert vers le haut (11 ans et plus). */
+  ageMax: number | null;
   translations?: Record<string, GroupTranslation>;
 }
 

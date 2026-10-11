@@ -11,6 +11,7 @@ import {
   groupLabel,
 } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
+import { agesOfGroup, formatAges } from "../../../lib/ages";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
 import type { ManifestGroup, ManifestLanguage, StaticPath } from "../../../lib/types";
@@ -39,9 +40,36 @@ interface Props extends GroupProps {}
 
 const { language, group } = Astro.props;
 const entries = entriesOf(language.code, group.id);
+const groups = getGroups();
 const label = groupLabel(group, language.code);
 const ageRange = groupAgeRange(group, language.code);
 const path = `/${language.code}/${group.id}/`;
+
+/** Âges exacts couverts par la tranche, pour dire clairement de qui il s'agit. */
+const ages = agesOfGroup(group, groups);
+const agesPart = group.ageMax === null ? "" : `, soit les âges ${formatAges(ages)}`;
+
+/**
+ * Borne partagée avec une autre tranche (5 et 7 ans existent dans deux tranches) :
+ * on le dit explicitement plutôt que de laisser le parent deviner.
+ */
+const shared = groups.flatMap((other) => {
+  if (other.id === group.id) return [];
+  const found: Array<{ age: number; other: ManifestGroup }> = [];
+  if (group.ageMax !== null && group.ageMax === other.ageMin) {
+    found.push({ age: group.ageMax, other });
+  }
+  if (other.ageMax !== null && other.ageMax === group.ageMin) {
+    found.push({ age: group.ageMin, other });
+  }
+  return found;
+});
+const sharedSentence = shared
+  .map(
+    ({ age, other }) =>
+      ` Un enfant de ${age} ans trouvera aussi des podcasts en « ${groupLabel(other, language.code)} ».`,
+  )
+  .join("");
 
 const jsonLd = itemListJsonLd(
   `${label} — podcasts`,
@@ -65,7 +93,7 @@ const description = `${plural(entries.length, "podcast")} pour la tranche ${labe
 >
   <CatalogBrowser
     title={label}
-    intro={`${plural(entries.length, "podcast")} pour la tranche « ${label} » — ${ageRange}.`}
+    intro={`${plural(entries.length, "podcast")} pour la tranche « ${label} » — ${ageRange}${agesPart}.${sharedSentence}`}
     entries={entries}
     languages={[]}
     groups={[]}
@@ -83,7 +111,7 @@ const description = `${plural(entries.length, "podcast")} pour la tranche ${labe
         ...getGroups()
           .map((candidate) => ({
             href: pageUrl(`/${language.code}/${candidate.id}/`),
-            label: groupLabel(candidate, language.code),
+            label: `${groupLabel(candidate, language.code)} · ${groupAgeRange(candidate, language.code)}`,
             count: entriesOf(language.code, candidate.id).length,
             active: candidate.id === group.id,
           }))

@@ -393,6 +393,86 @@ main:focus {
   margin: 0;
 }
 
+/* Filtre « âge » : pastilles cochables, multi-sélection (union des âges). */
+.field--ages {
+  display: block;
+  flex: 1 1 100%;
+  min-width: 0;
+  min-inline-size: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.field--ages legend {
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.ages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.age-chip {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+/* Case cochable réelle, mais invisible : le focus clavier reste possible. */
+.age-chip__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.age-chip__face {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.age-chip:hover .age-chip__face {
+  border-color: var(--accent);
+}
+
+.age-chip__input:focus + .age-chip__face,
+.age-chip__input:focus-visible + .age-chip__face {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.age-chip__input:checked + .age-chip__face {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.age-chip__label {
+  font-variant-numeric: tabular-nums;
+}
+
+.age-chip__count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 .field--sort {
   flex: 0 0 auto;
 }
