@@ -50,105 +50,125 @@ const showCategories = categories.length > 1;
   )}
 
   <form class="filters" role="search" data-search-form>
-    <div class="filters__row">
-      <div class="field field--search">
-        <label for="recherche">Rechercher un podcast</label>
-        <div class="field__control">
-          <input
-            id="recherche"
-            type="search"
-            name="q"
-            data-search
-            placeholder="Nom, éditeur, description, catégorie…"
-            autocomplete="off"
-            aria-describedby="recherche-aide"
-          />
-          <kbd class="field__shortcut" aria-hidden="true">
-            /
-          </kbd>
-        </div>
-        <p class="field__help" id="recherche-aide">
-          Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
-        </p>
-      </div>
+    <button
+      type="button"
+      class="filters__toggle"
+      data-filters-toggle
+      aria-expanded="false"
+      aria-controls="filters-content"
+    >
+      <span class="filters__toggle-label" data-toggle-label>
+        <svg class="filters__toggle-icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+          <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Filtres
+      </span>
+      <span class="filters__toggle-count" data-toggle-count aria-live="polite" aria-atomic="true">
+        {plural(entries.length, "podcast")}
+      </span>
+    </button>
 
-      {showLanguages && (
-        <div class="field">
-          <label for="filtre-langue">Langue</label>
-          <select id="filtre-langue" data-filter="language">
-            <option value="">Toutes les langues</option>
-            {languages.map((option) => (
-              <option value={option.value}>
-                {option.label} ({option.count})
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {showAges && (
-        <fieldset class="field field--ages">
-          <legend>Âge de l’enfant</legend>
-          <div class="ages">
-            {ages.map((option) => (
-              <label class="age-chip">
-                <input
-                  class="age-chip__input"
-                  type="checkbox"
-                  name="ages"
-                  value={option.age}
-                  data-age={option.age}
-                  aria-label={`${option.longLabel} — ${plural(option.count, "podcast")}`}
-                  aria-describedby="filtre-age-aide"
-                />
-                <span class="age-chip__face">
-                  <span class="age-chip__label">{option.shortLabel}</span>
-                  <span class="age-chip__count" aria-hidden="true">
-                    {option.count}
-                  </span>
-                </span>
-              </label>
-            ))}
+    <div id="filters-content" class="filters__content" hidden>
+      <div class="filters__row">
+        <div class="field field--search">
+          <label for="recherche">Rechercher un podcast</label>
+          <div class="field__control">
+            <input
+              id="recherche"
+              type="search"
+              name="q"
+              data-search
+              placeholder="Nom, éditeur, description, catégorie…"
+              autocomplete="off"
+              aria-describedby="recherche-aide"
+            />
+            <kbd class="field__shortcut" aria-hidden="true">
+              /
+            </kbd>
           </div>
-          <p class="field__help" id="filtre-age-aide">
-            Un ou plusieurs âges : la liste affiche les podcasts adaptés à au moins l’un d’eux. Les
-            âges de frontière (5 et 7 ans) relèvent de deux tranches.
+          <p class="field__help" id="recherche-aide">
+            Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
           </p>
-        </fieldset>
-      )}
-
-      {showCategories && (
-        <div class="field">
-          <label for="filtre-categorie">Catégorie</label>
-          <select id="filtre-categorie" data-filter="category">
-            <option value="">Toutes les catégories</option>
-            {categories.map((option) => (
-              <option value={option.value}>
-                {option.label} ({option.count})
-              </option>
-            ))}
-          </select>
         </div>
-      )}
-    </div>
 
-    <div class="filters__row filters__row--footer">
-      <div class="field field--sort">
-        <span class="field__label" id="tri-label">
-          Trier par
-        </span>
-        <div class="sort" role="group" aria-labelledby="tri-label">
-          <button type="button" class="sort__button" data-sort="name" aria-pressed="true">
-            Nom
-          </button>
-          <button type="button" class="sort__button" data-sort="category" aria-pressed="false">
-            Catégorie
-          </button>
-        </div>
+        {showLanguages && (
+          <div class="field">
+            <label for="filtre-langue">Langue</label>
+            <select id="filtre-langue" data-filter="language">
+              <option value="">Toutes les langues</option>
+              {languages.map((option) => (
+                <option value={option.value}>
+                  {option.label} ({option.count})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {showAges && (
+          <fieldset class="field field--ages">
+            <legend>Âge de l'enfant</legend>
+            <div class="ages">
+              {ages.map((option) => (
+                <label class="age-chip">
+                  <input
+                    class="age-chip__input"
+                    type="checkbox"
+                    name="ages"
+                    value={option.age}
+                    data-age={option.age}
+                    aria-label={`${option.longLabel} — ${plural(option.count, "podcast")}`}
+                    aria-describedby="filtre-age-aide"
+                  />
+                  <span class="age-chip__face">
+                    <span class="age-chip__label">{option.shortLabel}</span>
+                    <span class="age-chip__count" aria-hidden="true">
+                      {option.count}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p class="field__help" id="filtre-age-aide">
+              Un ou plusieurs âges : la liste affiche les podcasts adaptés à au moins l'un d'eux. Les
+              âges de frontière (5 et 7 ans) relèvent de deux tranches.
+            </p>
+          </fieldset>
+        )}
+
+        {showCategories && (
+          <div class="field">
+            <label for="filtre-categorie">Catégorie</label>
+            <select id="filtre-categorie" data-filter="category">
+              <option value="">Toutes les catégories</option>
+              {categories.map((option) => (
+                <option value={option.value}>
+                  {option.label} ({option.count})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
-      <button type="button" class="filters__reset" data-reset>
-        Réinitialiser les filtres
-      </button>
+
+      <div class="filters__row filters__row--footer">
+        <div class="field field--sort">
+          <span class="field__label" id="tri-label">
+            Trier par
+          </span>
+          <div class="sort" role="group" aria-labelledby="tri-label">
+            <button type="button" class="sort__button" data-sort="name" aria-pressed="true">
+              Nom
+            </button>
+            <button type="button" class="sort__button" data-sort="category" aria-pressed="false">
+              Catégorie
+            </button>
+          </div>
+        </div>
+        <button type="button" class="filters__reset" data-reset>
+          Réinitialiser les filtres
+        </button>
+      </div>
     </div>
   </form>
 

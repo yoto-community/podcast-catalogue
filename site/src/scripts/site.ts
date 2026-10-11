@@ -650,10 +650,42 @@ function sortList(runtime: CatalogRuntime, key: string): void {
   }
 }
 
+function bindFiltersToggle(root: HTMLElement): void {
+  const toggle = qs<HTMLButtonElement>("[data-filters-toggle]", root);
+  const content = qs<HTMLElement>("#filters-content", root);
+  const label = qs<HTMLElement>("[data-toggle-label]", root);
+  const count = qs<HTMLElement>("[data-toggle-count]", root);
+
+  if (!toggle || !content || !label || !count) return;
+
+  toggle.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    content.hidden = expanded;
+
+    if (!expanded) {
+      // Focus the search input when expanding
+      const search = qs<HTMLInputElement>("[data-search]", root);
+      search?.focus();
+    }
+  });
+
+  // Update the count when filters are applied
+  const runtime = readCatalog(root);
+  if (runtime) {
+    const observer = new MutationObserver(() => {
+      const visible = runtime.items.filter((item) => !item.hidden).length;
+      count.textContent = `${visible} podcast${visible > 1 ? "s" : ""}`;
+    });
+    observer.observe(runtime.list, { attributes: true, attributeFilter: ["hidden"], subtree: true });
+  }
+}
+
 function bindCatalog(root: HTMLElement): void {
   const runtime = readCatalog(root);
   if (!runtime) return;
 
+  bindFiltersToggle(root);
   applyFilters(runtime);
 
   const form = qs<HTMLFormElement>("[data-search-form]", root);
