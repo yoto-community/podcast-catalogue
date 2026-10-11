@@ -58,6 +58,11 @@
     ]
   },
   {
+    "name": "Chut, je lis",
+    "category": "histoire",
+    "rssUrl": "https://feeds.acast.com/public/shows/chut-je-lis"
+  },
+  {
     "name": "Club Citrouillade",
     "publisher": "Slate",
     "category": "histoire",
