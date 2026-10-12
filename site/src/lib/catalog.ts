@@ -403,7 +403,7 @@ export function getEpisodes(slug: string): DistEpisodesFile | null {
     if (fs.existsSync(file)) {
       const payload = readJson<DistEpisodesFile>(file);
       if (payload && Array.isArray(payload.episodes)) {
-        result = { ...payload, slug: payload.slug || slug, count: payload.episodes.length };
+        result = { ...payload, slug: payload.slug || slug };
       }
     }
   }

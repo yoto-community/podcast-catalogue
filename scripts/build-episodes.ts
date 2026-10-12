@@ -84,8 +84,11 @@ async function processEntry(entry: LoadedEntry, opts: Options): Promise<"ok" | "
       offline: !opts.network,
     });
     const parsed = parseFeed(feed.xml);
-    const episodes = parsed.items
-      .filter((item): item is ParsedItem & { audioUrl: string } => Boolean(item.audioUrl))
+    const itemsWithAudio = parsed.items.filter(
+      (item): item is ParsedItem & { audioUrl: string } => Boolean(item.audioUrl),
+    );
+    const totalCount = itemsWithAudio.length;
+    const episodes = itemsWithAudio
       .sort((a, b) => (b.pubDate ?? "").localeCompare(a.pubDate ?? ""))
       .slice(0, opts.limit)
       .map((item) => toDistEpisode(item, entry.slug));
@@ -96,7 +99,7 @@ async function processEntry(entry: LoadedEntry, opts: Options): Promise<"ok" | "
       slug: entry.slug,
       fetchedAt: new Date().toISOString(),
       ...(parsed.title ? { feedTitle: parsed.title } : {}),
-      count: episodes.length,
+      count: totalCount,
       episodes,
     };
     writeJson(outFile, data);

@@ -58,6 +58,13 @@ const baseUrl = Astro.site
 const endpoints = [
   {
     method: "GET",
+    path: "/api/podcasts.json",
+    description: "Liste paginée des podcasts avec filtres, tri et métadonnées de groupe",
+    response: "PodcastsResponse",
+    cache: "5 min / 10 min",
+  },
+  {
+    method: "GET",
     path: "/api/catalog.json",
     description: "Manifeste complet du catalogue",
     response: "Manifest",
@@ -113,6 +120,12 @@ export BASE=${baseUrl}
 
 # Récupérer le manifeste (198 podcasts, ${manifest.counts.total} total)
 curl $BASE/api/catalog.json | jq '.counts'
+
+# Lister tous les podcasts (paginé, 50 par page)
+curl "$BASE/api/podcasts.json" | jq '.meta'
+
+# Filtrer : podcasts français catégorie "histoire" pour 7-10 ans
+curl "$BASE/api/podcasts.json?lang=fr&cat=histoire&age=age-7-10" | jq '.results[] | .name'
 
 # Rechercher des podcasts en français sur les dinosaures
 curl "$BASE/api/search.json?q=dinosaures&lang=fr" | jq '.results[] | .name'
@@ -239,6 +252,45 @@ const searchResultsSchema = `{
       "imageUrl": "…",
       "websiteUrl": "…",
       "description": "Chansons et histoires sur les dinosaures..."
+    }
+  ]
+}`;
+
+const podcastsSchema = `{
+  "meta": {
+    "total": 198,
+    "page": 1,
+    "perPage": 50,
+    "totalPages": 4,
+    "hasNext": true,
+    "hasPrev": false
+  },
+  "links": {
+    "first": "/api/podcasts.json?page=1&per_page=50",
+    "prev": null,
+    "next": "/api/podcasts.json?page=2&per_page=50",
+    "last": "/api/podcasts.json?page=4&per_page=50"
+  },
+  "catalogVersion": "${manifest.catalogVersion}",
+  "schemaVersion": ${manifest.schemaVersion},
+  "results": [
+    {
+      "slug": "${exampleEntry?.slug}",
+      "name": "${exampleEntry?.name}",
+      "language": "${exampleEntry?.language}",
+      "groupId": "${exampleEntry?.groupId}",
+      "groupLabel": "${exampleGroup?.label}",
+      "groupSlug": "${exampleGroup?.slug}",
+      "groupAgeRange": "${exampleGroup?.ageRange}",
+      "groupTranslations": ${JSON.stringify(exampleGroup?.translations ?? {})},
+      "ageRange": "${exampleEntry?.ageRange}",
+      "category": "${exampleEntry?.category}",
+      "tags": [${(exampleEntry?.tags ?? []).map((tag) => `"${tag}"`).join(", ")}],
+      "publisher": "${exampleEntry?.publisher}",
+      "rssUrl": "${exampleEntry?.rssUrl.slice(0, 48)}…",
+      "imageUrl": "${exampleEntry?.imageUrl?.slice(0, 32)}…",
+      "websiteUrl": "${exampleEntry?.websiteUrl?.slice(0, 32)}…",
+      "description": "${(exampleEntry?.description ?? "").slice(0, 48)}…"
     }
   ]
 }`;
@@ -370,7 +422,34 @@ async function fetchCatalog() {
     </section>
 
     <section class="dev__section">
+      <h2>📋 Liste des podcasts (/api/podcasts.json)</h2>
+      <p>Endpoint paginé pour lister les podcasts avec filtres, tri et métadonnées enrichies :</p>
+      <pre><code># Paramètres de filtrage
+lang       — Filtrer par langue (${languageCodes})
+cat        — Filtrer par catégorie (histoire, education, fiction, documentaire, musique, science)
+age        — Filtrer par tranche d'âge (${groupIds})
+publisher  — Filtrer par éditeur (nom exact)
+
+# Paramètres de tri
+sort       — Champ de tri : name | publisher | language | group | updated (défaut : name)
+order      — Ordre : asc | desc (défaut : asc)
+
+# Pagination
+page       — Numéro de page (défaut : 1)
+per_page   — Résultats par page (défaut : 50, max : 200)
+
+# Exemples
+curl "$BASE/api/podcasts.json?lang=fr&cat=histoire&age=age-7-10"
+curl "$BASE/api/podcasts.json?sort=publisher&order=asc&per_page=100"
+curl "$BASE/api/podcasts.json?page=2&per_page=20"
+</code></pre>
+    </section>
+
+    <section class="dev__section">
       <h2>📄 Schemas de réponse</h2>
+
+      <h3>PodcastsResponse (/api/podcasts.json)</h3>
+      <pre><code set:html={podcastsSchema} /></pre>
 
       <h3>Manifest (/api/catalog.json)</h3>
       <pre><code set:html={manifestSchema} /></pre>
