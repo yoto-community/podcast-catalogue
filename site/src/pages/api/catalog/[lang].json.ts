@@ -16,10 +16,15 @@ export async function GET({ params }: APIContext) {
   // Reconstruct shard format similar to dist/<lang>.json or dist/<lang>/<group>.json
   const groups = [...new Set(entries.map((e) => e.groupId))];
   const shards = groups.map((groupId) => {
+    const group = manifest.groups.find((g) => g.id === groupId);
     const groupEntries = entries.filter((e) => e.groupId === groupId);
     return {
       language: lang,
       group: groupId,
+      groupLabel: group?.label,
+      groupSlug: group?.slug,
+      groupAgeRange: group?.ageRange,
+      groupTranslations: group?.translations,
       count: groupEntries.length,
       entries: groupEntries,
     };

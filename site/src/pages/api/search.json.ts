@@ -1,4 +1,4 @@
-import { getEntries, getEpisodes, groupIdOf } from "../../lib/catalog";
+import { getEntries, getEpisodes, getManifest, groupIdOf } from "../../lib/catalog";
 import type { APIContext } from "astro";
 
 export async function GET({ url }: APIContext) {
@@ -19,6 +19,7 @@ export async function GET({ url }: APIContext) {
     );
   }
 
+  const manifest = getManifest();
   let entries = getEntries();
 
   if (lang) entries = entries.filter((e) => e.language === lang);
@@ -36,11 +37,14 @@ export async function GET({ url }: APIContext) {
   }
 
   const results = entries.slice(0, limit).map((entry) => {
+    const group = manifest.groups.find((g) => g.id === entry.groupId);
     const base = {
       slug: entry.slug,
       name: entry.name,
       language: entry.language,
       groupId: entry.groupId,
+      groupLabel: group?.label,
+      groupSlug: group?.slug,
       ageRange: entry.ageRange,
       category: entry.category,
       tags: entry.tags,
