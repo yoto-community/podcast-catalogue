@@ -1,7 +1,6 @@
 import { getManifest } from "../../lib/catalog";
-import type { APIContext } from "astro";
 
-export async function GET({ request, site }: APIContext) {
+export async function GET() {
   const manifest = getManifest();
 
   return new Response(JSON.stringify(manifest, null, 2), {

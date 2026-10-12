@@ -4,10 +4,14 @@ import EpisodeList from "../../../../components/EpisodeList.astro";
 import FavoriteButton from "../../../../components/FavoriteButton.astro";
 import {
   categoryLabel,
+  entryPath,
   externalUrl,
   getEntries,
   getEpisodes,
   getGroups,
+  groupLabel,
+  groupPath,
+  groupSlugOfId,
 } from "../../../../lib/catalog";
 import { truncate } from "../../../../lib/format";
 import { podcastSeriesJsonLd } from "../../../../lib/seo";
@@ -16,7 +20,11 @@ import type { DistEntry, StaticPath } from "../../../../lib/types";
 
 export function getStaticPaths(): Array<StaticPath<EntryProps>> {
   return getEntries().map((entry) => ({
-    params: { lang: entry.language, tranche: entry.groupId, slug: entry.slug },
+    params: {
+      lang: entry.language,
+      tranche: groupSlugOfId(entry.groupId, entry.language),
+      slug: entry.slug,
+    },
     props: { entry },
   }));
 }
@@ -33,7 +41,7 @@ const episodes = getEpisodes(full.slug);
 const group = getGroups().find((candidate) => candidate.id === full.groupId);
 const external = externalUrl(full);
 const image = full.imageUrl;
-const path = `/${full.language}/${full.groupId}/${full.slug}/`;
+const path = entryPath(full);
 const description =
   truncate(full.description, 160) ??
   `${full.name} — podcast en ${full.language}, éditeur ${full.publisher}.`;
@@ -66,7 +74,9 @@ const jsonLd = podcastSeriesJsonLd(full, {
         </li>
         {group && (
           <li>
-            <a href={pageUrl(`/${full.language}/${full.groupId}/`)}>{group.label}</a>
+            <a href={pageUrl(groupPath(full.language, group))}>
+              {groupLabel(group, full.language)}
+            </a>
           </li>
         )}
         <li>

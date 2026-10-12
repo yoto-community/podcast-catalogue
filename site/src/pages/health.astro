@@ -1,6 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEpisodes, getEntries } from "../lib/catalog";
+import {
+  entryPath,
+  getEntries,
+  getEpisodes,
+  getGroups,
+  groupAgeRange,
+  groupLabel,
+} from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
 import { pageUrl } from "../lib/url";
 import type { DistEntry, DistEpisodesFile } from "../lib/types";
@@ -9,13 +16,19 @@ import type { DistEntry, DistEpisodesFile } from "../lib/types";
 const entries = getEntries();
 
 // Read feed-health issue data from checked-in cache (updated by feed-health.yml workflow)
-let feedHealthData: Record<string, { status: string; lastChecked: string; error?: string }> = {};
+let feedHealthCache: {
+  timestamp?: string;
+  bySlug?: Record<string, { status: string; lastChecked: string; error?: string }>;
+  byEntryName?: Record<string, Array<{ rule: string; message: string }>>;
+  summary?: { errors: number; warnings: number; total: number };
+} = {};
+
 try {
   const fs = await import("node:fs");
   const path = await import("node:path");
   const cacheFile = path.join(process.cwd(), "..", ".cache", "feed-health.json");
   if (fs.existsSync(cacheFile)) {
-    feedHealthData = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+    feedHealthCache = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
   }
 } catch {
   // Cache not available at build time - will show unknown status
@@ -26,13 +39,16 @@ interface PodcastHealth {
   episodes: DistEpisodesFile | null;
   feedStatus: "healthy" | "stale" | "unhealthy" | "unknown";
   lastFetch: string | null;
+  lastEpisodeDate: string | null;
   episodeCount: number;
   error?: string;
+  warnings?: Array<{ rule: string; message: string }>;
 }
 
 function getHealth(entry: DistEntry): PodcastHealth {
   const episodes = getEpisodes(entry.slug);
-  const feedHealth = feedHealthData[entry.slug];
+  const feedHealth = feedHealthCache.bySlug?.[entry.slug];
+  const warnings = feedHealthCache.byEntryName?.[entry.name];
 
   let feedStatus: PodcastHealth["feedStatus"] = "unknown";
   let lastFetch = episodes?.fetchedAt ?? null;
@@ -50,13 +66,18 @@ function getHealth(entry: DistEntry): PodcastHealth {
     else feedStatus = "unhealthy";
   }
 
+  // Get last episode date from episodes data
+  const lastEpisodeDate = episodes?.episodes?.[0]?.pubDate ?? null;
+
   return {
     entry,
     episodes,
     feedStatus,
     lastFetch,
+    lastEpisodeDate,
     episodeCount: episodes?.count ?? episodes?.episodes.length ?? 0,
     error,
+    warnings,
   };
 }
 
@@ -74,6 +95,10 @@ const stats = {
   unknown: allHealth.filter((h) => h.feedStatus === "unknown").length,
 };
 
+const cacheTimestamp = feedHealthCache.timestamp
+  ? formatDate(feedHealthCache.timestamp)
+  : "inconnu";
+
 const description = `État de santé des ${stats.total} flux RSS du catalogue — mis à jour à chaque build.`;
 ---
 
@@ -87,6 +112,15 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
           <strong>🟢 Sain</strong> {"<"} 24h · <strong>🟡 Obsolète</strong> 24-72h ·{" "}
           <strong>🔴 Défaillant</strong> > 72h ou erreur.
         </span>
+      </p>
+      <p class="health__cache-info">
+        Dernière vérification complète : {cacheTimestamp} ·
+        {feedHealthCache.summary && (
+          <>
+            {feedHealthCache.summary.errors} erreur(s) bloquante(s) ·{" "}
+            {feedHealthCache.summary.warnings} avertissement(s)
+          </>
+        )}
       </p>
       <div class="health__stats" role="status" aria-live="polite">
         <span class="stat stat--healthy" title="Flux récupérés il y a moins de 24h">
@@ -137,10 +171,11 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       </label>
       <select id="health-filter-group" aria-label="Filtrer par tranche d'âge">
         <option value="">Toutes les tranches</option>
-        <option value="tout-petits">Tout-petits (2-5 ans)</option>
-        <option value="maternelle-cp">Maternelle / CP (5-7 ans)</option>
-        <option value="primaire">Primaire (7-10 ans)</option>
-        <option value="college-plus">Collège & + (11+ ans)</option>
+        {getGroups().map((group) => (
+          <option value={group.id}>
+            {groupLabel(group, "fr")} ({groupAgeRange(group, "fr")})
+          </option>
+        ))}
       </select>
 
       <input
@@ -149,120 +184,181 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
         placeholder="Rechercher un podcast…"
         aria-label="Rechercher un podcast par nom, éditeur ou erreur"
       />
+
+      <button
+        type="button"
+        id="health-filter-clear"
+        class="btn btn--ghost btn--sm"
+        aria-label="Réinitialiser tous les filtres"
+      >
+        Effacer les filtres
+      </button>
     </div>
 
-    <table class="health__table" data-health-table>
-      <thead>
-        <tr>
-          <th scope="col">Podcast</th>
-          <th scope="col">Langue</th>
-          <th scope="col">Tranche</th>
-          <th scope="col">Statut</th>
-          <th scope="col">Dernière récupération</th>
-          <th scope="col">Épisodes</th>
-          <th scope="col">Détails</th>
-        </tr>
-      </thead>
-      <tbody>
-        {allHealth.map((health) => {
-          const { entry, feedStatus, lastFetch, episodeCount, error, episodes } = health;
-          const statusIcon =
-            feedStatus === "healthy"
-              ? "🟢"
-              : feedStatus === "stale"
-                ? "🟡"
-                : feedStatus === "unhealthy"
-                  ? "🔴"
-                  : "⚪";
-          const statusLabel =
-            feedStatus === "healthy"
-              ? "Sain"
-              : feedStatus === "stale"
-                ? "Obsolète"
-                : feedStatus === "unhealthy"
-                  ? "Défaillant"
-                  : "Inconnu";
-          const fetchDate = lastFetch ? formatDate(lastFetch) : "—";
-          const fetchDay = lastFetch ? isoDay(lastFetch) : null;
+    <div class="health__table-wrapper" data-health-table>
+      <table class="health__table">
+        <thead>
+          <tr>
+            <th scope="col">Podcast</th>
+            <th scope="col">Langue</th>
+            <th scope="col">Tranche</th>
+            <th scope="col">Statut</th>
+            <th scope="col">Dernière récupération</th>
+            <th scope="col">Dernier épisode</th>
+            <th scope="col">Épisodes</th>
+            <th scope="col">Détails</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allHealth.map((health) => {
+            const {
+              entry,
+              feedStatus,
+              lastFetch,
+              lastEpisodeDate,
+              episodeCount,
+              error,
+              warnings,
+              episodes,
+            } = health;
+            const statusIcon =
+              feedStatus === "healthy"
+                ? "🟢"
+                : feedStatus === "stale"
+                  ? "🟡"
+                  : feedStatus === "unhealthy"
+                    ? "🔴"
+                    : "⚪";
+            const statusLabel =
+              feedStatus === "healthy"
+                ? "Sain"
+                : feedStatus === "stale"
+                  ? "Obsolète"
+                  : feedStatus === "unhealthy"
+                    ? "Défaillant"
+                    : "Inconnu";
+            const fetchDate = lastFetch ? formatDate(lastFetch) : "—";
+            const fetchDay = lastFetch ? isoDay(lastFetch) : null;
+            const lastEpDate = lastEpisodeDate ? formatDate(lastEpisodeDate) : "—";
+            const lastEpDay = lastEpisodeDate ? isoDay(lastEpisodeDate) : null;
+            const hasWarnings = warnings && warnings.length > 0;
 
-          return (
-            <tr
-              data-status={feedStatus}
-              data-language={entry.language}
-              data-group={entry.groupId}
-              data-search={
-                entry.name.toLowerCase() +
-                " " +
-                entry.publisher.toLowerCase() +
-                " " +
-                (error?.toLowerCase() ?? "")
-              }
-            >
-              <td>
-                <a
-                  href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
-                  class="health__podcast-link"
+            return (
+              <>
+                <tr
+                  data-status={feedStatus}
+                  data-language={entry.language}
+                  data-group={entry.groupId}
+                  data-search={
+                    entry.name.toLowerCase() +
+                    " " +
+                    entry.publisher.toLowerCase() +
+                    " " +
+                    (error?.toLowerCase() ?? "") +
+                    " " +
+                    (warnings?.map((w) => w.message.toLowerCase()).join(" ") ?? "")
+                  }
+                  class={hasWarnings ? "health__row--has-warnings" : ""}
                 >
-                  <img
-                    src={entry.imageUrl || pageUrl("/placeholder.svg")}
-                    alt=""
-                    width="32"
-                    height="32"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span>{entry.name}</span>
-                </a>
-                <span class="health__publisher">{entry.publisher}</span>
-              </td>
-              <td>
-                <span class="badge">{entry.language === "fr" ? "Français" : "English"}</span>
-              </td>
-              <td>
-                <span class="badge">{entry.ageRange}</span>
-              </td>
-              <td class="health__status">
-                <span class="health__status-icon" aria-label={statusLabel}>
-                  {statusIcon}
-                </span>
-                <span class="health__status-label">{statusLabel}</span>
-              </td>
-              <td>
-                {fetchDate && <time datetime={fetchDay ?? lastFetch}>{fetchDate}</time>}
-                {!fetchDate && <span class="health__never">Jamais</span>}
-              </td>
-              <td>
-                {episodeCount} épisode{episodeCount > 1 ? "s" : ""}
-              </td>
-              <td>
-                {error && (
-                  <details class="health__error">
-                    <summary>Erreur</summary>
-                    <pre>{error}</pre>
-                  </details>
+                  <td class="health__podcast-cell">
+                    <a href={pageUrl(entryPath(entry))} class="health__podcast-link">
+                      <img
+                        src={entry.imageUrl || pageUrl("/placeholder.svg")}
+                        alt=""
+                        width="32"
+                        height="32"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div class="health__podcast-info">
+                        <span class="health__podcast-name">{entry.name}</span>
+                        <span class="health__publisher">{entry.publisher}</span>
+                      </div>
+                    </a>
+                  </td>
+                  <td>
+                    <span class="badge">{entry.language === "fr" ? "Français" : "English"}</span>
+                  </td>
+                  <td>
+                    <span class="badge">{entry.ageRange}</span>
+                  </td>
+                  <td class="health__status">
+                    <span class="health__status-icon" aria-label={statusLabel}>
+                      {statusIcon}
+                    </span>
+                    <span class="health__status-label">{statusLabel}</span>
+                  </td>
+                  <td>
+                    {fetchDate && <time datetime={fetchDay ?? lastFetch}>{fetchDate}</time>}
+                    {!fetchDate && <span class="health__never">Jamais</span>}
+                  </td>
+                  <td>
+                    {lastEpDate && (
+                      <time datetime={lastEpDay ?? lastEpisodeDate}>{lastEpDate}</time>
+                    )}
+                    {!lastEpDate && <span class="health__never">—</span>}
+                  </td>
+                  <td>
+                    <span class="health__episode-count">
+                      {episodeCount} épisode{episodeCount > 1 ? "s" : ""}
+                    </span>
+                  </td>
+                  <td class="health__actions">
+                    {hasWarnings && (
+                      <button
+                        type="button"
+                        class="btn btn--ghost btn--sm health__warnings-toggle"
+                        aria-expanded="false"
+                        aria-controls={`warnings-${entry.slug}`}
+                        data-target={`warnings-${entry.slug}`}
+                      >
+                        {warnings.length} avertissement{warnings.length > 1 ? "s" : ""}
+                      </button>
+                    )}
+                    {error && (
+                      <details class="health__error">
+                        <summary>Erreur</summary>
+                        <pre>{error}</pre>
+                      </details>
+                    )}
+                    {episodes && (
+                      <a href={pageUrl(entryPath(entry))} class="btn btn--ghost btn--sm">
+                        Voir épisodes
+                      </a>
+                    )}
+                    <a
+                      href={entry.rssUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn--ghost btn--sm"
+                    >
+                      Flux RSS
+                    </a>
+                  </td>
+                </tr>
+                {hasWarnings && (
+                  <tr id={`warnings-${entry.slug}`} class="health__warnings-row" hidden>
+                    <td colspan={8} class="health__warnings-cell">
+                      <details open>
+                        <summary>Avertissements détaillés</summary>
+                        <ul class="health__warnings-list">
+                          {warnings.map((w) => (
+                            <li>
+                              <span class="health__warning-rule">[{w.rule}]</span>
+                              <span class="health__warning-message">{w.message}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    </td>
+                  </tr>
                 )}
-                {episodes && (
-                  <a
-                    href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
-                    class="btn btn--ghost btn--sm"
-                  >
-                    Voir épisodes
-                  </a>
-                )}
-                <a
-                  href={entry.rssUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn--ghost btn--sm"
-                >
-                  Flux RSS
-                </a>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+              </>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
 
     {allHealth.length === 0 && (
       <p class="health__empty">Aucun podcast ne correspond aux filtres.</p>
@@ -274,6 +370,11 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       margin-bottom: var(--space-6);
     }
     .health__intro {
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+    .health__cache-info {
+      font-size: var(--text-sm);
       color: var(--color-text-muted);
       margin-bottom: var(--space-4);
     }
@@ -347,16 +448,23 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       min-width: 200px;
     }
 
+    .health__table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .health__table {
       width: 100%;
       border-collapse: collapse;
       font-size: var(--text-sm);
+      min-width: 880px;
     }
     .health__table th,
     .health__table td {
       padding: var(--space-3);
       text-align: left;
       border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
     }
     .health__table th {
       background: var(--color-surface);
@@ -365,14 +473,18 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       position: sticky;
       top: 0;
       z-index: 1;
+      white-space: nowrap;
     }
     .health__table tr:hover td {
       background: var(--color-surface-hover);
     }
+    .health__table tr.health__row--has-warnings {
+      background: rgba(var(--color-warning-rgb), 0.04);
+    }
     .health__podcast-link {
       display: flex;
       align-items: center;
-      gap: var(--space-2);
+      gap: var(--space-3);
       text-decoration: none;
       color: var(--color-text);
     }
@@ -382,16 +494,32 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     .health__podcast-link img {
       border-radius: var(--radius-sm);
       object-fit: cover;
+      flex-shrink: 0;
+    }
+    .health__podcast-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .health__podcast-name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .health__publisher {
-      display: block;
       font-size: var(--text-xs);
       color: var(--color-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .health__status {
       display: flex;
       align-items: center;
       gap: var(--space-2);
+      white-space: nowrap;
     }
     .health__status-icon {
       font-size: var(--text-lg);
@@ -399,6 +527,9 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     .health__never {
       color: var(--color-text-muted);
       font-style: italic;
+    }
+    .health__episode-count {
+      font-variant-numeric: tabular-nums;
     }
     .health__error summary {
       cursor: pointer;
@@ -413,6 +544,54 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       font-size: var(--text-xs);
       overflow-x: auto;
       color: var(--color-error);
+      max-width: 300px;
+    }
+    .health__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+    .health__warnings-toggle {
+      padding: var(--space-1) var(--space-2);
+      font-size: var(--text-xs);
+    }
+    .health__warnings-row td {
+      padding: 0 !important;
+      border: none !important;
+    }
+    .health__warnings-cell {
+      padding: var(--space-3) var(--space-4) !important;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+    .health__warnings-list {
+      margin: var(--space-2) 0 0;
+      padding-left: var(--space-4);
+      list-style: none;
+    }
+    .health__warnings-list li {
+      padding: var(--space-1) 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: flex-start;
+    }
+    .health__warning-rule {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-warning);
+      background: rgba(var(--color-warning-rgb), 0.1);
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .health__warning-message {
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      flex: 1;
+      min-width: 200px;
     }
     .health__empty {
       text-align: center;
@@ -422,41 +601,165 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     .btn--sm {
       padding: var(--space-1) var(--space-2);
       font-size: var(--text-xs);
+      white-space: nowrap;
+    }
+
+    /* Responsive: card layout on mobile */
+    @media (max-width: 768px) {
+      .health__table thead {
+        display: none;
+      }
+      .health__table,
+      .health__table tbody,
+      .health__table tr,
+      .health__table td {
+        display: block;
+        width: 100%;
+      }
+      .health__table tr {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        margin-bottom: var(--space-4);
+        padding: var(--space-4);
+        background: var(--color-surface);
+      }
+      .health__table td {
+        border: none;
+        padding: var(--space-2) 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-3);
+      }
+      .health__table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--color-text-muted);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
+      }
+      .health__podcast-cell {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: var(--space-2) !important;
+        padding-top: 0 !important;
+      }
+      .health__podcast-cell::before {
+        display: none !important;
+      }
+      .health__podcast-link {
+        width: 100%;
+      }
+      .health__podcast-info {
+        width: 100%;
+      }
+      .health__status {
+        flex-direction: row;
+        gap: var(--space-2);
+      }
+      .health__actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .health__actions::before {
+        content: "Actions";
+      }
+      .health__warnings-row {
+        margin-top: var(--space-2);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-2);
+      }
+      .health__warnings-row td {
+        padding: 0 !important;
+      }
+      .health__warnings-cell {
+        padding: var(--space-2) 0 !important;
+        border: none !important;
+      }
+      .health__controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .health__controls select,
+      .health__controls input {
+        width: 100%;
+        min-width: 0;
+      }
+      .health__controls input {
+        flex: none;
+      }
     }
   </style>
 
-  <script>
+  <script is:inline>
     const table = document.querySelector("[data-health-table]");
-    const rows = table?.querySelectorAll<HTMLTableRowElement>("tbody tr");
-    const statusFilter = document.getElementById("health-filter-status") as HTMLSelectElement;
-    const languageFilter = document.getElementById("health-filter-language") as HTMLSelectElement;
-    const groupFilter = document.getElementById("health-filter-group") as HTMLSelectElement;
-    const searchInput = document.getElementById("health-search") as HTMLInputElement;
+    const rows = table?.querySelectorAll("tbody tr:not(.health__warnings-row)");
+    const statusFilter = document.getElementById("health-filter-status");
+    const languageFilter = document.getElementById("health-filter-language");
+    const groupFilter = document.getElementById("health-filter-group");
+    const searchInput = document.getElementById("health-search");
+    const clearButton = document.getElementById("health-filter-clear");
 
     function applyFilters() {
       if (!rows) return;
-      const status = statusFilter?.value;
-      const language = languageFilter?.value;
-      const group = groupFilter?.value;
-      const search = searchInput?.value.toLowerCase() ?? "";
+      const status = statusFilter?.value ?? "";
+      const language = languageFilter?.value ?? "";
+      const group = groupFilter?.value ?? "";
+      const search = (searchInput?.value ?? "").toLowerCase();
 
       rows.forEach((row) => {
         const matchesStatus = !status || row.dataset.status === status;
         const matchesLanguage = !language || row.dataset.language === language;
         const matchesGroup = !group || row.dataset.group === group;
-        const matchesSearch = !search || row.dataset.search?.includes(search);
+        const matchesSearch = !search || (row.dataset.search ?? "").includes(search);
 
-        row.hidden = !(matchesStatus && matchesLanguage && matchesGroup && matchesSearch);
+        const visible = matchesStatus && matchesLanguage && matchesGroup && matchesSearch;
+        row.hidden = !visible;
+
+        // Also toggle the associated warnings row
+        const targetId = row.querySelector(".health__warnings-toggle")?.dataset.target;
+        if (targetId) {
+          const warningsRow = document.getElementById(targetId);
+          if (warningsRow) {
+            warningsRow.hidden = !visible;
+          }
+        }
       });
     }
 
-    let searchDebounceTimer: ReturnType<typeof setTimeout>;
-    [statusFilter, languageFilter, groupFilter].forEach((el) =>
-      el?.addEventListener("change", applyFilters),
-    );
-    searchInput?.addEventListener("input", () => {
-      clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(applyFilters, 150);
+    // Toggle warnings row visibility
+    table?.addEventListener("click", (e) => {
+      const toggle = e.target.closest(".health__warnings-toggle");
+      if (!toggle) return;
+      const targetId = toggle.dataset.target;
+      if (!targetId) return;
+      const warningsRow = document.getElementById(targetId);
+      if (!warningsRow) return;
+      const isHidden = warningsRow.hidden;
+      warningsRow.hidden = !isHidden;
+      toggle.setAttribute("aria-expanded", isHidden ? "true" : "false");
     });
+
+    let searchDebounceTimer = null;
+    [statusFilter, languageFilter, groupFilter].forEach((el) => {
+      if (el) el.addEventListener("change", applyFilters);
+    });
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(applyFilters, 150);
+      });
+    }
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        if (statusFilter) statusFilter.value = "";
+        if (languageFilter) languageFilter.value = "";
+        if (groupFilter) groupFilter.value = "";
+        if (searchInput) searchInput.value = "";
+        applyFilters();
+      });
+    }
   </script>
 </BaseLayout>

@@ -502,6 +502,45 @@ function syncNavCurrent(): void {
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   }
+  // Le bouton du menu « Communauté » se met en évidence si l'un de ses liens est courant.
+  const group = qs<HTMLElement>("[data-nav-group]");
+  const panel = group ? qs<HTMLElement>("[data-nav-panel]", group) : null;
+  if (group && panel) {
+    group.classList.toggle("is-active", qsa("a[aria-current]", panel).length > 0);
+  }
+}
+
+/**
+ * Comportement du menu déroulant « Communauté » (`<details>`).
+ *
+ * L'ouverture/fermeture au clic est native (donc fonctionnelle sans JS) ; ici on
+ * ajoute la fermeture au clic à l'extérieur, la touche Échap (rend du focus au
+ * bouton) et la fermeture après activation d'un lien du menu.
+ */
+function bindNavDropdown(): void {
+  const group = qs<HTMLDetailsElement>("[data-nav-group]");
+  if (!group) return;
+  const summary = group.querySelector<HTMLElement>("summary");
+  const panel = qs<HTMLElement>("[data-nav-panel]", group);
+
+  const close = (refocus: boolean): void => {
+    if (!group.open) return;
+    group.open = false;
+    if (refocus) summary?.focus();
+  };
+
+  document.addEventListener("click", (event) => {
+    if (event.target instanceof Node && !group.contains(event.target)) close(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close(true);
+  });
+
+  panel?.addEventListener("click", (event) => {
+    const anchor = event.target instanceof Element ? event.target.closest("a") : null;
+    if (anchor) close(false);
+  });
 }
 
 let navigationToken = 0;
@@ -901,6 +940,7 @@ function bindGlobalListeners(): void {
 function start(): void {
   bindPlayer();
   bindGlobalListeners();
+  bindNavDropdown();
   initPage(false);
 }
 

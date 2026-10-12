@@ -2,7 +2,7 @@
 
 ## Ce que j'ajoute / corrige
 
-<!-- Ex. : « ajoute le podcast X dans entries/fr/primaire.json » ou « l'ancien flux de Y redirige vers un 404 ». -->
+<!-- Ex. : « ajoute le podcast X dans entries/fr/age-7-10.json » ou « l'ancien flux de Y redirige vers un 404 ». -->
 
 ## Type de changement
 

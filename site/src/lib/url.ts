@@ -5,7 +5,7 @@
 
 const BASE = (import.meta.env.BASE_URL ?? "/").replace(/\/+$/, "");
 
-/** `/fr/primaire/` → `/<base>/fr/primaire/` (fonctionne aussi côté client). */
+/** `/fr/age-7-10/` → `/<base>/fr/age-7-10/` (fonctionne aussi côté client). */
 export function pageUrl(path: string): string {
   const clean = path.replace(/^\/+/, "");
   return BASE === "" ? `/${clean}` : `${BASE}/${clean}`;

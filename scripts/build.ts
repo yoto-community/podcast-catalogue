@@ -324,6 +324,8 @@ async function main(): Promise<void> {
         ageRange: g.ageRange,
         ageMin: g.ageMin,
         ageMax: g.ageMax,
+        slug: g.slug,
+        aliases: g.aliases ?? [],
         translations: g.translations,
       })),
     languages,

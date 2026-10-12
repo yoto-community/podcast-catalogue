@@ -4,11 +4,13 @@ import CatalogBrowser from "../../components/CatalogBrowser.astro";
 import {
   categoryOptions,
   entriesOfLanguage,
+  entryPath,
   getGroups,
   getLanguages,
   groupAgeRange,
   groupLabel,
   groupOptions,
+  groupPath,
   languageFrenchName,
 } from "../../lib/catalog";
 import { plural } from "../../lib/format";
@@ -35,7 +37,7 @@ const frenchName = languageFrenchName(language.code);
 
 const groupNav = getGroups()
   .map((group) => ({
-    href: pageUrl(`/${language.code}/${group.id}/`),
+    href: pageUrl(groupPath(language.code, group)),
     label: `${groupLabel(group, language.code)} · ${groupAgeRange(group, language.code)}`,
     count: entries.filter((entry) => entry.groupId === group.id).length,
     active: false,
@@ -46,7 +48,7 @@ const jsonLd = itemListJsonLd(
   `Podcasts en ${frenchName}`,
   entries.map((entry) => ({
     name: entry.name,
-    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+    path: entryPath(entry),
   })),
   Astro.site,
 );

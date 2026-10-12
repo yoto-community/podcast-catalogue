@@ -43,7 +43,7 @@ export interface PublishedEntry {
   /** Langue dérivée du chemin entries/<langue>/. */
   language: "fr" | "en";
   /** Tranche dérivée du nom de fichier. */
-  groupId: "tout-petits" | "maternelle-cp" | "primaire" | "college-plus";
+  groupId: "age-2-5" | "age-5-7" | "age-7-10" | "age-11-plus";
   /** Tranche d'âge affichable, dérivée de groups/groups.json (traduite). */
   ageRange: string;
   /** category */

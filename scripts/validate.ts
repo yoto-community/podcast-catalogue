@@ -302,6 +302,109 @@ function checkGroups(): void {
   }
 }
 
+/**
+ * S11 — identifiants de tranches : neutres, explicites, uniques.
+ *
+ * Un identifiant ne peut pas désigner une classe d'un pays : le catalogue est
+ * international. Sous-règles :
+ *   - S11a : `id` au format `age-<ageMin>-<ageMax>` (`age-<n>-plus` si ouvert) —
+ *     un identifiant ne ment jamais sur les bornes ;
+ *   - S11b : `id`, `slug` et `aliases` en minuscules ASCII kebab (≥ 3) et
+ *     **globalement uniques** : aucune valeur ne peut désigner deux tranches ;
+ *   - S11c : ni id ni slug n'est un code de langue (sinon `/fr/en/…`) ;
+ *   - S11d : une langue du catalogue sans libellés traduits ferait retomber ses
+ *     pages sur le français.
+ *
+ * Renommer une tranche exige donc d'ajouter l'ancienne valeur dans `aliases` :
+ * c'est elle qui alimente les redirections du site et le `?age=` rétrocompatible.
+ */
+function checkGroupNames(entries: LoadedEntry[]): void {
+  const at = path.relative(paths.root, paths.groups);
+  const groups = loadGroups();
+  const languageCodes = new Set(loadLanguages().map((l) => l.code));
+  const TOKEN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  /** Valeur déjà employée → groupe propriétaire (id, slug ou alias). */
+  const taken = new Map<string, string>();
+
+  const claim = (value: string | undefined, owner: string, field: string): void => {
+    if (value === undefined || value === "") {
+      add({
+        severity: "error",
+        rule: "S11b",
+        file: at,
+        message: `${owner} : champ « ${field} » manquant`,
+      });
+      return;
+    }
+    const key = value.toLowerCase();
+    const holder = taken.get(key);
+    if (holder !== undefined && holder !== owner) {
+      add({
+        severity: "error",
+        rule: "S11b",
+        file: at,
+        message: `${field} « ${value} » déjà employé par ${holder} — id, slug et aliases doivent être uniques`,
+      });
+      return;
+    }
+    taken.set(key, owner);
+    if (!TOKEN.test(value) || value.length < 3) {
+      add({
+        severity: "error",
+        rule: "S11b",
+        file: at,
+        message: `${owner} : ${field} « ${value} » invalide — minuscules ASCII, chiffres et tirets attendus (≥ 3 caractères)`,
+      });
+    }
+    if (languageCodes.has(value)) {
+      add({
+        severity: "error",
+        rule: "S11c",
+        file: at,
+        message: `${owner} : ${field} « ${value} » est aussi un code de langue (reference/languages.json) — segment d'URL ambigu`,
+      });
+    }
+  };
+
+  for (const group of groups) {
+    const where = `« ${group.id} »`;
+    const span =
+      group.ageMax === null
+        ? `${group.ageMin} ans et plus`
+        : `${group.ageMin} – ${group.ageMax} ans`;
+    const expected =
+      group.ageMax === null ? `age-${group.ageMin}-plus` : `age-${group.ageMin}-${group.ageMax}`;
+    if (group.id !== expected) {
+      add({
+        severity: "error",
+        rule: "S11a",
+        file: at,
+        message: `${where} : id ≠ bornes attendu « ${expected} » — l'identifiant doit décrire la plage (${span})`,
+      });
+    }
+    claim(group.slug, where, "slug");
+    for (const alias of group.aliases ?? []) claim(alias, where, "alias");
+  }
+
+  // S11d — chaque langue qui a des entrées doit avoir ses libellés de tranche.
+  const translated = new Set(entries.map((entry) => entry.language));
+  for (const language of translated) {
+    if (language === "fr") continue; // langue de référence : champs de tête
+    for (const group of groups) {
+      const label = group.translations?.[language]?.label;
+      const ageRange = group.translations?.[language]?.ageRange;
+      if (!label || !ageRange) {
+        add({
+          severity: "error",
+          rule: "S11d",
+          file: at,
+          message: `« ${group.id} » (${group.label}) : traductions « ${language} » incomplètes (label${label ? "" : ", ageRange"}) — la page retomberait sur le français`,
+        });
+      }
+    }
+  }
+}
+
 function checkStructure(entries: LoadedEntry[], fix: boolean): LoadedEntry[] {
   const categories = new Set(loadCategories().map((c) => c.id));
   const languages = new Set(loadLanguages().map((l) => l.code));
@@ -1171,6 +1274,7 @@ async function main(): Promise<void> {
 
   checkSchemaDrift();
   checkGroups();
+  checkGroupNames(entries);
   checkStructure(entries, opts.fix);
   checkDuplicates(entries);
 

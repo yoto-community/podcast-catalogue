@@ -25,6 +25,11 @@ export type GroupId = PublishedEntry["groupId"];
 export interface GroupTranslation {
   label: string;
   ageRange: string;
+  /**
+   * Segment d'URL localisé (optionnel) : à défaut, le `slug` de la tranche sert
+   * dans toutes les langues. Sert aux locales à part (`en-gb` : `year-1`…).
+   */
+  slug?: string;
 }
 
 export interface GroupDef {
@@ -37,6 +42,10 @@ export interface GroupDef {
   ageMin: number;
   /** Dernier âge couvert (inclus), ou `null` = ouvert vers le haut (dernière tranche). */
   ageMax: number | null;
+  /** Segment d'URL (neutre, identique en toutes langues) — validé par `validate.ts` (S11). */
+  slug: string;
+  /** Anciens ids/segments : rétro-compatibilité de l'API + redirections du site. */
+  aliases?: string[];
   /** Traductions optionnelles, ex. `{ "en": { "label": "Toddlers", "ageRange": "2–5 years" } }`. */
   translations?: Record<string, GroupTranslation>;
 }
@@ -62,7 +71,7 @@ export interface TagDef {
 /** Entrée enrichie interne (source + métadonnées de chemin + compléments réseau). */
 export interface LoadedEntry {
   source: SourceEntry;
-  /** Fichier source relatif à la racine, ex. `entries/fr/tout-petits.json`. */
+  /** Fichier source relatif à la racine, ex. `entries/fr/age-2-5.json`. */
   file: string;
   /** 1-based dans le fichier (après tri) — pour les messages d'erreur. */
   line: number;
@@ -102,6 +111,10 @@ export interface Manifest {
     ageMin: number;
     /** Dernier âge couvert (inclus), `null` = ouvert (11 ans et plus). */
     ageMax: number | null;
+    /** Segment d'URL (neutre) — voir `groupSlug()`. */
+    slug: string;
+    /** Anciens ids/segments acceptés (API) et redirigés (site). */
+    aliases: string[];
     translations?: Record<string, GroupTranslation>;
   }>;
   languages: LanguageDef[];

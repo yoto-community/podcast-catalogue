@@ -82,6 +82,8 @@ jobs:
         run: |
           pnpm build
           pnpm build:episodes
+          # Index plein-texte servi à la page /search/ (site/public/)
+          pnpm build:search-index
 
       - name: Vérifier les artefacts (S8)
         run: pnpm validate:dist

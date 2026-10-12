@@ -202,6 +202,62 @@ export function groupAgeRange(group: ManifestGroup, language?: string): string {
   return group.ageRange;
 }
 
+/**
+ * Segment d'URL d'une tranche : le slug **neutre** (`age-2-5`) sert toutes les
+ * langues, sauf si la locale en définit un sien (`translations.<lang>.slug`).
+ * Ne jamais concaténer `group.id` à la main : c'est cette fonction qui décide
+ * du segment — l'id reste la clé de données.
+ */
+export function groupSlug(group: ManifestGroup, language?: string): string {
+  if (language) {
+    const translated = group.translations?.[language];
+    if (translated?.slug) return translated.slug;
+  }
+  return group.slug;
+}
+
+/** `/fr/age-2-5/` — chemin d'une tranche (à passer à `pageUrl()`). */
+export function groupPath(language: string, group: ManifestGroup): string {
+  return `/${language}/${groupSlug(group, language)}/`;
+}
+
+/** Groupe identifié par son id (clé de données `groupId`). */
+export function groupOfId(id: string): ManifestGroup | undefined {
+  return getGroups().find((candidate) => candidate.id === id);
+}
+
+/**
+ * Résout une valeur brute vers l'**id** d'une tranche : id actuel, segment
+ * d'URL (`slug`) ou ancien id (`aliases`). Sert au `?age=` rétrocompatible —
+ * un lien partagé avec l'ancien identifiant reste valable.
+ */
+export function groupIdOf(raw: string): string | undefined {
+  const needle = raw.trim().toLowerCase();
+  if (!needle) return undefined;
+  return getGroups().find(
+    (group) =>
+      group.id.toLowerCase() === needle ||
+      group.slug.toLowerCase() === needle ||
+      (group.aliases ?? []).some((alias) => alias.toLowerCase() === needle),
+  )?.id;
+}
+
+/** Segment d'URL d'un groupe identifié par son id (repli sur l'id si inconnu). */
+export function groupSlugOfId(id: string, language?: string): string {
+  const group = groupOfId(id);
+  return group ? groupSlug(group, language) : id;
+}
+
+/** `/fr/age-2-5/` — tranche d'une entrée, dans la langue de l'entrée. */
+export function entryGroupPath(entry: DistEntry): string {
+  return `/${entry.language}/${groupSlugOfId(entry.groupId, entry.language)}/`;
+}
+
+/** `/fr/age-2-5/animalite/` — chemin canonique d'une entrée. */
+export function entryPath(entry: DistEntry): string {
+  return `${entryGroupPath(entry)}${entry.slug}/`;
+}
+
 export function categoryLabel(id: string, language?: string): string {
   const category = readCategories().find((candidate) => candidate.id === id);
   if (!category) return id.charAt(0).toUpperCase() + id.slice(1);

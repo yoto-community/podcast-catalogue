@@ -71,15 +71,27 @@ export function parseIssueFields(body: string): Record<string, string> {
   return out;
 }
 
-/** Résout un id canonique depuis un id, un libellé fr ou un libellé en. */
+/**
+ * Résout un id canonique depuis un id, un slug d'URL, un ancien id (`aliases`),
+ * un libellé fr ou un libellé en — le formulaire d'issue n'a donc jamais besoin
+ * d'être mis à jour quand on renomme une tranche.
+ */
 export function resolveId<
-  T extends { id: string; label: string; translations?: Record<string, { label?: string }> },
+  T extends {
+    id: string;
+    label: string;
+    slug?: string;
+    aliases?: string[];
+    translations?: Record<string, { label?: string }>;
+  },
 >(raw: string, items: T[]): string | undefined {
   const needle = normalizeName(raw);
   for (const item of items) {
     const labels = [
       item.id,
+      item.slug ?? "",
       item.label,
+      ...(item.aliases ?? []),
       ...Object.values(item.translations ?? {}).map((t) => t?.label ?? ""),
     ];
     if (labels.some((label) => label && normalizeName(label) === needle)) return item.id;

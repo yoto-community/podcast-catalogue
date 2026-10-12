@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEntries, getEpisodes } from "../lib/catalog";
+import { entryPath, getEntries, getEpisodes } from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
 import { itemListJsonLd } from "../lib/seo";
 import { pageUrl } from "../lib/url";
@@ -15,7 +15,7 @@ const episodesWithMeta = entries.flatMap((entry) => {
   return episodes.episodes.map((ep) => ({
     ...ep,
     podcast: entry,
-    podcastUrl: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+    podcastUrl: entryPath(entry),
   }));
 });
 

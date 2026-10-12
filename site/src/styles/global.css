@@ -181,9 +181,10 @@ kbd {
   color: var(--accent);
 }
 
-.site-nav ul {
+.site-nav > ul {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.25rem;
 }
 
@@ -203,6 +204,87 @@ kbd {
   background: var(--accent-soft);
   color: var(--accent-strong);
   font-weight: 600;
+}
+
+/* menu déroulant « Communauté » */
+
+.site-nav__group {
+  position: relative;
+}
+
+.site-nav__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.site-nav__summary::-webkit-details-marker {
+  display: none;
+}
+
+.site-nav__summary:hover,
+.site-nav__group[open] > .site-nav__summary {
+  background: var(--surface-2);
+}
+
+.site-nav__group.is-active > .site-nav__summary {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.site-nav__caret {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.site-nav__group.is-active .site-nav__caret {
+  color: inherit;
+}
+
+.site-nav__group[open] > .site-nav__summary .site-nav__caret {
+  transform: rotate(180deg);
+}
+
+.site-nav__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 45;
+  min-width: max-content;
+  padding: 0.3rem;
+  display: grid;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.site-nav__panel a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+}
+
+.site-nav__panel-external {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.site-nav__external-mark {
+  color: var(--text-muted);
+  font-size: 0.85em;
 }
 
 /* ------------------------------------------------------------------ contenu */
@@ -1027,6 +1109,21 @@ main:focus {
 /* --------------------------------------------------------------- responsive */
 
 @media (max-width: 40rem) {
+  /* Le panneau s'aligne sur la barre de nav entière : ancré au déclencheur,
+     il déborderait hors de l'écran selon la position du « Communauté ». */
+  .site-nav > ul {
+    position: relative;
+  }
+
+  .site-nav__group {
+    position: static;
+  }
+
+  .site-nav__panel {
+    max-width: calc(100vw - 2rem);
+    box-shadow: none;
+  }
+
   .detail__header {
     grid-template-columns: 1fr;
   }

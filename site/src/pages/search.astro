@@ -1,8 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getGroups, groupAgeRange, groupLabel } from "../lib/catalog";
 
 const description =
   "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
+
+/**
+ * Tranches du catalogue : valeurs (`id`), segment d'URL (`slug`), anciens ids
+ * (`aliases`) et libellés lus dans `dist/index.json`. Rien n'est écrit en dur —
+ * ajouter une tranche ou une langue ne demande aucune modification ici.
+ */
+const groups = getGroups().map((group) => ({
+  id: group.id,
+  slug: group.slug,
+  aliases: group.aliases,
+  label: groupLabel(group, "fr"),
+  ageRange: groupAgeRange(group, "fr"),
+}));
 ---
 
 <BaseLayout title="Recherche dans les épisodes" description={description} path="/search/" lang="fr">
@@ -62,10 +76,11 @@ const description =
       </label>
       <select id="search-filter-age" aria-label="Filtrer par tranche d'âge">
         <option value="">Tous les âges</option>
-        <option value="tout-petits">Tout-petits (2–5 ans)</option>
-        <option value="maternelle-cp">Maternelle / CP (5–7 ans)</option>
-        <option value="primaire">Primaire (7–10 ans)</option>
-        <option value="college-plus">Collège & + (11+ ans)</option>
+        {groups.map((group) => (
+          <option value={group.id}>
+            {group.label} ({group.ageRange})
+          </option>
+        ))}
       </select>
 
       <button type="button" id="search-filter-reset" class="btn btn--ghost btn--sm" hidden>
@@ -297,9 +312,15 @@ const description =
     }
   </style>
 
+  <!-- Tranches du catalogue (id, slug d'URL, anciens ids, libellés) : source unique côté client -->
+  <script type="application/json" id="search-groups" set:html={JSON.stringify(groups)} />
+  <!-- Script traité par Astro (TS compilé) — un `is:inline` laisserait tel quel le TypeScript, invalide en JS -->
   <script>
+    import { pageUrl } from "../lib/url";
+
     // Configuration
-    const INDEX_URL = "/search-index.json";
+    // `pageUrl` préfixe le `base` Astro : GitHub Pages publie sous `/nom-du-dépôt/`.
+    const INDEX_URL = pageUrl("/search-index.json");
     const DEBOUNCE_MS = 80;
 
     // État
@@ -317,14 +338,35 @@ const description =
     const ageFilter = document.getElementById("search-filter-age") as HTMLSelectElement;
     const resetButton = document.getElementById("search-filter-reset") as HTMLButtonElement;
     const template = document.getElementById("search-result-template") as HTMLTemplateElement;
+    /** Tranches du catalogue, injectées au build depuis `dist/index.json`. */
+    const groupsData = JSON.parse(
+      document.getElementById("search-groups")?.textContent ?? "[]",
+    ) as SearchGroup[];
+
+    /** Une tranche par son id, son slug d'URL ou un ancien id (`?age=` partagé). */
+    function findGroup(value: string): SearchGroup | undefined {
+      if (!value) return undefined;
+      return groupsData.find(
+        (group) => group.id === value || group.slug === value || group.aliases.includes(value),
+      );
+    }
 
     // Types
+    interface SearchGroup {
+      id: string;
+      slug: string;
+      aliases: string[];
+      label: string;
+      ageRange: string;
+    }
+
     interface SearchIndexEntry {
       id: string;
       podcastSlug: string;
       podcastName: string;
       language: string;
       groupId: string;
+      groupSlug?: string;
       category: string;
       title: string;
       description: string;
@@ -389,13 +431,7 @@ const description =
     }
 
     function getAgeLabel(groupId: string): string {
-      const labels: Record<string, string> = {
-        "tout-petits": "2–5 ans",
-        "maternelle-cp": "5–7 ans",
-        primaire: "7–10 ans",
-        "college-plus": "11+ ans",
-      };
-      return labels[groupId] ?? groupId;
+      return findGroup(groupId)?.ageRange ?? groupId;
     }
 
     function getCategoryLabel(category: string, language: string): string {
@@ -525,7 +561,9 @@ const description =
         playBtn.dataset.episode = ep.id;
 
         const podcastLink = clone.querySelector("[data-podcast-link]") as HTMLAnchorElement;
-        podcastLink.href = `/${ep.language}/${ep.groupId}/${ep.podcastSlug}/`;
+        // Segment d'URL de la tranche : slug localisé de l'index, sinon celui du catalogue.
+        const segment = ep.groupSlug || findGroup(ep.groupId)?.slug || ep.groupId;
+        podcastLink.href = `/${ep.language}/${segment}/${ep.podcastSlug}/`;
 
         fragment.appendChild(clone);
       }
@@ -594,7 +632,9 @@ const description =
       if (params.get("q")) queryInput.value = params.get("q")!;
       if (params.get("lang")) languageFilter.value = params.get("lang")!;
       if (params.get("cat")) categoryFilter.value = params.get("cat")!;
-      if (params.get("age")) ageFilter.value = params.get("age")!;
+      // `?age=` accepte un id, un slug ou un ancien id (lien partagé avant renommage)
+      const age = params.get("age");
+      if (age) ageFilter.value = findGroup(age)?.id ?? "";
     }
 
     // Debounced URL sync

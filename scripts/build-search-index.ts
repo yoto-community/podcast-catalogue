@@ -1,15 +1,18 @@
 /**
- * `dist/search-index.json` — index de recherche full-text sur les épisodes.
+ * `site/public/search-index.json` — index de recherche full-text sur les épisodes.
  *
- * Généré à la construction (après build:episodes), chargé côté client pour
- * recherche instantanée sans backend. ~2000 épisodes = ~200 Ko JSON gzip.
+ * Généré à la construction (après build:episodes), servi par le site comme un
+ * asset statique et chargé côté client pour recherche instantanée sans backend.
+ * Écrit dans `site/public/` (et non `dist/`) : c'est le seul répertoire qu'Astro
+ * publie — sans cela, `/search-index.json` répond 404 en prod.
+ * ~2000 épisodes = ~200 Ko JSON gzip.
  *
  * Usage : pnpm build:search-index
  */
 import fs from "node:fs";
 import path from "node:path";
 import { paths, SCHEMA_VERSION } from "./lib/config.ts";
-import { loadEntries } from "./lib/catalog.ts";
+import { loadEntries, loadGroups } from "./lib/catalog.ts";
 import { catalogVersion, gitInfo } from "./lib/version.ts";
 import { writeJson } from "./lib/io.ts";
 import type { DistEpisode, DistEpisodesFile } from "./lib/types.ts";
@@ -25,6 +28,8 @@ interface SearchIndexEntry {
   language: string;
   /** Tranche d'âge */
   groupId: string;
+  /** Segment d'URL de la tranche dans la langue du podcast (`age-2-5`) */
+  groupSlug: string;
   /** Catégorie */
   category: string;
   /** Titre de l'épisode */
@@ -141,6 +146,14 @@ async function main(): Promise<void> {
 
   console.log(`🔍 Construction de l'index de recherche — ${entries.length} podcasts`);
 
+  const groups = loadGroups();
+  /** Segment d'URL de la tranche dans la langue du podcast (slug localisé si présent). */
+  const groupSlugOf = (groupId: string, language: string): string => {
+    const group = groups.find((candidate) => candidate.id === groupId);
+    if (!group) return groupId;
+    return group.translations?.[language]?.slug ?? group.slug;
+  };
+
   const allEpisodes: SearchIndexEntry[] = [];
   let processed = 0;
   let skipped = 0;
@@ -169,6 +182,7 @@ async function main(): Promise<void> {
           podcastName: entry.source.name,
           language: entry.language,
           groupId: entry.groupId,
+          groupSlug: groupSlugOf(entry.groupId, entry.language),
           category: entry.source.category,
           title: ep.title ?? "",
           description: ep.description ?? "",
@@ -199,7 +213,7 @@ async function main(): Promise<void> {
     episodes: allEpisodes,
   };
 
-  const outFile = path.join(paths.dist, "search-index.json");
+  const outFile = path.join(paths.sitePublic, "search-index.json");
   writeJson(outFile, index);
 
   const sizeKb = (fs.statSync(outFile).size / 1024).toFixed(1);
