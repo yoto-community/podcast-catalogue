@@ -84,8 +84,8 @@ async function processEntry(entry: LoadedEntry, opts: Options): Promise<"ok" | "
       offline: !opts.network,
     });
     const parsed = parseFeed(feed.xml);
-    const itemsWithAudio = parsed.items.filter(
-      (item): item is ParsedItem & { audioUrl: string } => Boolean(item.audioUrl),
+    const itemsWithAudio = parsed.items.filter((item): item is ParsedItem & { audioUrl: string } =>
+      Boolean(item.audioUrl),
     );
     const totalCount = itemsWithAudio.length;
     const episodes = itemsWithAudio
