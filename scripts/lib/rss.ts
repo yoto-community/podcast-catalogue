@@ -279,6 +279,10 @@ function parseRssChannel(channel: Record<string, unknown>): ParsedFeed {
     .map((c) => text(c))
     .filter((c): c is string => Boolean(c));
 
+  // itunes:owner/itunes:name pour l'organisation propriétaire
+  const owner = channel["itunes:owner"] as Record<string, unknown> | undefined;
+  const ownerName = text(owner?.["itunes:name"]);
+
   return {
     title: text(channel["title"]),
     description: text(channel["description"]) ?? text(channel["itunes:summary"]),
@@ -289,10 +293,15 @@ function parseRssChannel(channel: Record<string, unknown>): ParsedFeed {
       text(image?.["url"]) ??
       text(channel["image"]) ??
       undefined,
+    // author : pour publisher (éditeur) — fallback managingEditor/webMaster
     author:
       text(channel["itunes:author"]) ??
       text(channel["managingEditor"]) ??
       text(channel["webMaster"]),
+    // podcastAuthor : pour author (animateur/créateur) — itunes:author uniquement
+    podcastAuthor: text(channel["itunes:author"]),
+    // owner : organisation propriétaire (itunes:owner/itunes:name)
+    owner: ownerName,
     categories,
     selfUrl,
     lastBuildDate: parseDate(text(channel["lastBuildDate"])),
@@ -341,15 +350,18 @@ function parseAtom(feed: Record<string, unknown>): ParsedFeed {
     (l) => (attr(l, "rel") ?? "self") === "self",
   );
 
+  const atomAuthor =
+    text((feed["author"] as Record<string, unknown> | undefined)?.["name"]) ?? text(feed["author"]);
+
   return {
     title: text(feed["title"]),
     description: text(feed["subtitle"]) ?? text(feed["tagline"]),
     link: atomLink("alternate") ?? text(feed["link"]),
     language: text(feed["language"]) ?? attr(feed, "xml:lang"),
     imageUrl: text(feed["logo"]) ?? text(feed["icon"]) ?? attr(feed["image"], "href"),
-    author:
-      text((feed["author"] as Record<string, unknown> | undefined)?.["name"]) ??
-      text(feed["author"]),
+    author: atomAuthor,
+    podcastAuthor: atomAuthor,
+    owner: undefined,
     categories: toArr<Record<string, unknown>>(feed["category"])
       .map((c) => attr(c, "term"))
       .filter((c): c is string => Boolean(c)),

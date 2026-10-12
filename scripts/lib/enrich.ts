@@ -17,6 +17,7 @@ import type { SourceEntry } from "./types.ts";
 export interface FeedFill {
   imageUrl?: string;
   publisher?: string;
+  author?: string;
   description?: string;
   websiteUrl?: string;
 }
@@ -26,7 +27,10 @@ export interface FeedFill {
  * déclarent `<link>http://…`) est ignorée : le schéma n'accepte que https.
  */
 export async function enrichFromFeed(
-  entry: Pick<SourceEntry, "rssUrl" | "imageUrl" | "publisher" | "description" | "websiteUrl">,
+  entry: Pick<
+    SourceEntry,
+    "rssUrl" | "imageUrl" | "publisher" | "author" | "description" | "websiteUrl"
+  >,
   opts: { refresh?: boolean } = {},
 ): Promise<FeedFill> {
   const feed = await fetchFeed(entry.rssUrl, { cacheDir: paths.cache, refresh: opts.refresh });
@@ -38,6 +42,9 @@ export async function enrichFromFeed(
   }
   if (!entry.publisher && parsed.author) {
     fill.publisher = truncate(parsed.author, LIMITS.publisher);
+  }
+  if (!entry.author && parsed.podcastAuthor) {
+    fill.author = truncate(parsed.podcastAuthor, LIMITS.publisher);
   }
   if (!entry.description && parsed.description) {
     const description = stripHtml(parsed.description).trim();

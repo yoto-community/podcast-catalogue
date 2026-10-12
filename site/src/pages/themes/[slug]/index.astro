@@ -1,7 +1,16 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
-import { entriesOfTag, entryPath, getTags, tagLabel } from "../../../lib/catalog";
+import {
+  authorOptions,
+  categoryOptions,
+  entriesOfTag,
+  entryPath,
+  getTags,
+  groupOptions,
+  languageOptions,
+  tagLabel,
+} from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
@@ -58,9 +67,10 @@ const description = `${plural(entries.length, "podcast")} sur le thème « ${lab
     title={label}
     intro={`${plural(entries.length, "podcast")} taggués « ${label} ».`}
     entries={entries}
-    languages={[]}
-    groups={[]}
-    categories={[]}
+    languages={languageOptions(entries)}
+    groups={groupOptions(entries)}
+    categories={categoryOptions(entries)}
+    authors={authorOptions(entries)}
     preset={{}}
     nav={{
       label: "Tous les thèmes",

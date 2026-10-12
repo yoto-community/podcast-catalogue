@@ -750,6 +750,25 @@ main:focus {
   margin: 0;
 }
 
+.card__author {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.card__author a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.card__author a:hover {
+  border-color: var(--accent);
+}
+
 .badges {
   display: flex;
   flex-wrap: wrap;
@@ -826,6 +845,24 @@ main:focus {
 .detail__publisher {
   font-weight: 600;
   color: var(--text-muted);
+}
+
+.detail__author {
+  font-size: 1rem;
+  color: var(--accent);
+  font-style: italic;
+  margin: 0.25rem 0 0;
+}
+
+.detail__author a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.detail__author a:hover {
+  border-color: var(--accent);
 }
 
 .detail__links {

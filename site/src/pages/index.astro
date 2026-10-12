@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CatalogBrowser from "../components/CatalogBrowser.astro";
 import {
+  authorOptions,
   categoryOptions,
   entriesOfLanguage,
   entryPath,
@@ -94,6 +95,7 @@ const description = `${plural(manifest.counts.total, "podcast")} pour enfants â€
     languages={languageOptions(entries)}
     groups={groupOptions(entries)}
     categories={categoryOptions(entries)}
+    authors={authorOptions(entries)}
     nav={{ label: "Langues", items: languageNav }}
   />
 </BaseLayout>

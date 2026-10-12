@@ -22,7 +22,7 @@ import type {
 import { normalizeText } from "./text";
 import { ageChoices, coversAge } from "./ages";
 import type { AgeChoice } from "./ages";
-import { slugifyPublisher } from "./url";
+import { slugifyAuthor, slugifyPublisher } from "./url";
 
 const MISSING_DIST_MESSAGE = [
   "Données du catalogue introuvable : aucun `dist/index.json` valide.",
@@ -381,6 +381,21 @@ export function categoryOptions(entries: DistEntry[], language?: string): Filter
     .sort((a, b) => a.label.localeCompare(b.label, "fr", { sensitivity: "base" }));
 }
 
+export function authorOptions(entries: DistEntry[]): FilterOption[] {
+  const entriesWithAuthor = entries.filter((e) => e.author !== "Inconnu");
+  const byAuthor = new Map<string, number>();
+  for (const entry of entriesWithAuthor) {
+    byAuthor.set(entry.author, (byAuthor.get(entry.author) ?? 0) + 1);
+  }
+  return [...byAuthor.entries()]
+    .map(([name, count]) => ({
+      value: slugifyAuthor(name),
+      label: name,
+      count,
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "fr"));
+}
+
 /* ------------------------------------------------------------------ épisodes */
 
 let episodesDirCache: boolean | undefined;
@@ -431,4 +446,25 @@ export function getPublishers(): Array<{ name: string; slug: string; count: numb
 
 export function entriesOfPublisher(publisherSlug: string): DistEntry[] {
   return getEntries().filter((entry) => slugifyPublisher(entry.publisher) === publisherSlug);
+}
+
+/* ------------------------------------------------------------------ auteurs */
+
+export function getAuthors(): Array<{ name: string; slug: string; count: number }> {
+  const entries = getEntries();
+  const byAuthor = new Map<string, number>();
+  for (const entry of entries) {
+    if (entry.author !== "Inconnu") {
+      byAuthor.set(entry.author, (byAuthor.get(entry.author) ?? 0) + 1);
+    }
+  }
+  return [...byAuthor.entries()]
+    .map(([name, count]) => ({ name, slug: slugifyAuthor(name), count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"));
+}
+
+export function entriesOfAuthor(authorSlug: string): DistEntry[] {
+  return getEntries().filter(
+    (entry) => entry.author !== "Inconnu" && slugifyAuthor(entry.author) === authorSlug,
+  );
 }

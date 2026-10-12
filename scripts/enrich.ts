@@ -1,6 +1,6 @@
 /**
  * Complète `entries/` depuis les flux RSS : `description`, `publisher`, `imageUrl`,
- * `websiteUrl` — uniquement les champs **absents** (la source gagne toujours).
+ * `websiteUrl`, `author` — uniquement les champs **absents** (la source gagne toujours).
  *
  * Sélection (obligatoire, pour éviter une réécriture accidentelle du dépôt entier) :
  *   --new            entrées absentes de `HEAD` (une contribution non commitée)
@@ -21,7 +21,7 @@ import { slugify } from "./lib/norm.ts";
 import { urlProblem } from "./lib/url.ts";
 import type { SourceEntry } from "./lib/types.ts";
 
-const FILLABLE = ["description", "publisher", "imageUrl", "websiteUrl"] as const;
+const FILLABLE = ["description", "publisher", "imageUrl", "websiteUrl", "author"] as const;
 type FillableField = (typeof FILLABLE)[number];
 
 interface Options {

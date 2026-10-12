@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../../components/CatalogBrowser.astro";
+import {
+  entriesOfAuthor,
+  getAuthors,
+  authorOptions,
+  categoryOptions,
+  groupOptions,
+  languageOptions,
+} from "../../../lib/catalog";
+import { plural } from "../../../lib/format";
+import { itemListJsonLd } from "../../../lib/seo";
+import { pageUrl } from "../../../lib/url";
+import type { StaticPath } from "../../../lib/types";
+
+export function getStaticPaths(): Array<StaticPath<AuthorProps>> {
+  return getAuthors()
+    .filter((a) => entriesOfAuthor(a.slug).length > 0)
+    .map((author) => ({
+      params: { slug: author.slug },
+      props: { author },
+    }));
+}
+
+interface AuthorProps {
+  author: { name: string; slug: string; count: number };
+}
+
+interface Props extends AuthorProps {}
+
+const { author } = Astro.props;
+const entries = entriesOfAuthor(author.slug);
+const path = `/auteurs/${author.slug}/`;
+
+const jsonLd = itemListJsonLd(
+  `Podcasts — ${author.name}`,
+  entries.map((entry) => ({
+    name: entry.name,
+    path: pageUrl(`/fr/${entry.groupId}/${entry.slug}/`),
+  })),
+  Astro.site,
+);
+
+const title = `${author.name} — podcasts`;
+const description = `${plural(entries.length, "podcast")} de l'auteur / animateur « ${author.name} » — écoute directe, description et lien vers le site.`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <nav class="breadcrumb" aria-label="Fil d'ariane">
+    <ol>
+      <li>
+        <a href={pageUrl("/")}>Catalogue</a>
+      </li>
+      <li>
+        <a href={pageUrl("/auteurs/")}>Auteurs</a>
+      </li>
+      <li>
+        <span aria-current="page">{author.name}</span>
+      </li>
+    </ol>
+  </nav>
+  <CatalogBrowser
+    title={author.name}
+    intro={`${plural(entries.length, "podcast")} créés / animés par « ${author.name} ».`}
+    entries={entries}
+    languages={languageOptions(entries)}
+    groups={groupOptions(entries)}
+    categories={categoryOptions(entries)}
+    authors={authorOptions(entries)}
+    preset={{}}
+    nav={{
+      label: "Tous les auteurs",
+      items: [
+        {
+          href: pageUrl("/auteurs/"),
+          label: "Tous les auteurs",
+          count: getAuthors().length,
+          active: false,
+        },
+      ],
+    }}
+  />
+</BaseLayout>

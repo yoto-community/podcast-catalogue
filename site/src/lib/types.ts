@@ -69,6 +69,7 @@ export interface DistEntry {
   category: string;
   tags: string[];
   publisher: string;
+  author: string;
   rssUrl: string;
   /** Peut manquer sur un build `--allow-incomplete` : le site affiche un placeholder. */
   imageUrl?: string;

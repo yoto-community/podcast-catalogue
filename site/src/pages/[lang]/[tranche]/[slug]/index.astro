@@ -13,6 +13,7 @@ import {
   groupPath,
   groupSlugOfId,
 } from "../../../../lib/catalog";
+import { slugifyAuthor } from "../../../../lib/url";
 import { truncate } from "../../../../lib/format";
 import { podcastSeriesJsonLd } from "../../../../lib/seo";
 import { pageUrl } from "../../../../lib/url";
@@ -42,6 +43,7 @@ const group = getGroups().find((candidate) => candidate.id === full.groupId);
 const external = externalUrl(full);
 const image = full.imageUrl;
 const path = entryPath(full);
+const authorSlug = full.author !== "Inconnu" ? slugifyAuthor(full.author) : "";
 const description =
   truncate(full.description, 160) ??
   `${full.name} — podcast en ${full.language}, éditeur ${full.publisher}.`;
@@ -98,6 +100,11 @@ const jsonLd = podcastSeriesJsonLd(full, {
       <div class="detail__headline">
         <h1>{full.name}</h1>
         <p class="detail__publisher">{full.publisher}</p>
+        {full.author !== "Inconnu" && (
+          <p class="detail__author">
+            <a href={pageUrl(`/auteurs/${authorSlug}/`)}>{full.author}</a>
+          </p>
+        )}
         <ul class="badges" aria-label="Caractéristiques du podcast">
           <li class="badge">{full.language === "fr" ? "Français" : "English"}</li>
           {group && <li class="badge">{group.label}</li>}

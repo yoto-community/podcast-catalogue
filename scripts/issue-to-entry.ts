@@ -3,7 +3,7 @@
  *
  * Lit le corps de l'issue (env `ISSUE_BODY`), contrôle les champs obligatoires (nom, flux https,
  * catégorie, langue, tranche), détecte les doublons, complète l'entrée depuis le flux RSS
- * (`description`, `publisher`, `imageUrl`, `websiteUrl` — `--no-network` pour sauter) et propose
+ * (`description`, `publisher`, `imageUrl`, `websiteUrl`, `author` — `--no-network` pour sauter) et propose
  * des `tags`, puis écrit l'entrée **triée** dans le fichier dérivé. La CI revalide ensuite le
  * résultat comme n'importe quelle contribution (`pnpm validate:changed`).
  *
@@ -180,7 +180,7 @@ async function main(): Promise<void> {
       Object.assign(entry, fill);
     } catch (err) {
       console.warn(
-        `⚠️ auto-complétion impossible (${err instanceof Error ? err.message : String(err)}) — entrée créée sans description/site.`,
+        `⚠️ auto-complétion impossible (${err instanceof Error ? err.message : String(err)}) — entrée créée sans description/site/auteur.`,
       );
     }
   }

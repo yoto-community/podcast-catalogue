@@ -1,7 +1,15 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
-import { entriesOfPublisher, entryPath, getPublishers } from "../../../lib/catalog";
+import {
+  entriesOfPublisher,
+  entryPath,
+  getPublishers,
+  authorOptions,
+  categoryOptions,
+  groupOptions,
+  languageOptions,
+} from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
@@ -57,9 +65,10 @@ const description = `${plural(entries.length, "podcast")} de l'éditeur « ${pub
     title={publisher.name}
     intro={`${plural(entries.length, "podcast")} publiés par « ${publisher.name} ».`}
     entries={entries}
-    languages={[]}
-    groups={[]}
-    categories={[]}
+    languages={languageOptions(entries)}
+    groups={groupOptions(entries)}
+    categories={categoryOptions(entries)}
+    authors={authorOptions(entries)}
     preset={{}}
     nav={{
       label: "Tous les éditeurs",

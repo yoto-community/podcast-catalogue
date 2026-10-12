@@ -7,7 +7,7 @@
  *     (une langue entière sous le seuil produit un seul fichier, ex. `en.json`).
  *
  * Auto-complétion (sauf `--no-network`) : `imageUrl`, `publisher`, `description`,
- * `websiteUrl` sont complétés depuis le flux quand le contributeur les a laissés vides.
+ * `websiteUrl`, `author` sont complétés depuis le flux quand le contributeur les a laissés vides.
  * La source gagne toujours : rien n'est écrasé.
  *
  * Usage : pnpm build [--no-network] [--allow-incomplete] [--refresh]
@@ -85,7 +85,11 @@ async function enrich(
 
   const missing = entries.filter(
     (e) =>
-      !e.source.imageUrl || !e.source.publisher || !e.source.description || !e.source.websiteUrl,
+      !e.source.imageUrl ||
+      !e.source.publisher ||
+      !e.source.description ||
+      !e.source.websiteUrl ||
+      !e.source.author,
   );
 
   await mapConcurrent(missing, CONCURRENCY, async (entry) => {
@@ -145,9 +149,10 @@ async function main(): Promise<void> {
 
   // Assemblage des entrées publiées (imageUrl/description peuvent être absents
   // uniquement avec --allow-incomplete ; S8 les exige dans un dist publiable).
-  type BuiltEntry = Omit<DistEntry, "imageUrl" | "description"> & {
+  type BuiltEntry = Omit<DistEntry, "imageUrl" | "description" | "author"> & {
     imageUrl?: string;
     description?: string;
+    author?: string;
   };
   const distEntries: BuiltEntry[] = entries.map((entry) => {
     const src: SourceEntry = entry.source;
@@ -158,6 +163,7 @@ async function main(): Promise<void> {
     const imageUrl = src.imageUrl ?? fill.imageUrl;
     const description = src.description ?? fill.description;
     const publisher = src.publisher ?? fill.publisher ?? "Indépendant";
+    const author = src.author ?? fill.author ?? "Inconnu";
 
     if (!src.publisher && !fill.publisher) {
       findings.push({
@@ -166,6 +172,15 @@ async function main(): Promise<void> {
         entry: src.name,
         file: entry.file,
         message: "aucun éditeur dans le flux → défaut « Indépendant »",
+      });
+    }
+    if (!src.author && !fill.author) {
+      findings.push({
+        severity: "warning",
+        rule: "AUTHOR",
+        entry: src.name,
+        file: entry.file,
+        message: "aucun auteur dans le flux → défaut « Inconnu »",
       });
     }
     for (const [field, value] of [
@@ -192,6 +207,7 @@ async function main(): Promise<void> {
       category: src.category,
       tags: src.tags ?? [],
       publisher,
+      author,
       rssUrl: src.rssUrl,
       ...(imageUrl ? { imageUrl } : {}),
       ...((src.websiteUrl ?? fill.websiteUrl)

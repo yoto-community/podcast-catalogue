@@ -21,7 +21,13 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 120,
-      "description": "Éditeur / production. Auto-complété depuis `itunes:author` au build s’il est absent (défaut : « Indépendant »)."
+      "description": "Éditeur / production. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Indépendant »)."
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Auteur / animateur principal. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Inconnu »)."
     },
     "category": {
       "type": "string",
@@ -86,7 +92,7 @@
     "websiteUrl": {
       "type": "string",
       "pattern": "^https://",
-      "description": "URL https du site de l’éditeur (auto-complétée depuis `<link>` du canal si absente)."
+      "description": "URL https du site de l'éditeur (auto-complétée depuis `<link>` du canal si absente)."
     }
   }
 }

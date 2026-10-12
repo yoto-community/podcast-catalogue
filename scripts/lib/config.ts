@@ -62,6 +62,7 @@ export const REQUIRED_SOURCE_FIELDS = ["name", "category", "rssUrl"] as const;
 
 export const OPTIONAL_SOURCE_FIELDS = [
   "publisher",
+  "author",
   "description",
   "imageUrl",
   "websiteUrl",

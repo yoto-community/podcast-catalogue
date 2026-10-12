@@ -602,6 +602,7 @@ interface CatalogRuntime {
   /** Cases à cocher « âge » (`data-age`), multi-sélection. */
   ages: HTMLInputElement[];
   category?: HTMLSelectElement;
+  author?: HTMLSelectElement;
   sortButtons: HTMLButtonElement[];
 }
 
@@ -621,6 +622,7 @@ function readCatalog(root: HTMLElement): CatalogRuntime | null {
     language: qs<HTMLSelectElement>('[data-filter="language"]', root) ?? undefined,
     ages: qsa<HTMLInputElement>("[data-age]", root),
     category: qs<HTMLSelectElement>('[data-filter="category"]', root) ?? undefined,
+    author: qs<HTMLSelectElement>('[data-filter="author"]', root) ?? undefined,
     sortButtons: qsa<HTMLButtonElement>("[data-sort]", root),
   };
 }
@@ -652,6 +654,14 @@ function syncAgesUrl(selected: Set<number>): void {
   history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+/** Écrit (ou retire, si vide) `?author=` — l'état du filtre devient partageable. */
+function syncAuthorUrl(author: string): void {
+  const url = new URL(location.href);
+  if (author) url.searchParams.set("author", author);
+  else url.searchParams.delete("author");
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
 /**
  * Union des âges cochés — logique pure dans `lib/ages.ts` (`matchesAnyAge`) :
  * sans âge coché, le filtre est inactif.
@@ -660,6 +670,7 @@ function applyFilters(runtime: CatalogRuntime): void {
   const query = normalizeText(runtime.search.value);
   const language = runtime.language?.value ?? "";
   const category = runtime.category?.value ?? "";
+  const author = runtime.author?.value ?? "";
   const ages = selectedAges(runtime);
   let visible = 0;
   for (const item of runtime.items) {
@@ -667,6 +678,7 @@ function applyFilters(runtime: CatalogRuntime): void {
     const matches =
       (!language || data.language === language) &&
       (!category || data.category === category) &&
+      (!author || data.author === author) &&
       matchesAnyAge(data.ages, ages) &&
       (!query || (data.search ?? "").includes(query));
     item.hidden = !matches;
@@ -746,6 +758,10 @@ function bindCatalog(root: HTMLElement): void {
   for (const select of [runtime.language, runtime.category]) {
     select?.addEventListener("change", () => applyFilters(runtime));
   }
+  runtime.author?.addEventListener("change", () => {
+    applyFilters(runtime);
+    syncAuthorUrl(runtime.author?.value ?? "");
+  });
 
   for (const box of runtime.ages) {
     box.addEventListener("change", () => {
@@ -764,6 +780,7 @@ function bindCatalog(root: HTMLElement): void {
       if (runtime.language) runtime.language.value = "";
       for (const box of runtime.ages) box.checked = false;
       if (runtime.category) runtime.category.value = "";
+      if (runtime.author) runtime.author.value = "";
       sortList(runtime, "name");
       applyFilters(runtime);
       syncSearchUrl("");
@@ -780,13 +797,20 @@ function applyUrlState(): void {
   const search = qs<HTMLInputElement>("[data-search]");
   const query = params.get("q");
   const ages = parseAges(params.get("ages"));
-  if (search && (query || ages.length > 0)) {
+  const author = params.get("author");
+  if (search && (query || ages.length > 0 || author)) {
     if (query) search.value = query;
     const root = search.closest<HTMLElement>("[data-catalog]");
-    if (root && ages.length > 0) {
-      const wanted = new Set(ages);
-      for (const box of qsa<HTMLInputElement>("[data-age]", root)) {
-        box.checked = wanted.has(Number(box.value));
+    if (root) {
+      if (ages.length > 0) {
+        const wanted = new Set(ages);
+        for (const box of qsa<HTMLInputElement>("[data-age]", root)) {
+          box.checked = wanted.has(Number(box.value));
+        }
+      }
+      if (author) {
+        const authorSelect = qs<HTMLSelectElement>('[data-filter="author"]', root);
+        if (authorSelect) authorSelect.value = author;
       }
     }
     const runtime = root ? readCatalog(root) : null;

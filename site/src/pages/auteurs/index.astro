@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getEntries, getAuthors } from "../../lib/catalog";
+import { pageUrl } from "../../lib/url";
+import { plural } from "../../lib/format";
+
+const entries = getEntries();
+const authors = getAuthors();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Auteurs",
+  description: "Tous les auteurs / animateurs du catalogue de podcasts pour enfants",
+};
+
+const title = "Auteurs — Catalogue de podcasts";
+const description = `${authors.length} auteurs / animateurs — ${plural(entries.length, "podcast")} classés par créateur.`;
+const path = "/auteurs/";
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <section class="catalog" data-catalog aria-labelledby="titre-page">
+    <header class="catalog__header">
+      <h1 id="titre-page">Auteurs / animateurs</h1>
+      <p class="catalog__intro">
+        Découvrez les podcasts par auteur, animateur ou créateur principal.
+      </p>
+      <p class="catalog__count" role="status">
+        {authors.length} auteurs · {plural(entries.length, "podcast")}
+      </p>
+    </header>
+
+    <ul class="grid authors-grid">
+      {authors.map((author) => (
+        <li class="author-card">
+          <a class="author-card__link" href={pageUrl(`/auteurs/${author.slug}/`)}>
+            <span class="author-card__name">{author.name}</span>
+            <span class="author-card__count">
+              {author.count} podcast{author.count > 1 ? "s" : ""}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <style>
+    .authors-grid {
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    }
+    .author-card {
+      display: flex;
+    }
+    .author-card__link {
+      display: block;
+      width: 100%;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: inherit;
+      transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
+    }
+    .author-card__link:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+    .author-card__name {
+      display: block;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+    .author-card__count {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

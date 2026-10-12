@@ -2,6 +2,7 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
 import {
+  authorOptions,
   categoryOptions,
   entriesOf,
   entriesOfLanguage,
@@ -12,6 +13,7 @@ import {
   groupLabel,
   groupPath,
   groupSlug,
+  languageOptions,
 } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { agesOfGroup, formatAges } from "../../../lib/ages";
@@ -81,7 +83,7 @@ const jsonLd = itemListJsonLd(
 );
 
 const title = `${label} (${ageRange}) — podcasts en ${language.code === "fr" ? "français" : "anglais"}`;
-const description = `${plural(entries.length, "podcast")} pour la tranche ${label} (${ageRange}), avec écoute directe et lien vers le site de l’éditeur.`;
+const description = `${plural(entries.length, "podcast")} pour la tranche ${label} (${ageRange}), avec écoute directe et lien vers le site de l'éditeur.`;
 ---
 
 <BaseLayout
@@ -95,9 +97,10 @@ const description = `${plural(entries.length, "podcast")} pour la tranche ${labe
     title={label}
     intro={`${plural(entries.length, "podcast")} pour la tranche « ${label} » — ${ageRange}${agesPart}.${sharedSentence}`}
     entries={entries}
-    languages={[]}
+    languages={languageOptions(entries)}
     groups={[]}
     categories={categoryOptions(entries, language.code)}
+    authors={authorOptions(entries)}
     preset={{ language: language.code, group: group.id }}
     nav={{
       label: "Toutes les tranches",

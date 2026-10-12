@@ -525,6 +525,16 @@ function checkStructure(entries: LoadedEntry[], fix: boolean): LoadedEntry[] {
         message: `publisher : ${publisher.length} caractères (> ${LIMITS.publisher})`,
       });
     }
+    const author = typeof src["author"] === "string" ? src["author"] : "";
+    if (author.length > LIMITS.publisher) {
+      add({
+        severity: "error",
+        rule: "S5",
+        file: at,
+        entry: name,
+        message: `author : ${author.length} caractères (> ${LIMITS.publisher})`,
+      });
+    }
     const tags = Array.isArray(src["tags"]) ? src["tags"] : [];
     if (tags.length > LIMITS.tags) {
       add({

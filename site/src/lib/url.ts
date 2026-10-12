@@ -27,3 +27,14 @@ export function slugifyPublisher(name: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/** Slug stable pour auteur : `Myriam de Beaurepaire` → `myriam-de-beaurepaire`. */
+export function slugifyAuthor(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}

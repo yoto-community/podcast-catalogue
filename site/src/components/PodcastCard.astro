@@ -3,6 +3,7 @@ import { categoryLabel, entryPath, getGroups, languageLabel } from "../lib/catal
 import { agesOfGroup, formatAges } from "../lib/ages";
 import { searchIndex, normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
+import { slugifyAuthor } from "../lib/url";
 import FavoriteButton from "./FavoriteButton.astro";
 import type { DistEntry } from "../lib/types";
 
@@ -23,11 +24,13 @@ const agesText = formatAges(ages);
 const searchText = searchIndex(
   entry.name,
   entry.publisher,
+  entry.author,
   entry.description,
   categoryLabel(entry.category, entry.language),
 );
 const sortName = normalizeText(entry.name);
 const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.language))} ${sortName}`;
+const authorSlug = entry.author !== "Inconnu" ? slugifyAuthor(entry.author) : "";
 ---
 
 <li
@@ -37,6 +40,7 @@ const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.langua
   data-group={entry.groupId}
   data-ages={ages.join(",")}
   data-category={entry.category}
+  data-author={authorSlug}
   data-search={searchText}
   data-sort-name={sortName}
   data-sort-category={sortCategory}
@@ -55,6 +59,11 @@ const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.langua
       <h2 class="card__title">{entry.name}</h2>
     </a>
     <p class="card__publisher">{entry.publisher}</p>
+    {entry.author !== "Inconnu" && (
+      <p class="card__author">
+        <a href={pageUrl(`/auteurs/${slugifyAuthor(entry.author)}/`)}>{entry.author}</a>
+      </p>
+    )}
     <ul class="badges" aria-label={`Caractéristiques de ${entry.name}`}>
       <li class="badge">{languageLabel(entry.language)}</li>
       {group && <li class="badge">{group.label}</li>}

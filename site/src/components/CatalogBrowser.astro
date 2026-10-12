@@ -1,7 +1,7 @@
 ---
 import PodcastCard from "./PodcastCard.astro";
 import { plural } from "../lib/format";
-import { sortByName, ageOptions } from "../lib/catalog";
+import { sortByName, ageOptions, authorOptions } from "../lib/catalog";
 import type { DistEntry, FilterOption, NavItem } from "../lib/types";
 
 interface Props {
@@ -12,17 +12,19 @@ interface Props {
   /** Tranches présentes — pilote l'affichage du filtre « âge » (masqué si preset). */
   groups: FilterOption[];
   categories: FilterOption[];
+  authors: FilterOption[];
   /** Filtres déjà imposés par la page (masqués dans l'interface). */
   preset?: { language?: string; group?: string };
   nav?: { label: string; items: NavItem[] };
 }
 
-const { title, intro, entries, languages, groups, categories, preset, nav } = Astro.props;
+const { title, intro, entries, languages, groups, categories, authors, preset, nav } = Astro.props;
 const sorted = sortByName(entries);
 const showLanguages = !preset?.language && languages.length > 1;
 const ages = ageOptions(entries);
 const showAges = !preset?.group && groups.length > 1 && ages.length > 1;
 const showCategories = categories.length > 1;
+const showAuthors = authors.length > 1;
 ---
 
 <section class="catalog" data-catalog aria-labelledby="titre-page">
@@ -155,6 +157,20 @@ const showCategories = categories.length > 1;
             <select id="filtre-categorie" data-filter="category">
               <option value="">Toutes les catégories</option>
               {categories.map((option) => (
+                <option value={option.value}>
+                  {option.label} ({option.count})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {showAuthors && (
+          <div class="field">
+            <label for="filtre-auteur">Auteur / animateur</label>
+            <select id="filtre-auteur" data-filter="author">
+              <option value="">Tous les auteurs</option>
+              {authors.map((option) => (
                 <option value={option.value}>
                   {option.label} ({option.count})
                 </option>

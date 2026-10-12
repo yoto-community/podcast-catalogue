@@ -16,8 +16,10 @@ export type SourceTag = "animaux" | "dinosaures" | "espace" | "sciences" | "hist
 export interface CatalogEntry {
   /** Nom public du podcast (≤ 200 caractères). */
   name: string;
-  /** Éditeur / production. Auto-complété depuis `itunes:author` au build s’il est absent (défaut : « Indépendant »). */
+  /** Éditeur / production. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Indépendant »). */
   publisher?: string;
+  /** Auteur / animateur principal. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Inconnu »). */
+  author?: string;
   /** Catégorie — doit exister dans `reference/categories.json`. */
   category: SourceCategory;
   /** Tags thématiques — doivent exister dans `reference/tags.json`. */
@@ -28,7 +30,7 @@ export interface CatalogEntry {
   description?: string;
   /** URL https de la couverture (auto-complétée depuis `itunes:image` / `<image>` si absente). */
   imageUrl?: string;
-  /** URL https du site de l’éditeur (auto-complétée depuis `<link>` du canal si absente). */
+  /** URL https du site de l'éditeur (auto-complétée depuis `<link>` du canal si absente). */
   websiteUrl?: string;
 }
 
@@ -52,6 +54,8 @@ export interface PublishedEntry {
   tags?: ("animaux" | "dinosaures" | "espace" | "sciences" | "histoires-soir" | "contes-classiques" | "histoires-originales" | "enquetes-mysteres" | "personnages-recurrents" | "musique" | "histoire-france" | "geographie-voyages" | "emotions-bienetre" | "apprentissages" | "nature-environnement" | "philosophie" | "arts-culture" | "langues" | "heros-filles" | "humour" | "sante-corps" | "technologie" | "politique-societe" | "cuisine-alimentation")[];
   /** publisher */
   publisher: string;
+  /** author */
+  author: string;
   /** rssUrl */
   rssUrl: string;
   /** imageUrl */

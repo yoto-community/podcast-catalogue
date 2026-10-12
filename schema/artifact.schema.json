@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/yoto-community/podcast-catalogue/blob/main/schema/artifact.schema.json",
   "title": "Entrée publiée dans dist/",
-  "description": "Contrat de sortie du build (schemaVersion 2) : toujours complet (imageUrl, description, publisher obligatoires).",
+  "description": "Contrat de sortie du build (schemaVersion 2) : toujours complet (imageUrl, description, publisher, author obligatoires).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,6 +13,7 @@
     "ageRange",
     "category",
     "publisher",
+    "author",
     "rssUrl",
     "imageUrl",
     "description"
@@ -95,6 +96,11 @@
       "description": "Tags thématiques."
     },
     "publisher": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "author": {
       "type": "string",
       "minLength": 1,
       "maxLength": 120

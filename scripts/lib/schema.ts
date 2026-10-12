@@ -50,7 +50,9 @@ const BASE_URL = `https://github.com/${REPOSITORY}/blob/main/schema`;
 const DOC = {
   name: "Nom public du podcast (≤ {name} caractères).",
   publisher:
-    "Éditeur / production. Auto-complété depuis `itunes:author` au build s’il est absent (défaut : « Indépendant »).",
+    "Éditeur / production. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Indépendant »).",
+  author:
+    "Auteur / animateur principal. Auto-complété depuis `itunes:author` au build s'il est absent (défaut : « Inconnu »).",
   category: "Catégorie — doit exister dans `reference/categories.json`.",
   rssUrl: "URL du flux RSS/Atom (https, hôte public — règles anti-SSRF).",
   description:
@@ -58,7 +60,7 @@ const DOC = {
   imageUrl:
     "URL https de la couverture (auto-complétée depuis `itunes:image` / `<image>` si absente).",
   websiteUrl:
-    "URL https du site de l’éditeur (auto-complétée depuis `<link>` du canal si absente).",
+    "URL https du site de l'éditeur (auto-complétée depuis `<link>` du canal si absente).",
 } as const;
 
 function buildEntrySchema(): Schema {
@@ -76,6 +78,12 @@ function buildEntrySchema(): Schema {
       minLength: 1,
       maxLength: LIMITS.publisher,
       description: DOC.publisher,
+    },
+    author: {
+      type: "string",
+      minLength: 1,
+      maxLength: LIMITS.publisher,
+      description: DOC.author,
     },
     category: { type: "string", enum: categories, description: DOC.category },
     tags: {
@@ -126,7 +134,7 @@ function buildArtifactSchema(): Schema {
     $schema: "https://json-schema.org/draft/2020-12/schema",
     $id: `${BASE_URL}/artifact.schema.json`,
     title: "Entrée publiée dans dist/",
-    description: `Contrat de sortie du build (schemaVersion ${SCHEMA_VERSION}) : toujours complet (imageUrl, description, publisher obligatoires).`,
+    description: `Contrat de sortie du build (schemaVersion ${SCHEMA_VERSION}) : toujours complet (imageUrl, description, publisher, author obligatoires).`,
     type: "object",
     additionalProperties: false,
     required: [
@@ -137,6 +145,7 @@ function buildArtifactSchema(): Schema {
       "ageRange",
       "category",
       "publisher",
+      "author",
       "rssUrl",
       "imageUrl",
       "description",
@@ -165,6 +174,7 @@ function buildArtifactSchema(): Schema {
         description: "Tags thématiques.",
       },
       publisher: { type: "string", minLength: 1, maxLength: LIMITS.publisher },
+      author: { type: "string", minLength: 1, maxLength: LIMITS.publisher },
       rssUrl: { type: "string", pattern: "^https://" },
       imageUrl: { type: "string", pattern: "^https://" },
       websiteUrl: { type: "string", pattern: "^https://" },
