@@ -186,7 +186,9 @@ async function main(): Promise<void> {
         });
         // On va stocker les findings indexés par le nom d'entrée pour l'instant
         // et faire la correspondance côté health.astro via getEntries()
-        const key = finding.file ? finding.file.replace(/entries\/[^/]+\/(.+)\.json/, "$1") : finding.entry;
+        const key = finding.file
+          ? finding.file.replace(/entries\/[^/]+\/(.+)\.json/, "$1")
+          : finding.entry;
         // Mieux: utiliser le slug depuis results si possible
         // Pour l'instant on stocke par entry name
         if (!findingsBySlug.has(finding.entry)) {

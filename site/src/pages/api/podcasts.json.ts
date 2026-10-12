@@ -20,7 +20,7 @@ export async function GET({ url }: APIContext) {
   const sort = url.searchParams.get("sort") ?? "name";
   const order = url.searchParams.get("order") ?? "asc";
 
-  const sortFn = (a: typeof entries[0], b: typeof entries[0]) => {
+  const sortFn = (a: (typeof entries)[0], b: (typeof entries)[0]) => {
     let aVal: string | number = "";
     let bVal: string | number = "";
     switch (sort) {
@@ -96,8 +96,14 @@ export async function GET({ url }: APIContext) {
     },
     links: {
       first: `/api/podcasts.json?page=1&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}`,
-      prev: page > 1 ? `/api/podcasts.json?page=${page - 1}&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}` : null,
-      next: page < totalPages ? `/api/podcasts.json?page=${page + 1}&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}` : null,
+      prev:
+        page > 1
+          ? `/api/podcasts.json?page=${page - 1}&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}`
+          : null,
+      next:
+        page < totalPages
+          ? `/api/podcasts.json?page=${page + 1}&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}`
+          : null,
       last: `/api/podcasts.json?page=${totalPages}&per_page=${perPage}${buildQueryString({ lang, cat, age, publisher, sort, order })}`,
     },
     catalogVersion: manifest.catalogVersion,

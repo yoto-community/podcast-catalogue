@@ -211,7 +211,16 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
         </thead>
         <tbody>
           {allHealth.map((health) => {
-            const { entry, feedStatus, lastFetch, lastEpisodeDate, episodeCount, error, warnings, episodes } = health;
+            const {
+              entry,
+              feedStatus,
+              lastFetch,
+              lastEpisodeDate,
+              episodeCount,
+              error,
+              warnings,
+              episodes,
+            } = health;
             const statusIcon =
               feedStatus === "healthy"
                 ? "🟢"
@@ -284,11 +293,15 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
                     {!fetchDate && <span class="health__never">Jamais</span>}
                   </td>
                   <td>
-                    {lastEpDate && <time datetime={lastEpDay ?? lastEpisodeDate}>{lastEpDate}</time>}
+                    {lastEpDate && (
+                      <time datetime={lastEpDay ?? lastEpisodeDate}>{lastEpDate}</time>
+                    )}
                     {!lastEpDate && <span class="health__never">—</span>}
                   </td>
                   <td>
-                    <span class="health__episode-count">{episodeCount} épisode{episodeCount > 1 ? "s" : ""}</span>
+                    <span class="health__episode-count">
+                      {episodeCount} épisode{episodeCount > 1 ? "s" : ""}
+                    </span>
                   </td>
                   <td class="health__actions">
                     {hasWarnings && (
