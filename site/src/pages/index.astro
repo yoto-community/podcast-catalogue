@@ -4,6 +4,7 @@ import CatalogBrowser from "../components/CatalogBrowser.astro";
 import {
   categoryOptions,
   entriesOfLanguage,
+  entryPath,
   getEntries,
   getLanguages,
   getManifest,
@@ -32,7 +33,7 @@ const jsonLd = itemListJsonLd(
   "Catalogue de podcasts pour enfants",
   entries.map((entry) => ({
     name: entry.name,
-    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+    path: entryPath(entry),
   })),
   Astro.site,
 );
@@ -46,7 +47,7 @@ const description = `${plural(manifest.counts.total, "podcast")} pour enfants â€
     const entries = JSON.parse(button?.dataset.entries ?? "[]");
     if (entries.length === 0) return;
     const random = entries[Math.floor(Math.random() * entries.length)];
-    window.location.href = `/${random.language}/${random.groupId}/${random.slug}/`;
+    window.location.href = random.path;
   }
 </script>
 
@@ -70,9 +71,7 @@ const description = `${plural(manifest.counts.total, "podcast")} pour enfants â€
           class="btn btn--primary"
           onclick="goRandomPodcast()"
           aria-label="DÃ©couvrir un podcast au hasard"
-          data-entries={JSON.stringify(
-            entries.map((e) => ({ slug: e.slug, language: e.language, groupId: e.groupId })),
-          )}
+          data-entries={JSON.stringify(entries.map((e) => ({ slug: e.slug, path: entryPath(e) })))}
         >
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
             <path

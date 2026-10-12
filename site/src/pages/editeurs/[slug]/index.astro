@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import CatalogBrowser from "../../../components/CatalogBrowser.astro";
-import { entriesOfPublisher, getPublishers } from "../../../lib/catalog";
+import { entriesOfPublisher, entryPath, getPublishers } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { itemListJsonLd } from "../../../lib/seo";
 import { pageUrl } from "../../../lib/url";
@@ -30,7 +30,7 @@ const jsonLd = itemListJsonLd(
   `Podcasts — ${publisher.name}`,
   entries.map((entry) => ({
     name: entry.name,
-    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
+    path: entryPath(entry),
   })),
   Astro.site,
 );

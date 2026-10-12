@@ -48,6 +48,22 @@ export function groupById(groups: GroupDef[], id: string): GroupDef | undefined 
 }
 
 /**
+ * Résout une valeur brute (id, slug d'URL ou ancien id) vers le groupe.
+ * Sert au `?age=` de l'API et au formulaire d'issue, qui emploient des libellés
+ * ou d'anciens identifiants.
+ */
+export function groupBySlugOrAlias(groups: GroupDef[], raw: string): GroupDef | undefined {
+  const needle = raw.trim().toLowerCase();
+  if (!needle) return undefined;
+  return groups.find(
+    (group) =>
+      group.id.toLowerCase() === needle ||
+      group.slug.toLowerCase() === needle ||
+      (group.aliases ?? []).some((alias) => alias.toLowerCase() === needle),
+  );
+}
+
+/**
  * Lit tous les fichiers `entries/<langue>/<tranche>.json`.
  * La langue vient du répertoire et la tranche du nom de fichier (champs dérivés interdits).
  */

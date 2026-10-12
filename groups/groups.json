@@ -1,44 +1,52 @@
 [
   {
-    "id": "tout-petits",
+    "id": "age-2-5",
     "order": 1,
     "label": "Tout-petits",
     "ageRange": "2 – 5 ans",
     "ageMin": 2,
     "ageMax": 5,
+    "slug": "age-2-5",
+    "aliases": ["tout-petits"],
     "translations": {
       "en": { "label": "Toddlers", "ageRange": "2 – 5 years" }
     }
   },
   {
-    "id": "maternelle-cp",
+    "id": "age-5-7",
     "order": 2,
     "label": "Maternelle / CP",
     "ageRange": "5 – 7 ans",
     "ageMin": 5,
     "ageMax": 7,
+    "slug": "age-5-7",
+    "aliases": ["maternelle-cp"],
     "translations": {
       "en": { "label": "Preschool & K", "ageRange": "5 – 7 years" }
     }
   },
   {
-    "id": "primaire",
+    "id": "age-7-10",
     "order": 3,
     "label": "Primaire",
     "ageRange": "7 – 10 ans",
     "ageMin": 7,
     "ageMax": 10,
+    "slug": "age-7-10",
+    "aliases": ["primaire"],
     "translations": {
       "en": { "label": "Elementary", "ageRange": "7 – 10 years" }
     }
   },
   {
-    "id": "college-plus",
+    "id": "age-11-plus",
     "order": 4,
     "label": "Collège & +",
     "ageRange": "11 ans et plus",
     "ageMin": 11,
     "ageMax": null,
+    "slug": "age-11-plus",
+    "aliases": ["college-plus"],
     "translations": {
       "en": { "label": "Middle school & up", "ageRange": "11 years and up" }
     }

@@ -1,5 +1,5 @@
 ---
-import { categoryLabel, getGroups, languageLabel } from "../lib/catalog";
+import { categoryLabel, entryPath, getGroups, languageLabel } from "../lib/catalog";
 import { agesOfGroup, formatAges } from "../lib/ages";
 import { searchIndex, normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
@@ -12,7 +12,7 @@ interface Props {
 
 const { entry } = Astro.props;
 
-const href = pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`);
+const href = pageUrl(entryPath(entry));
 const image = entry.imageUrl || pageUrl("/placeholder.svg");
 const alt = entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : "";
 const groups = getGroups();

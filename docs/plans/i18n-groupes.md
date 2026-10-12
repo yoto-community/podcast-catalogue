@@ -46,29 +46,40 @@ mécanique, à condition de bien séparer les trois rôles actuellement fondus d
 
 ## 2. Décisions
 
-| Sujet                 | Décision                                                                     |
-| --------------------- | ---------------------------------------------------------------------------- |
-| Identifiant technique | `age-2-5` · `age-5-7` · `age-7-10` · `age-11-plus` (neutre, auto-explicite)  |
-| Segment d'URL         | **slug localisé par langue** : `/fr/primaire/` · `/en/elementary/`           |
-| Fichiers `entries/`   | **id neutre** : `entries/fr/age-7-10.json` (indépendant de la langue)        |
-| Anciens ids           | champ `aliases` (résolution API + redirections d'URL)                        |
-| Cassure de format     | oui, assumée : `SCHEMA_VERSION` 1 → 2, release `v2.0.0` + notes de migration |
+| Sujet                 | Décision                                                                                                                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identifiant technique | `age-2-5` · `age-5-7` · `age-7-10` · `age-11-plus` (neutre, auto-explicite)                                                                                                              |
+| Segment d'URL         | **slug neutre, identique en toutes langues** : `age-2-5`, `age-5-7`, `age-7-10`, `age-11-plus` — raccord avec l'id (surcharge `translations.<lang>.slug` possible pour un futur `en-gb`) |
+| Fichiers `entries/`   | **id neutre** : `entries/fr/age-7-10.json` (indépendant de la langue)                                                                                                                    |
+| Libellés affichés     | localisés, inchangés : « Tout-petits » / « Toddlers » (jamais dans l'URL)                                                                                                                |
+| Anciens ids           | champ `aliases` (résolution API + redirections d'URL)                                                                                                                                    |
+| Cassure de format     | oui, assumée : `SCHEMA_VERSION` 1 → 2, release `v2.0.0` + notes de migration                                                                                                             |
 
 Règle d'or du plan : **`id` ne change jamais par accident** (il est vérifié par la CI),
 **slug d'URL ne change jamais sans `aliases`** (redirection générée automatiquement).
 
+Le neutralisme des segments d'URL vient du choix de nom : pas de mot d'une langue
+donnée, pas de référence au système scolaire d'un pays. Un système US (_first grade_)
+ou UK (_Year 1_) ne peut être rendu dans un slug unique — c'est le rôle des **libellés**
+(`translations.<lang>.label`), pas de l'URL. Une locale `en-gb` pourra plus tard avoir
+son propre slug sans toucher à `en`, ni aux ids, ni aux fichiers.
+
 ### 2.1 Table de correspondance
 
-| Ancien id       | Nouvel id     | slug `fr` (inchangé) | slug `en` (nouveau) |
-| --------------- | ------------- | -------------------- | ------------------- |
-| `tout-petits`   | `age-2-5`     | `tout-petits`        | `toddlers`          |
-| `maternelle-cp` | `age-5-7`     | `maternelle-cp`      | `preschool-k`       |
-| `primaire`      | `age-7-10`    | `primaire`           | `elementary`        |
-| `college-plus`  | `age-11-plus` | `college-plus`       | `middle-school`     |
+| Ancien id       | Nouvel id = slug | Libellé fr      | Libellé en         |
+| --------------- | ---------------- | --------------- | ------------------ |
+| `tout-petits`   | `age-2-5`        | Tout-petits     | Toddlers           |
+| `maternelle-cp` | `age-5-7`        | Maternelle / CP | Preschool & K      |
+| `primaire`      | `age-7-10`       | Primaire        | Elementary         |
+| `college-plus`  | `age-11-plus`    | Collège & +     | Middle school & up |
 
-> **Aucune URL française ne change.** Seules les URLs `en` (aujourd'hui en français) sont
-> redirigées. Les libellés EN sont repris de `groups/groups.json → translations.en.label`
-> (libellés éditables sans toucher aux ids).
+> **Toutes les URLs de tranche changent** (fr comme en) : `/{langue}/{ancien-id}/` →
+> `/{langue}/{slug}/`, redirection générée à partir de `aliases` (pages de groupe
+> **et** pages d'épisode). Les libellés affichés, eux, ne bougent pas.
+>
+> Champ `slug` conservé **même s'il vaut aujourd'hui l'id** : c'est lui qui porte la
+> règle « segment d'URL localisable », `id` restant la clé de données (`entries/`,
+> `groupId`, `counts.byGroup`, `?age=`).
 
 ### 2.2 Modèle de données cible — `groups/groups.json`
 
@@ -129,19 +140,19 @@ Chaque phase = une PR indépendante, réversible, verte en CI.
    `[lang]/index.astro:49`, `[lang]/[tranche]/index.astro:38`,
    `[lang]/[tranche]/[slug]/index.astro:36,69`, `editeurs/[slug]/index.astro:33`,
    `themes/[slug]/index.astro:34`.
-3. **Redirections** : `site/astro.config.mjs` lit `groups/groups.json` et génère le bloc
-   `redirects` (Astro produit une page HTML `<meta http-equiv="refresh">` +
-   `<link rel="canonical">` — GitHub Pages n'offre pas de 301) :
-   `/{lang}/{ancienSegment}/` → `/{lang}/{slug}/`, **et** toutes les pages d'épisode
-   `/{lang}/{ancienSegment}/{slug}/` → nouvelle URL (~200 entrées générées, zéro
-   écriture manuelle).
+3. **Redirections** : route unique `site/src/pages/[...legacy].astro`, qui énumère
+   depuis `manifest.groups[].aliases` les anciens segments et émet, pour chacun,
+   `site/src/layouts/RedirectLayout.astro` (`meta refresh` + `canonical` + `noindex` —
+   GitHub Pages n'offre pas de 301) : `/{lang}/{ancienSegment}/` → `/{lang}/{slug}/`,
+   **et** toutes les pages d'épisode `/{lang}/{ancienSegment}/{episode}/` → nouvelle
+   URL (~200 redirections générées, zéro écriture manuelle).
 4. `sitemap-index.xml.ts` : uniquement les URLs canoniques (les redirections restent
    hors sitemap).
 5. Les comparaisons `data-group` / `?ages=` continuent d'employer l'**id** (`ages.ts`,
    `search.astro:440`) : le segment d'URL et la clé de filtrage restent découplés.
 
-> Vérif : `/fr/primaire/` identique, `/en/maternelle-cp/` → `/en/preschool-k/`,
-> aucun 404 dans le sitemap.
+> Vérif : `/fr/age-7-10/` canonique, `/fr/primaire/` → redirection vers
+> `/fr/age-7-10/`, aucun 404 dans le sitemap.
 
 ### Phase 3 — Renommage des identifiants (la seule cassure)
 
@@ -172,8 +183,8 @@ Chaque phase = une PR indépendante, réversible, verte en CI.
    `counts.byGroup`, `?age=`, et rappel du pinning par tag (consommateurs non impactés
    avant leur bump volontaire).
 
-> Contrôle : `grep -rn "tout-petits\|maternelle-cp\|primaire\|college-plus" --glob '!groups/groups.json'`
-> ne doit plus retourner que `aliases`, `MIGRATION.md` et les redirections générées.
+> Contrôle : `grep -rn "tout-petits\|maternelle-cp\|primaire\|college-plus" --glob '!groups/groups.json' --glob '!MIGRATION.md' --glob '!docs/'`
+> ne doit plus retourner que `aliases`, `MIGRATION.md`, `docs/` et les redirections générées.
 
 ### Phase 4 — Suppression des valeurs codées en dur (i18n-ready)
 
@@ -201,14 +212,14 @@ au caractère près. À traiter comme une PR séparée (touche S10, les schémas
 
 ## 4. Règles de validation à ajouter (`scripts/validate.ts`)
 
-| Règle    | Contrôle                                                                                                                                       | Sévérité      |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| **S11a** | `id` au format `age-<ageMin>-<ageMax>` (`age-<n>-plus` si `ageMax: null`) — un id ne peut pas mentir sur les bornes                            | erreur        |
-| **S11b** | `id`, `slug` (toutes langues), `aliases` : `[a-z0-9-]+`, longueur ≥ 3, **unicité globale** (un alias ne peut être l'id/slug d'un autre groupe) | erreur        |
-| **S11c** | `id`/`slug` ≠ code de langue (`reference/languages.json`) → évite `/fr/en/…`                                                                   | erreur        |
-| **S11d** | pour **chaque** langue de `languages.json` : `slug` présent dans `translations.<lang>` si la langue a des entrées                              | erreur        |
-| **S11e** | `aliases` non vide quand un id/segment a changé (comparaison git optionnelle)                                                                  | avertissement |
-| **S10**  | inchangé, **mais** son format `ageRange` FR (`:213`) est à adapter dès que la Phase 5 arrive                                                   | —             |
+| Règle    | Contrôle                                                                                                                                                | Sévérité      |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **S11a** | `id` au format `age-<ageMin>-<ageMax>` (`age-<n>-plus` si `ageMax: null`) — un id ne peut pas mentir sur les bornes                                     | erreur        |
+| **S11b** | `id`, `slug` (toutes langues), `aliases` : `[a-z0-9-]+`, longueur ≥ 3, **unicité globale** (un alias ne peut être l'id/slug d'un autre groupe)          | erreur        |
+| **S11c** | `id`/`slug` ≠ code de langue (`reference/languages.json`) → évite `/fr/en/…`                                                                            | erreur        |
+| **S11d** | pour **chaque** langue qui a des entrées : `label` **et** `ageRange` présents dans `translations.<lang>` (le `slug` étant global, il ne se décline pas) | erreur        |
+| **S11e** | `aliases` non vide quand un id/segment a changé (comparaison git optionnelle)                                                                           | avertissement |
+| **S10**  | inchangé, **mais** son format `ageRange` FR (`:213`) est à adapter dès que la Phase 5 arrive                                                            | —             |
 
 Effet de bord de **S11a** : changer une borne d'âge impose un renommage d'id + un alias +
 des redirections. C'est voulu (rareté assumée, `aliases` couvre la transition) — c'est le
@@ -221,7 +232,7 @@ prix d'identifiants qui restent explicites.
 | Risque                                                       | Atténuation                                                                                                                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Consommateurs de `main` (jsDelivr `@main`) cassés à la merge | README impose le pinning d'un tag ; `MIGRATION.md` + release `v2.0.0` ; `SCHEMA_VERSION` signale le break                                              |
-| SEO `en` (perte de positions)                                | URLs FR inchangées (la majorité du trafic) ; redirections + `canonical` ; sitemap reconstruit                                                          |
+| SEO `en` (perte de positions)                                | Toutes les URLs de tranche changent (fr **et** en) ; redirections + `canonical` ; sitemap reconstruit sur les URL canoniques                           |
 | Cache PWA (HTML pré-caché, liens anciens)                    | `registerType: "autoUpdate"` + `cleanupOutdatedCaches` ; l'ancien lien pointe vers une page de redirection existante                                   |
 | Oubli d'un site de remplacement                              | grep de surveillance (§Phase 3) en CI + `typecheck` (les unions générées dans `schema/entry.schema.d.ts:46` cassent le build si un ancien id subsiste) |
 | Rollback                                                     | chaque phase est un PR indépendant ; Phase 3 réversible en un `git revert` (les `aliases` assurent la continuité des URLs dans les deux sens)          |
@@ -244,8 +255,8 @@ pnpm site:build
 
 Manuel / automatisé :
 
-- [ ] `/fr/primaire/` (URL FR inchangée, 200, canonical correct)
-- [ ] `/en/maternelle-cp/` → redirige vers `/en/preschool-k/` (page d'épisode comprise)
+- [ ] `/fr/age-7-10/` (URL canonique, 200, canonical correct)
+- [ ] `/fr/primaire/` → redirige vers `/fr/age-7-10/` (page d'épisode comprise)
 - [ ] `?age=primaire` toujours accepté (alias) **et** `?age=age-7-10`
 - [ ] sitemap : 0 URL en ancien segment
 - [ ] `grep` de surveillance §Phase 3 : plus aucune littérale hors `aliases` / `MIGRATION.md`
@@ -256,10 +267,10 @@ Manuel / automatisé :
 
 ## 7. Ordre des PR
 
-| #   | PR                                                      | Effort | Cassure                                 |
-| --- | ------------------------------------------------------- | ------ | --------------------------------------- |
-| 1   | Modèle `slug`/`aliases` + règles S11                    | S      | non                                     |
-| 2   | Helpers d'URL + URLs localisées + redirects             | M      | URLs `en` uniquement (redirigées)       |
-| 3   | Renommage `age-*` + `SCHEMA_VERSION 2` + `MIGRATION.md` | M      | **oui** (`dist/`, paramètres, fichiers) |
-| 4   | Dé-codage dur (`search`/`health`/`developers`)          | S      | non                                     |
-| 5   | `ageRange` dérivé (optionnel)                           | M      | non (source only)                       |
+| #   | PR                                                      | Effort | Cassure                                     |
+| --- | ------------------------------------------------------- | ------ | ------------------------------------------- |
+| 1   | Modèle `slug`/`aliases` + règles S11                    | S      | non                                         |
+| 2   | Helpers d'URL + URLs localisées + redirects             | M      | **toutes** les URLs de tranche (redirigées) |
+| 3   | Renommage `age-*` + `SCHEMA_VERSION 2` + `MIGRATION.md` | M      | **oui** (`dist/`, paramètres, fichiers)     |
+| 4   | Dé-codage dur (`search`/`health`/`developers`)          | S      | non                                         |
+| 5   | `ageRange` dérivé (optionnel)                           | M      | non (source only)                           |

@@ -1,0 +1,650 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getGroups, groupAgeRange, groupLabel } from "../lib/catalog";
+
+const description =
+  "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
+
+/**
+ * Tranches du catalogue : valeurs (`id`), segment d'URL (`slug`), anciens ids
+ * (`aliases`) et libellés lus dans `dist/index.json`. Rien n'est écrit en dur —
+ * ajouter une tranche ou une langue ne demande aucune modification ici.
+ */
+const groups = getGroups().map((group) => ({
+  id: group.id,
+  slug: group.slug,
+  aliases: group.aliases,
+  label: groupLabel(group, "fr"),
+  ageRange: groupAgeRange(group, "fr"),
+}));
+---
+
+<BaseLayout title="Recherche dans les épisodes" description={description} path="/search/" lang="fr">
+  <section class="search-page" aria-labelledby="search-title">
+    <header class="search-page__header">
+      <h1 id="search-title">Rechercher dans les épisodes</h1>
+      <p class="search-page__intro">
+        Tapez un mot-clé (ex. <kbd>dinosaures</kbd>, <kbd>histoire du soir</kbd>, <kbd>espace</kbd>
+        …) — la recherche porte sur les titres et descriptions de{" "}
+        <strong id="search-stats-total">…</strong> épisodes.
+      </p>
+    </header>
+
+    <form class="search-page__form" role="search" aria-label="Recherche d'épisodes">
+      <div class="search-page__input-wrapper">
+        <label for="search-query" class="sr-only">
+          Rechercher un épisode
+        </label>
+        <input
+          id="search-query"
+          type="search"
+          name="q"
+          placeholder="Titre, description, podcast… (ex. « dinosaures »)"
+          autocomplete="off"
+          aria-describedby="search-hint"
+          autofocus
+        />
+        <kbd class="search-page__shortcut" aria-hidden="true">
+          /
+        </kbd>
+      </div>
+      <p class="search-page__hint" id="search-hint">
+        Raccourci : touche <kbd>/</kbd> pour focus · <kbd>Échap</kbd> pour effacer · Résultats mis à
+        jour en temps réel
+      </p>
+    </form>
+
+    <div class="search-page__filters" role="group" aria-label="Filtres">
+      <label for="search-filter-language" class="sr-only">
+        Langue
+      </label>
+      <select id="search-filter-language" aria-label="Filtrer par langue">
+        <option value="">Toutes les langues</option>
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
+
+      <label for="search-filter-category" class="sr-only">
+        Catégorie
+      </label>
+      <select id="search-filter-category" aria-label="Filtrer par catégorie">
+        <option value="">Toutes les catégories</option>
+      </select>
+
+      <label for="search-filter-age" class="sr-only">
+        Tranche d'âge
+      </label>
+      <select id="search-filter-age" aria-label="Filtrer par tranche d'âge">
+        <option value="">Tous les âges</option>
+        {groups.map((group) => (
+          <option value={group.id}>
+            {group.label} ({group.ageRange})
+          </option>
+        ))}
+      </select>
+
+      <button type="button" id="search-filter-reset" class="btn btn--ghost btn--sm" hidden>
+        Réinitialiser les filtres
+      </button>
+    </div>
+
+    <div
+      id="search-results"
+      class="search-page__results"
+      role="status"
+      aria-live="polite"
+      aria-busy="false"
+    >
+      <p class="search-page__empty" hidden>
+        Aucun épisode ne correspond à votre recherche.
+      </p>
+      <p class="search-page__loading" hidden>
+        Chargement de l'index…
+      </p>
+    </div>
+
+    <template id="search-result-template">
+      <article class="search-result">
+        <header class="search-result__header">
+          <h2 class="search-result__title"></h2>
+          <div class="search-result__meta">
+            <span class="search-result__podcast"></span>
+            <span class="search-result__badges" aria-label="Caractéristiques"></span>
+          </div>
+        </header>
+        <p class="search-result__description"></p>
+        <footer class="search-result__footer">
+          <time class="search-result__date" datetime=""></time>
+          <span class="search-result__duration" aria-label="Durée"></span>
+          <div class="search-result__actions">
+            <button
+              type="button"
+              class="btn btn--primary btn--sm"
+              data-play
+              aria-label="Écouter cet épisode"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
+              </svg>
+              Écouter
+            </button>
+            <a
+              class="btn btn--ghost btn--sm"
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              data-podcast-link
+            >
+              Voir le podcast
+            </a>
+          </div>
+        </footer>
+      </article>
+    </template>
+  </section>
+
+  <style is:global>
+    .search-page__header {
+      margin-bottom: var(--space-6);
+    }
+    .search-page__intro {
+      color: var(--color-text-muted);
+      margin-top: var(--space-2);
+    }
+    .search-page__form {
+      margin-bottom: var(--space-6);
+    }
+    .search-page__input-wrapper {
+      position: relative;
+      max-width: 640px;
+    }
+    .search-page__input-wrapper input {
+      width: 100%;
+      padding: var(--space-3) var(--space-4);
+      padding-right: var(--space-12);
+      font-size: var(--text-lg);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-surface);
+      color: var(--color-text);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+    }
+    .search-page__input-wrapper input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-focus);
+    }
+    .search-page__shortcut {
+      position: absolute;
+      right: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      background: var(--color-surface);
+      padding: 0 var(--space-1);
+      border-radius: var(--radius-sm);
+    }
+    .search-page__hint {
+      margin-top: var(--space-2);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .search-page__filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+    }
+    .search-page__filters select {
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-background);
+      color: var(--color-text);
+      font-size: var(--text-sm);
+      min-width: 160px;
+    }
+    .search-page__results {
+      display: grid;
+      gap: var(--space-4);
+    }
+    .search-page__empty,
+    .search-page__loading {
+      text-align: center;
+      color: var(--color-text-muted);
+      padding: var(--space-8);
+      grid-column: 1 / -1;
+    }
+    .search-result {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+    }
+    .search-result:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+    }
+    .search-result__header {
+      margin-bottom: var(--space-2);
+    }
+    .search-result__title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      margin: 0 0 var(--space-2);
+      line-height: 1.3;
+    }
+    .search-result__title mark {
+      background: var(--color-primary-light);
+      color: var(--color-primary-dark);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .search-result__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+    }
+    .search-result__podcast {
+      font-weight: 500;
+      color: var(--color-text);
+    }
+    .search-result__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1);
+    }
+    .search-result__badges .badge {
+      font-size: var(--text-xs);
+    }
+    .search-result__description {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .search-result__description mark {
+      background: var(--color-primary-light);
+      color: var(--color-primary-dark);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .search-result__footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+    .search-result__date {
+      white-space: nowrap;
+    }
+    .search-result__duration {
+      font-variant-numeric: tabular-nums;
+    }
+    .search-result__actions {
+      display: flex;
+      gap: var(--space-2);
+      margin-left: auto;
+    }
+    .btn--sm {
+      padding: var(--space-1) var(--space-2);
+      font-size: var(--text-xs);
+    }
+  </style>
+
+  <!-- Tranches du catalogue (id, slug d'URL, anciens ids, libellés) : source unique côté client -->
+  <script type="application/json" id="search-groups" set:html={JSON.stringify(groups)} />
+  <!-- Script traité par Astro (TS compilé) — un `is:inline` laisserait tel quel le TypeScript, invalide en JS -->
+  <script>
+    // Configuration
+    const INDEX_URL = "/search-index.json";
+    const DEBOUNCE_MS = 80;
+
+    // État
+    let searchIndex: SearchIndexEntry[] = [];
+    let isIndexLoaded = false;
+
+    // Éléments DOM
+    const queryInput = document.getElementById("search-query") as HTMLInputElement;
+    const resultsContainer = document.getElementById("search-results") as HTMLElement;
+    const emptyMessage = resultsContainer.querySelector(".search-page__empty") as HTMLElement;
+    const loadingMessage = resultsContainer.querySelector(".search-page__loading") as HTMLElement;
+    const statsTotal = document.getElementById("search-stats-total") as HTMLElement;
+    const languageFilter = document.getElementById("search-filter-language") as HTMLSelectElement;
+    const categoryFilter = document.getElementById("search-filter-category") as HTMLSelectElement;
+    const ageFilter = document.getElementById("search-filter-age") as HTMLSelectElement;
+    const resetButton = document.getElementById("search-filter-reset") as HTMLButtonElement;
+    const template = document.getElementById("search-result-template") as HTMLTemplateElement;
+    /** Tranches du catalogue, injectées au build depuis `dist/index.json`. */
+    const groupsData = JSON.parse(
+      document.getElementById("search-groups")?.textContent ?? "[]",
+    ) as SearchGroup[];
+
+    /** Une tranche par son id, son slug d'URL ou un ancien id (`?age=` partagé). */
+    function findGroup(value: string): SearchGroup | undefined {
+      if (!value) return undefined;
+      return groupsData.find(
+        (group) => group.id === value || group.slug === value || group.aliases.includes(value),
+      );
+    }
+
+    // Types
+    interface SearchGroup {
+      id: string;
+      slug: string;
+      aliases: string[];
+      label: string;
+      ageRange: string;
+    }
+
+    interface SearchIndexEntry {
+      id: string;
+      podcastSlug: string;
+      podcastName: string;
+      language: string;
+      groupId: string;
+      groupSlug?: string;
+      category: string;
+      title: string;
+      description: string;
+      pubDate: string;
+      durationSec?: number;
+      audioUrl?: string;
+      episodeNumber?: number;
+      seasonNumber?: number;
+      imageUrl?: string;
+    }
+
+    interface SearchIndexFile {
+      schemaVersion: number;
+      catalogVersion: string;
+      updatedAt: string;
+      count: number;
+      episodes: SearchIndexEntry[];
+    }
+
+    // Helpers
+    function escapeHtml(text: string): string {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function highlight(text: string, query: string): string {
+      if (!query.trim()) return escapeHtml(text);
+      const escaped = escapeHtml(text);
+      const terms = query
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((t) => t.length >= 2);
+      let result = escaped;
+      for (const term of terms) {
+        const regex = new RegExp(`(${escapeRegExp(term)})`, "gi");
+        result = result.replace(regex, "<mark>$1</mark>");
+      }
+      return result;
+    }
+
+    function escapeRegExp(string: string): string {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function formatDateFr(dateStr: string): string {
+      if (!dateStr) return "";
+      try {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      } catch {
+        return dateStr.slice(0, 10);
+      }
+    }
+
+    function formatDuration(seconds?: number): string {
+      if (!seconds || !Number.isFinite(seconds)) return "";
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${String(s).padStart(2, "0")}`;
+    }
+
+    function getAgeLabel(groupId: string): string {
+      return findGroup(groupId)?.ageRange ?? groupId;
+    }
+
+    function getCategoryLabel(category: string, language: string): string {
+      const labels: Record<string, Record<string, string>> = {
+        histoire: { fr: "Histoire", en: "History" },
+        education: { fr: "Éducation", en: "Education" },
+        fiction: { fr: "Fiction", en: "Fiction" },
+        documentaire: { fr: "Documentaire", en: "Documentary" },
+        musique: { fr: "Musique", en: "Music" },
+        science: { fr: "Science", en: "Science" },
+      };
+      return labels[category]?.[language] ?? category;
+    }
+
+    // Chargement de l'index
+    async function loadIndex(): Promise<void> {
+      loadingMessage.hidden = false;
+      resultsContainer.setAttribute("aria-busy", "true");
+      try {
+        const response = await fetch(INDEX_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = (await response.json()) as SearchIndexFile;
+        searchIndex = data.episodes;
+        isIndexLoaded = true;
+        statsTotal.textContent = `${data.count.toLocaleString("fr-FR")}`;
+        buildCategoryFilter();
+        console.log(`🔍 Index de recherche chargé : ${data.count} épisodes`);
+      } catch (err) {
+        console.error("Erreur chargement index :", err);
+        resultsContainer.innerHTML = `<p class="search-page__empty">Impossible de charger l'index de recherche.</p>`;
+      } finally {
+        loadingMessage.hidden = true;
+        resultsContainer.setAttribute("aria-busy", "false");
+      }
+    }
+
+    function buildCategoryFilter(): void {
+      const categories = new Set(searchIndex.map((e) => e.category));
+      const currentValue = categoryFilter.value;
+      categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
+      for (const cat of [...categories].sort()) {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = getCategoryLabel(cat, "fr"); // UI en français
+        categoryFilter.appendChild(opt);
+      }
+      categoryFilter.value = currentValue;
+    }
+
+    // Recherche
+    let performSearch = () => {
+      if (!isIndexLoaded) return;
+
+      const query = queryInput.value.trim().toLowerCase();
+      const lang = languageFilter.value;
+      const cat = categoryFilter.value;
+      const age = ageFilter.value;
+
+      const hasFilters = query || lang || cat || age;
+      resetButton.hidden = !hasFilters;
+
+      let results = searchIndex;
+
+      if (query) {
+        const terms = query.split(/\s+/).filter((t) => t.length >= 2);
+        results = results.filter((ep) => {
+          const searchText = `${ep.title} ${ep.description} ${ep.podcastName}`.toLowerCase();
+          return terms.every((term) => searchText.includes(term));
+        });
+      }
+
+      if (lang) results = results.filter((ep) => ep.language === lang);
+      if (cat) results = results.filter((ep) => ep.category === cat);
+      if (age) results = results.filter((ep) => ep.groupId === age);
+
+      renderResults(results, query);
+    };
+
+    function renderResults(results: SearchIndexEntry[], query: string): void {
+      resultsContainer.innerHTML = "";
+      emptyMessage.hidden = true;
+
+      if (results.length === 0) {
+        emptyMessage.hidden = false;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      for (const ep of results) {
+        const clone = template.content.cloneNode(true) as DocumentFragment;
+
+        // Titre
+        const titleEl = clone.querySelector(".search-result__title") as HTMLElement;
+        titleEl.innerHTML = highlight(ep.title, query);
+
+        // Podcast + badges
+        const podcastEl = clone.querySelector(".search-result__podcast") as HTMLElement;
+        podcastEl.textContent = ep.podcastName;
+
+        const badgesEl = clone.querySelector(".search-result__badges") as HTMLElement;
+        badgesEl.innerHTML = `
+          <span class="badge">${ep.language === "fr" ? "Français" : "English"}</span>
+          <span class="badge">${getAgeLabel(ep.groupId)}</span>
+          <span class="badge badge--category">${getCategoryLabel(ep.category, ep.language)}</span>
+        `;
+
+        // Description
+        const descEl = clone.querySelector(".search-result__description") as HTMLElement;
+        descEl.innerHTML = highlight(ep.description, query);
+
+        // Date + durée
+        const dateEl = clone.querySelector(".search-result__date") as HTMLTimeElement;
+        dateEl.textContent = formatDateFr(ep.pubDate);
+        dateEl.dateTime = ep.pubDate;
+
+        const durEl = clone.querySelector(".search-result__duration") as HTMLElement;
+        durEl.textContent = formatDuration(ep.durationSec);
+        if (ep.durationSec)
+          durEl.setAttribute("aria-label", `Durée : ${formatDuration(ep.durationSec)}`);
+
+        // Actions
+        const playBtn = clone.querySelector("[data-play]") as HTMLButtonElement;
+        playBtn.dataset.audio = ep.audioUrl ?? "";
+        playBtn.dataset.title = ep.title;
+        playBtn.dataset.artist = ep.podcastName;
+        playBtn.dataset.album = ep.podcastName;
+        playBtn.dataset.episode = ep.id;
+
+        const podcastLink = clone.querySelector("[data-podcast-link]") as HTMLAnchorElement;
+        // Segment d'URL de la tranche : slug localisé de l'index, sinon celui du catalogue.
+        const segment = ep.groupSlug || findGroup(ep.groupId)?.slug || ep.groupId;
+        podcastLink.href = `/${ep.language}/${segment}/${ep.podcastSlug}/`;
+
+        fragment.appendChild(clone);
+      }
+      resultsContainer.appendChild(fragment);
+    }
+
+    // Event listeners
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    queryInput.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(performSearch, DEBOUNCE_MS);
+    });
+
+    [languageFilter, categoryFilter, ageFilter].forEach((el) =>
+      el.addEventListener("change", performSearch),
+    );
+
+    resetButton.addEventListener("click", () => {
+      queryInput.value = "";
+      languageFilter.value = "";
+      categoryFilter.value = "";
+      ageFilter.value = "";
+      performSearch();
+      queryInput.focus();
+    });
+
+    // Raccourcis clavier
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const target = e.target as HTMLElement;
+        if (
+          !["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) &&
+          !target.isContentEditable
+        ) {
+          e.preventDefault();
+          queryInput.focus();
+          queryInput.select();
+        }
+      }
+      if (e.key === "Escape") {
+        queryInput.value = "";
+        queryInput.blur();
+        performSearch();
+      }
+    });
+
+    // Sync URL query param
+    function syncUrl(): void {
+      const params = new URLSearchParams(window.location.search);
+      const q = queryInput.value.trim();
+      if (q) params.set("q", q);
+      else params.delete("q");
+      if (languageFilter.value) params.set("lang", languageFilter.value);
+      else params.delete("lang");
+      if (categoryFilter.value) params.set("cat", categoryFilter.value);
+      else params.delete("cat");
+      if (ageFilter.value) params.set("age", ageFilter.value);
+      else params.delete("age");
+      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      history.replaceState(null, "", newUrl);
+    }
+
+    // Restore from URL on load
+    function restoreFromUrl(): void {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("q")) queryInput.value = params.get("q")!;
+      if (params.get("lang")) languageFilter.value = params.get("lang")!;
+      if (params.get("cat")) categoryFilter.value = params.get("cat")!;
+      // `?age=` accepte un id, un slug ou un ancien id (lien partagé avant renommage)
+      const age = params.get("age");
+      if (age) ageFilter.value = findGroup(age)?.id ?? "";
+    }
+
+    // Debounced URL sync
+    let urlSyncTimer: ReturnType<typeof setTimeout>;
+    const originalPerformSearch = performSearch;
+    performSearch = () => {
+      originalPerformSearch();
+      clearTimeout(urlSyncTimer);
+      urlSyncTimer = setTimeout(syncUrl, 100);
+    };
+
+    // Initialisation
+    restoreFromUrl();
+    loadIndex();
+  </script>
+</BaseLayout>

@@ -4,7 +4,7 @@
  *
  * Sélection (obligatoire, pour éviter une réécriture accidentelle du dépôt entier) :
  *   --new            entrées absentes de `HEAD` (une contribution non commitée)
- *   --file <chemin>  un fichier d'entrée, ex. `entries/fr/tout-petits.json`
+ *   --file <chemin>  un fichier d'entrée, ex. `entries/fr/age-2-5.json`
  *   --slug <slug>    une entrée, recherchée dans tout `entries/`
  *   --all            toutes les entrées incomplètes du dépôt
  *

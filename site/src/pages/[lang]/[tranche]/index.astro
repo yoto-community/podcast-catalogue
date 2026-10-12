@@ -5,10 +5,13 @@ import {
   categoryOptions,
   entriesOf,
   entriesOfLanguage,
+  entryPath,
   getGroups,
   getLanguages,
   groupAgeRange,
   groupLabel,
+  groupPath,
+  groupSlug,
 } from "../../../lib/catalog";
 import { plural } from "../../../lib/format";
 import { agesOfGroup, formatAges } from "../../../lib/ages";
@@ -22,7 +25,7 @@ export function getStaticPaths(): Array<StaticPath<GroupProps>> {
     for (const group of getGroups()) {
       if (entriesOf(language.code, group.id).length > 0) {
         paths.push({
-          params: { lang: language.code, tranche: group.id },
+          params: { lang: language.code, tranche: groupSlug(group, language.code) },
           props: { language, group },
         });
       }
@@ -43,7 +46,7 @@ const entries = entriesOf(language.code, group.id);
 const groups = getGroups();
 const label = groupLabel(group, language.code);
 const ageRange = groupAgeRange(group, language.code);
-const path = `/${language.code}/${group.id}/`;
+const path = groupPath(language.code, group);
 
 /** Âges exacts couverts par la tranche, pour dire clairement de qui il s'agit. */
 const ages = agesOfGroup(group, groups);
@@ -73,10 +76,7 @@ const sharedSentence = shared
 
 const jsonLd = itemListJsonLd(
   `${label} — podcasts`,
-  entries.map((entry) => ({
-    name: entry.name,
-    path: `/${entry.language}/${entry.groupId}/${entry.slug}/`,
-  })),
+  entries.map((entry) => ({ name: entry.name, path: entryPath(entry) })),
   Astro.site,
 );
 
@@ -110,7 +110,7 @@ const description = `${plural(entries.length, "podcast")} pour la tranche ${labe
         },
         ...getGroups()
           .map((candidate) => ({
-            href: pageUrl(`/${language.code}/${candidate.id}/`),
+            href: pageUrl(groupPath(language.code, candidate)),
             label: `${groupLabel(candidate, language.code)} · ${groupAgeRange(candidate, language.code)}`,
             count: entriesOf(language.code, candidate.id).length,
             active: candidate.id === group.id,

@@ -6,6 +6,8 @@
 export interface GroupTranslation {
   label: string;
   ageRange: string;
+  /** Segment d'URL localisé (optionnel) — à défaut, `ManifestGroup.slug` sert toutes les langues. */
+  slug?: string;
 }
 
 export interface ManifestGroup {
@@ -17,6 +19,10 @@ export interface ManifestGroup {
   ageMin: number;
   /** Dernier âge couvert (inclus), `null` = ouvert vers le haut (11 ans et plus). */
   ageMax: number | null;
+  /** Segment d'URL (neutre, identique en toutes langues) — voir `groupSlug()`. */
+  slug: string;
+  /** Anciens ids/segments : acceptés en query (`?age=`) et redirigés côté site. */
+  aliases: string[];
   translations?: Record<string, GroupTranslation>;
 }
 

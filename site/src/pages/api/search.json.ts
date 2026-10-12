@@ -1,7 +1,7 @@
-import { getEntries, getEpisodes } from "../../lib/catalog";
+import { getEntries, getEpisodes, groupIdOf } from "../../lib/catalog";
 import type { APIContext } from "astro";
 
-export async function GET({ url, request }: APIContext) {
+export async function GET({ url }: APIContext) {
   const q = url.searchParams.get("q")?.toLowerCase().trim() ?? "";
   const lang = url.searchParams.get("lang") ?? "";
   const cat = url.searchParams.get("cat") ?? "";
@@ -23,7 +23,8 @@ export async function GET({ url, request }: APIContext) {
 
   if (lang) entries = entries.filter((e) => e.language === lang);
   if (cat) entries = entries.filter((e) => e.category === cat);
-  if (age) entries = entries.filter((e) => e.groupId === age);
+  // `?age=` accepte l'id, le slug d'URL ou un ancien id (`aliases`)
+  if (age) entries = entries.filter((e) => e.groupId === (groupIdOf(age) ?? age));
 
   if (q) {
     const terms = q.split(/\s+/).filter((t) => t.length >= 2);

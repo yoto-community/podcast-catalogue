@@ -1,4 +1,12 @@
-import { getEntries, getLanguages, getGroups, getTags, getPublishers } from "../lib/catalog";
+import {
+  getEntries,
+  getLanguages,
+  getGroups,
+  getTags,
+  getPublishers,
+  entryPath,
+  groupPath,
+} from "../lib/catalog";
 import { pageUrl } from "../lib/url";
 import type { APIContext } from "astro";
 
@@ -37,14 +45,14 @@ export async function GET({ site }: APIContext) {
         (e) => e.language === language.code && e.groupId === group.id,
       ).length;
       if (count > 0) {
-        urls.push(new URL(pageUrl(`/${language.code}/${group.id}/`), site).href);
+        urls.push(new URL(pageUrl(groupPath(language.code, group)), site).href);
       }
     }
   }
 
   // Pages détail podcasts
   for (const entry of entries) {
-    urls.push(new URL(pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`), site).href);
+    urls.push(new URL(pageUrl(entryPath(entry)), site).href);
   }
 
   // Pages thèmes

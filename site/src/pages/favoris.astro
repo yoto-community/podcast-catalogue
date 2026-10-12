@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEntries } from "../lib/catalog";
+import { entryPath, getEntries } from "../lib/catalog";
 import { pageUrl } from "../lib/url";
 
 const entries = getEntries();
@@ -59,10 +59,7 @@ const description =
           hidden
         >
           <article class="card__body">
-            <a
-              class="card__link"
-              href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
-            >
+            <a class="card__link" href={pageUrl(entryPath(entry))}>
               <img
                 class="card__image"
                 src={entry.imageUrl || pageUrl("/placeholder.svg")}

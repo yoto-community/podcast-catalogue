@@ -27,8 +27,8 @@ export const SHARD_MAX_BYTES = 500 * 1024;
 export const EPISODES_PER_PODCAST = 10;
 /** TTL du cache disque des flux. */
 export const FEED_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-/** Version de format (incrémentée à chaque break). */
-export const SCHEMA_VERSION = 1;
+/** Version de format (incrémentée à chaque break) — v2 : ids de tranches `age-*`. */
+export const SCHEMA_VERSION = 2;
 
 /**
  * Dépôt public cible (`<owner>/<name>`), utilisé dans les `$id` des schémas, l'User-Agent

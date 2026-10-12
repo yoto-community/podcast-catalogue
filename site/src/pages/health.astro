@@ -1,6 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getEpisodes, getEntries } from "../lib/catalog";
+import {
+  entryPath,
+  getEntries,
+  getEpisodes,
+  getGroups,
+  groupAgeRange,
+  groupLabel,
+} from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
 import { pageUrl } from "../lib/url";
 import type { DistEntry, DistEpisodesFile } from "../lib/types";
@@ -43,8 +50,7 @@ function getHealth(entry: DistEntry): PodcastHealth {
     else if (feedHealth.status === "stale") feedStatus = "stale";
     else if (feedHealth.status === "error") feedStatus = "unhealthy";
   } else if (episodes?.fetchedAt) {
-    const hoursSinceFetch =
-      (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
+    const hoursSinceFetch = (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
     if (hoursSinceFetch < 24) feedStatus = "healthy";
     else if (hoursSinceFetch < 72) feedStatus = "stale";
     else feedStatus = "unhealthy";
@@ -137,10 +143,11 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       </label>
       <select id="health-filter-group" aria-label="Filtrer par tranche d'âge">
         <option value="">Toutes les tranches</option>
-        <option value="tout-petits">Tout-petits (2-5 ans)</option>
-        <option value="maternelle-cp">Maternelle / CP (5-7 ans)</option>
-        <option value="primaire">Primaire (7-10 ans)</option>
-        <option value="college-plus">Collège & + (11+ ans)</option>
+        {getGroups().map((group) => (
+          <option value={group.id}>
+            {groupLabel(group, "fr")} ({groupAgeRange(group, "fr")})
+          </option>
+        ))}
       </select>
 
       <input
@@ -199,10 +206,7 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
               }
             >
               <td>
-                <a
-                  href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
-                  class="health__podcast-link"
-                >
+                <a href={pageUrl(entryPath(entry))} class="health__podcast-link">
                   <img
                     src={entry.imageUrl || pageUrl("/placeholder.svg")}
                     alt=""
@@ -242,10 +246,7 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
                   </details>
                 )}
                 {episodes && (
-                  <a
-                    href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
-                    class="btn btn--ghost btn--sm"
-                  >
+                  <a href={pageUrl(entryPath(entry))} class="btn btn--ghost btn--sm">
                     Voir épisodes
                   </a>
                 )}
@@ -425,13 +426,18 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     }
   </style>
 
+  <!-- Script traité par Astro (TS compilé) — un `is:inline` laisserait tel quel le TypeScript, invalide en JS -->
   <script>
     const table = document.querySelector("[data-health-table]");
     const rows = table?.querySelectorAll<HTMLTableRowElement>("tbody tr");
-    const statusFilter = document.getElementById("health-filter-status") as HTMLSelectElement;
-    const languageFilter = document.getElementById("health-filter-language") as HTMLSelectElement;
-    const groupFilter = document.getElementById("health-filter-group") as HTMLSelectElement;
-    const searchInput = document.getElementById("health-search") as HTMLInputElement;
+    const statusFilter = document.getElementById(
+      "health-filter-status",
+    ) as HTMLSelectElement | null;
+    const languageFilter = document.getElementById(
+      "health-filter-language",
+    ) as HTMLSelectElement | null;
+    const groupFilter = document.getElementById("health-filter-group") as HTMLSelectElement | null;
+    const searchInput = document.getElementById("health-search") as HTMLInputElement | null;
 
     function applyFilters() {
       if (!rows) return;

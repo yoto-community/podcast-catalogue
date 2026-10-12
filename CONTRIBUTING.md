@@ -98,7 +98,10 @@ git commit -m "feat: …"
 - `schema/` édité à la main (S9) — corriger par `pnpm gen:types`, jamais à la main ;
 - `dist/` non conforme à `artifact.schema.json` (S8) ;
 - tranches d'âge incohérentes (S10) : `ageMin`/`ageMax` invalides, trou dans la
-  couverture des âges, plus d'une tranche ouverte, `ageRange` ≠ bornes.
+  couverture des âges, plus d'une tranche ouverte, `ageRange` ≠ bornes ;
+- identifiant de tranche non neutre (S11) : `id` ≠ `age-<ageMin>-<ageMax>`, segment
+  d'URL (`slug`) ou `aliases` manquant/invalide/dupliqué, ou code de langue ; une langue
+  du catalogue sans libellés de tranche traduits bloque aussi.
 
 ### Ce qui n'est bloquant que
 
@@ -148,7 +151,9 @@ git add reference/ schema/
 
 Sans cette étape, `pnpm validate` échoue sur **S9** et la CI refuse le push. Ne renommez
 pas un identifiant existant sans migration : il est référencé par chaque entrée et par
-`dist/` (consommé par l'application qui épingle un tag).
+`dist/` (consommé par l'application qui épingle un tag). Pour une **tranche** (`groups/`),
+le renommage est possible en ajoutant l'ancien id dans `aliases` : c'est ce tableau qui
+alimente la résolution du paramètre `?age=` et les redirections d'URL du site.
 
 **Bornes d'âge** : chaque tranche porte `ageMin` / `ageMax` (bornes **inclusives** ;
 `ageMax: null` pour la dernière tranche ouverte, « 11 ans et plus »). Elles pilotent le

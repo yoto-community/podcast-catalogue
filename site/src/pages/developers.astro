@@ -1,13 +1,36 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { pageUrl } from "../lib/url";
-import { getManifest } from "../lib/catalog";
+import { getEntries, getManifest } from "../lib/catalog";
 
 const title = "API développeurs — Catalogue de podcasts";
 const description =
   "Documentation de l'API publique : catalogue, épisodes, recherche et santé des flux. Réutilisez les données dans vos applications.";
 const path = "/developers/";
 const manifest = getManifest();
+
+/**
+ * Exemples **réels** du catalogue : la documentation ne peut plus dériver des
+ * identifiants (`age-*`), des segments d'URL ni du numéro de version.
+ */
+const entries = getEntries();
+const exampleEntry = entries.find((entry) => entry.slug === "animalite") ?? entries[0];
+const exampleGroup = exampleEntry
+  ? (manifest.groups.find((group) => group.id === exampleEntry.groupId) ?? manifest.groups[0])
+  : manifest.groups[0];
+const secondGroup = manifest.groups[1] ?? manifest.groups[0];
+const exampleShard = manifest.shards[0];
+/** Tranche la plus fournie → exemple de valeur pour `?age=`. */
+const busiestGroupId =
+  Object.entries(manifest.counts.byGroup).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+const groupIds = manifest.groups.map((group) => group.id).join(", ");
+const languageCodes = manifest.languages.map((language) => language.code).join(", ");
+const byLanguageJson = Object.entries(manifest.counts.byLanguage)
+  .map(([code, count]) => `      "${code}": ${count}`)
+  .join(",\n");
+const byGroupJson = Object.entries(manifest.counts.byGroup)
+  .map(([id, count]) => `      "${id}": ${count}`)
+  .join(",\n");
 const siteUrl = Astro.site ? new URL(pageUrl("/developers/"), Astro.site).href : undefined;
 const searchActionUrl = Astro.site
   ? new URL(pageUrl("/api/search.json"), Astro.site).href + "?q={search_term_string}"
@@ -43,7 +66,7 @@ const endpoints = [
   {
     method: "GET",
     path: "/api/catalog/{lang}.json",
-    description: "Catalogue par langue (fr, en)",
+    description: `Catalogue par langue (${languageCodes})`,
     response: "CatalogLang",
     cache: "1 h / 24 h",
   },
@@ -102,74 +125,79 @@ GET /api/search.json?q=mots+cles
 
 # Paramètres disponibles
 q       — Texte à rechercher (nom, description, éditeur, catégorie)
-lang    — Filtrer par langue (fr, en)
+lang    — Filtrer par langue (${languageCodes})
 cat     — Filtrer par catégorie (histoire, education, fiction, documentaire, musique, science)
-age     — Filtrer par tranche d'âge (tout-petits, maternelle-cp, primaire, college-plus)
+age     — Filtrer par tranche d'âge (${groupIds})
 limit   — Nombre max de résultats (défaut : 50, max : 200)
 episodes — Inclure les 5 derniers épisodes (true/false)
 
 # Exemples
 curl "$BASE/api/search.json?q=animaux&lang=fr&limit=10"
-curl "$BASE/api/search.json?cat=histoire&age=primaire"
+curl "$BASE/api/search.json?cat=histoire&age=${busiestGroupId}"
 curl "$BASE/api/search.json?q=espace&episodes=true"`;
 
 const manifestSchema = `{
-  "schemaVersion": 1,
+  "schemaVersion": ${manifest.schemaVersion},
   "catalogVersion": "${manifest.catalogVersion}",
   "commit": "${manifest.commit}",
   "updatedAt": "${manifest.updatedAt}",
   "counts": {
     "total": ${manifest.counts.total},
-    "byLanguage": { "fr": ${manifest.counts.byLanguage.fr}, "en": ${manifest.counts.byLanguage.en} },
-    "byGroup": { "tout-petits": ${manifest.counts.byGroup["tout-petits"]}, "maternelle-cp": ${manifest.counts.byGroup["maternelle-cp"]}, "primaire": ${manifest.counts.byGroup["primaire"]}, "college-plus": ${manifest.counts.byGroup["college-plus"]} }
+    "byLanguage": {
+${byLanguageJson}
+    },
+    "byGroup": {
+${byGroupJson}
+    }
   },
   "groups": [
     {
-      "id": "tout-petits",
-      "order": 1,
-      "label": "Tout-petits",
-      "ageRange": "0 – 3 ans",
-      "ageMin": 0,
-      "ageMax": 3
+      "id": "${exampleGroup?.id}",
+      "slug": "${exampleGroup?.slug}",
+      "aliases": [${(exampleGroup?.aliases ?? []).map((alias) => `"${alias}"`).join(", ")}],
+      "order": ${exampleGroup?.order},
+      "label": "${exampleGroup?.label}",
+      "ageRange": "${exampleGroup?.ageRange}",
+      "ageMin": ${exampleGroup?.ageMin},
+      "ageMax": ${exampleGroup?.ageMax}
     }
   ],
   "languages": [
-    { "code": "fr", "label": "Français" },
-    { "code": "en", "label": "English" }
+${manifest.languages.map((language) => `    { "code": "${language.code}", "label": "${language.label}" }`).join(",\n")}
   ],
   "shards": [
     {
-      "path": "fr/tout-petits.json",
-      "language": "fr",
-      "group": "tout-petits",
-      "count": 45,
-      "bytes": 123456,
-      "sha256": "abc..."
+      "path": "${exampleShard?.path}",
+      "language": "${exampleShard?.language}",
+      "group": ${exampleShard?.group ? `"${exampleShard.group}"` : "null"},
+      "count": ${exampleShard?.count},
+      "bytes": ${exampleShard?.bytes},
+      "sha256": "${(exampleShard?.sha256 ?? "").slice(0, 12)}…"
     }
   ]
 }`;
 
 const entrySchema = `{
-  "slug": "animalite",
-  "name": "Animalité",
-  "language": "fr",
-  "groupId": "primaire",
-  "ageRange": "7 – 10 ans",
-  "category": "science",
-  "tags": ["animaux", "nature-environnement"],
-  "publisher": "Radio France",
-  "rssUrl": "https://radiofrance-podcastorage.googleapis.com/...",
-  "imageUrl": "https://...",
-  "websiteUrl": "https://www.radiofrance.fr/...",
-  "description": "Découverte du monde animal..."
+  "slug": "${exampleEntry?.slug}",
+  "name": "${exampleEntry?.name}",
+  "language": "${exampleEntry?.language}",
+  "groupId": "${exampleEntry?.groupId}",
+  "ageRange": "${exampleEntry?.ageRange}",
+  "category": "${exampleEntry?.category}",
+  "tags": [${(exampleEntry?.tags ?? []).map((tag) => `"${tag}"`).join(", ")}],
+  "publisher": "${exampleEntry?.publisher}",
+  "rssUrl": "${exampleEntry?.rssUrl.slice(0, 48)}…",
+  "imageUrl": "${exampleEntry?.imageUrl?.slice(0, 32)}…",
+  "websiteUrl": "${exampleEntry?.websiteUrl?.slice(0, 32)}…",
+  "description": "${(exampleEntry?.description ?? "").slice(0, 48)}…"
 }`;
 
 const episodesSchema = `{
-  "schemaVersion": 1,
+  "schemaVersion": ${manifest.schemaVersion},
   "catalogVersion": "${manifest.catalogVersion}",
-  "slug": "animalite",
+  "slug": "${exampleEntry?.slug}",
   "fetchedAt": "2026-10-12T06:00:00.000Z",
-  "feedTitle": "Animalité",
+  "feedTitle": "${exampleEntry?.name}",
   "count": 10,
   "episodes": [
     {
@@ -202,8 +230,8 @@ const searchResultsSchema = `{
       "slug": "dino-rhyme",
       "name": "Dino Rythm",
       "language": "fr",
-      "groupId": "maternelle-cp",
-      "ageRange": "3 – 6 ans",
+      "groupId": "${secondGroup?.id}",
+      "ageRange": "${secondGroup?.ageRange}",
       "category": "education",
       "tags": ["dinosaures", "musique"],
       "publisher": "…",
@@ -226,13 +254,13 @@ const healthSchema = `{
   },
   "podcasts": [
     {
-      "slug": "animalite",
-      "name": "Animalité",
-      "language": "fr",
-      "groupId": "primaire",
-      "ageRange": "7 – 10 ans",
-      "category": "science",
-      "publisher": "Radio France",
+      "slug": "${exampleEntry?.slug}",
+      "name": "${exampleEntry?.name}",
+      "language": "${exampleEntry?.language}",
+      "groupId": "${exampleEntry?.groupId}",
+      "ageRange": "${exampleEntry?.ageRange}",
+      "category": "${exampleEntry?.category}",
+      "publisher": "${exampleEntry?.publisher}",
       "status": "healthy",
       "lastFetch": "2026-10-12T06:00:00.000Z",
       "episodeCount": 10
@@ -404,7 +432,12 @@ async function fetchCatalog() {
       </p>
       <ul>
         <li>
-          <strong>schemaVersion 1 :</strong> Schéma actuel (stable depuis {manifest.catalogVersion})
+          <strong>schemaVersion {manifest.schemaVersion} :</strong> Schéma actuel (stable depuis{" "}
+          {manifest.catalogVersion})
+        </li>
+        <li>
+          <strong>schemaVersion 1 :</strong> Ancienne version — tranches nommées en français (
+          <code>primaire</code>…), désormais redirigées vers <code>age-*</code>
         </li>
         <li>
           <strong>Ajouts de champs :</strong> Non considérés comme breaking changes

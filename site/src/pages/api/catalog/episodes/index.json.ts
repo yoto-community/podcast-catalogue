@@ -12,7 +12,7 @@ export async function GET() {
   }
 
   const manifest = getManifest();
-  const items: Array<{ slug: string; count: number; fetchedAt: string }> = [];
+  const items: Array<{ slug: string; count: number; fetchedAt?: string }> = [];
 
   for (const entry of manifest.shards) {
     const eps = getEpisodes(

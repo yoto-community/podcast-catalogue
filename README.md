@@ -129,7 +129,7 @@ podcast.
 
 **Champs dérivés interdits** dans la source : `language`, `groupId`, `ageRange` (+ `id`,
 `slug`, `isActive`, `createdBy`). Ils viennent du **chemin du fichier** :
-`entries/fr/primaire.json` → `language: "fr"`, `groupId: "primaire"`, `ageRange` lu dans
+`entries/fr/age-7-10.json` → `language: "fr"`, `groupId: "age-7-10"`, `ageRange` lu dans
 `groups/groups.json` (traduit selon la langue).
 
 Les champs ➖ encore vides sont complétés **à la construction** depuis le flux (voir
@@ -155,7 +155,7 @@ pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 ```
 
 - **Découpage adaptatif** : par langue, les tranches ≥ 15 entrées ont leur fichier
-  (`dist/fr/tout-petits.json`), les tranches en dessous sont fusionnées
+  (`dist/fr/age-2-5.json`), les tranches en dessous sont fusionnées
   (`dist/en.json`). Le manifeste référence chaque éclat avec `bytes` + `sha256`.
 - **`catalogVersion`** = `YYYY.MM.DD-<nb de commits>` (monotone, dédié au cache).
 - **`dist/episodes/`** : le navigateur ne peut pas lire un RSS tiers (cross-origin) et
@@ -172,7 +172,7 @@ pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 
 | Niveau | Commande                | Ce que contrôle                                              | Durée  |
 | ------ | ----------------------- | ------------------------------------------------------------ | ------ |
-| 1      | `pnpm validate`         | structure S1…S10 (champs, limites, tri, schéma, tranches)    | < 5 s  |
+| 1      | `pnpm validate`         | structure S1…S11 (champs, limites, tri, schéma, tranches)    | < 5 s  |
 | 2      | `pnpm validate`         | doublons D1…D4 (slug, flux, noms proches)                    | < 5 s  |
 | 3      | `pnpm validate:changed` | flux modifiés vs `main` : https, épisodes https, langue, âge | réseau |
 | —      | `pnpm validate:all`     | les 198 flux (audit hebdomadaire)                            | réseau |
@@ -188,6 +188,11 @@ Autres contrôles :
   une tranche ouverte (`ageMax: null`, la dernière) ; `ageRange` affiché doit dire
   exactement les bornes. Les bornes sont **inclusives** et une **borne partagée est
   voulue** : 5 et 7 ans relèvent de deux tranches, le filtre « âge » du site fait l'union.
+- **S11 — identifiants de tranches** : `id` doit être explicite et annoncer ses bornes
+  (`age-2-5`, `age-11-plus`), `slug` (segment d'URL) et `aliases` (anciens ids) sont
+  obligatoires, en minuscules ASCII et **globalement uniques**, jamais un code de langue ;
+  chaque langue du catalogue doit traduire les libellés. Les `aliases` alimentent les
+  redirections du site et la résolution rétrocompatible du `?age=`.
 - **CI** : `pnpm gen:types && git diff --exit-code schema/` en plus de S9, `typecheck`,
   `prettier --check`, `build` + `validate:dist`, niveau 3 sur les flux modifiés.
 - **Échappatoire mainteneur** : libellé `ci:skip-network` sur la PR → saute le niveau 3 et
@@ -220,7 +225,9 @@ pnpm site:build    # 142 pages pré-rendues → site/dist/
 ```
 
 - **Parcours** : `/` (catalogue + recherche instantanée) → `/{langue}/` →
-  `/{langue}/{tranche}/` → `/{langue}/{tranche}/{slug}/` (10 épisodes, JSON-LD).
+  `/{langue}/{slug}/` (segment d'URL de la tranche, ex. `age-7-10`) →
+  `/{langue}/{slug}/{episode}/` (10 épisodes, JSON-LD). Les anciens segments
+  (`aliases`) redirigent vers la nouvelle adresse.
 - **Filtres** : recherche instantanée (`?q=`), langue, **un ou plusieurs âges exacts**
   (`?ages=`, union des tranches : cocher 5 ans remonte les podcasts _Tout-petits_ **et**
   _Maternelle / CP_) et catégorie.

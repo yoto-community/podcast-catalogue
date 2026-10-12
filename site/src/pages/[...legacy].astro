@@ -1,0 +1,53 @@
+---
+/**
+ * Anciennes URL de tranche → page de redirection statique.
+ *
+ * GitHub Pages ne sait pas répondre en 301 : chaque segment antérieur
+ * (`aliases` de `groups/groups.json`, ex. `/fr/tout-petits/`,
+ * `/en/maternelle-cp/animalite/`) est regénéré à chaque build avec un
+ * `meta refresh` + `canonical` vers l'adresse actuelle, pour que les liens
+ * partagés et les moteurs de recherche suivent le renommage.
+ *
+ * Les URL canoniques vivent dans `[lang]/[tranche]/* — cette route ne doit
+ * jamais en produire une (alias ≠ slug, vérifié aussi par S11b en CI).
+ */
+import RedirectLayout from "../layouts/RedirectLayout.astro";
+import { entriesOf, getGroups, getLanguages, groupPath, groupSlug } from "../lib/catalog";
+import type { StaticPath } from "../lib/types";
+
+interface Props {
+  /** Chemin cible, ex. `/fr/age-2-5/`. */
+  to: string;
+  /** Langue du document. */
+  lang: string;
+}
+
+export function getStaticPaths(): Array<StaticPath<Props>> {
+  const paths: Array<StaticPath<Props>> = [];
+  for (const language of getLanguages()) {
+    for (const group of getGroups()) {
+      const canonical = groupSlug(group, language.code);
+      const target = groupPath(language.code, group);
+      const stale = (group.aliases ?? []).filter((alias) => alias !== canonical);
+      if (stale.length === 0) continue;
+      for (const alias of stale) {
+        paths.push({
+          params: { legacy: `${language.code}/${alias}` },
+          props: { to: target, lang: language.code },
+        });
+        for (const entry of entriesOf(language.code, group.id)) {
+          paths.push({
+            params: { legacy: `${language.code}/${alias}/${entry.slug}` },
+            props: { to: `${target}${entry.slug}/`, lang: language.code },
+          });
+        }
+      }
+    }
+  }
+  return paths;
+}
+
+const { to, lang } = Astro.props;
+---
+
+<RedirectLayout to={to} lang={lang} />

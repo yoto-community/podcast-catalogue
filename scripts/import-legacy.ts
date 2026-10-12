@@ -66,11 +66,11 @@ function main(): void {
 
   for (const legacy of flat) {
     const language = (legacy.language ?? "fr").trim().toLowerCase();
-    const groupId = (legacy.groupId ?? "tout-petits").trim();
+    const groupId = (legacy.groupId ?? "age-2-5").trim();
     if (!groups.has(groupId)) {
-      warnings.push(`${legacy.name} : tranche « ${groupId} » inconnue → déplacée dans tout-petits`);
+      warnings.push(`${legacy.name} : tranche « ${groupId} » inconnue → déplacée dans age-2-5`);
     }
-    const targetGroup = groups.has(groupId) ? groupId : "tout-petits";
+    const targetGroup = groups.has(groupId) ? groupId : "age-2-5";
 
     let description = (legacy.description ?? "").replace(/\s+/g, " ").trim();
     if (description.length > LIMITS.description) {

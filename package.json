@@ -1,6 +1,6 @@
 {
   "name": "yoto-podcast-catalog",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "description": "Catalogue statique de podcasts pour enfants — source éditoriale (entries/) validée par CI et publiée en JSON (dist/)",
