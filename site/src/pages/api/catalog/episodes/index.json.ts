@@ -1,14 +1,13 @@
 import { getManifest, getEpisodes, episodesAvailable } from "../../../../lib/catalog";
-import type { APIContext } from "astro";
 
-export async function GET({ request }: APIContext) {
+export async function GET() {
   if (!episodesAvailable()) {
     return new Response(
       JSON.stringify({
         error: "Episodes not yet indexed",
         message: "Run 'pnpm build:episodes' to generate episode data",
       }),
-      { status: 503, headers: apiHeaders() }
+      { status: 503, headers: apiHeaders() },
     );
   }
 
@@ -16,9 +15,14 @@ export async function GET({ request }: APIContext) {
   const items: Array<{ slug: string; count: number; fetchedAt: string }> = [];
 
   for (const entry of manifest.shards) {
-    const eps = getEpisodes(entry.path.replace(/\.json$/, "").split("/").pop()!);
+    const eps = getEpisodes(
+      entry.path
+        .replace(/\.json$/, "")
+        .split("/")
+        .pop()!,
+    );
     if (eps) {
-      items.push({ slug: eps.slug, count: eps.count, fetchedAt: eps.fetchedAt });
+      items.push({ slug: eps.slug, count: eps.count, fetchedAt: eps.fetchedAt ?? "" });
     }
   }
 

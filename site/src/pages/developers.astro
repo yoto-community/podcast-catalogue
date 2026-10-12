@@ -28,7 +28,9 @@ const jsonLd = {
   }),
 };
 
-const baseUrl = Astro.site ? new URL(pageUrl("/"), Astro.site).href : "https://yoto-community.github.io/podcast-catalogue/";
+const baseUrl = Astro.site
+  ? new URL(pageUrl("/"), Astro.site).href
+  : "https://yoto-community.github.io/podcast-catalogue/";
 
 const endpoints = [
   {
@@ -311,26 +313,31 @@ async function fetchCatalog() {
           <tbody>
             {endpoints.map((ep) => (
               <tr>
-                <td><code class="dev__method">{ep.method}</code></td>
-                <td><code>{ep.path}</code></td>
+                <td>
+                  <code class="dev__method">{ep.method}</code>
+                </td>
+                <td>
+                  <code>{ep.path}</code>
+                </td>
                 <td>{ep.description}</td>
-                <td><span class="dev__cache">{ep.cache}</span></td>
+                <td>
+                  <span class="dev__cache">{ep.cache}</span>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <p class="note">
-        <strong>CORS :</strong> Toutes les endpoints acceptent les requêtes cross-origin
-        (<code>Access-Control-Allow-Origin: *</code>). Méthodes : <code>GET</code>, <code>HEAD</code>, <code>OPTIONS</code>.
+        <strong>CORS :</strong> Toutes les endpoints acceptent les requêtes cross-origin (
+        <code>Access-Control-Allow-Origin: *</code>). Méthodes : <code>GET</code>, <code>HEAD</code>
+        , <code>OPTIONS</code>.
       </p>
     </section>
 
     <section class="dev__section">
       <h2>🔍 Recherche</h2>
-      <p>
-        L'endpoint de recherche accepte plusieurs paramètres combinables :
-      </p>
+      <p>L'endpoint de recherche accepte plusieurs paramètres combinables :</p>
       <pre><code set:html={searchDocs} /></pre>
     </section>
 
@@ -371,15 +378,16 @@ async function fetchCatalog() {
       <ul>
         <li>
           <strong>Caching agressif :</strong> Tous les endpoints incluent des en-têtes
-          <code>Cache-Control</code> et <code>stale-while-revalidate</code>. Mettez en cache côté client.
+          <code>Cache-Control</code> et <code>stale-while-revalidate</code>. Mettez en cache côté
+          client.
         </li>
         <li>
           <strong>Pas de rate limiting :</strong> L'API est statique (GitHub Pages). Aucune limite
           stricte, mais soyez raisonnable (&lt; 100 req/min recommandé).
         </li>
         <li>
-          <strong>Données figées :</strong> Le catalogue est reconstruit automatiquement une fois par
-          semaine. Utilisez <code>catalogVersion</code> pour détecter les mises à jour.
+          <strong>Données figées :</strong> Le catalogue est reconstruit automatiquement une fois
+          par semaine. Utilisez <code>catalogVersion</code> pour détecter les mises à jour.
         </li>
         <li>
           <strong>Recherche côté client alternative :</strong> Téléchargez{" "}
@@ -407,8 +415,8 @@ async function fetchCatalog() {
       </ul>
       <p class="note">
         <strong>Stabilité :</strong> Les endpoints <code>/api/catalog*</code> et{" "}
-        <code>/api/search.json</code> sont stables. Les endpoints <code>/api/health.json</code>{" "}
-        et <code>/search-index.json</code> peuvent évoluer pour ajouter des métriques.
+        <code>/api/search.json</code> sont stables. Les endpoints <code>/api/health.json</code> et{" "}
+        <code>/search-index.json</code> peuvent évoluer pour ajouter des métriques.
       </p>
     </section>
 
@@ -422,8 +430,8 @@ async function fetchCatalog() {
         — libres de réutilisation commerciale.
       </p>
       <p>
-        <strong>Attribution recommandée :</strong> Mentionnez le catalogue dans les crédits de
-        votre application ou sur la page « À propos ».
+        <strong>Attribution recommandée :</strong> Mentionnez le catalogue dans les crédits de votre
+        application ou sur la page « À propos ».
       </p>
       <p class="note">
         <strong>Contenus audio :</strong> Les flux RSS et fichiers audio restent la propriété de

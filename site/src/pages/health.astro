@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getManifest, getEpisodes, getEntries } from "../lib/catalog";
+import { getEpisodes, getEntries } from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
 import { pageUrl } from "../lib/url";
 import type { DistEntry, DistEpisodesFile } from "../lib/types";
 
 // Build-time data fetching - no runtime dependencies
-const manifest = getManifest();
 const entries = getEntries();
 
 // Read feed-health issue data from checked-in cache (updated by feed-health.yml workflow)
@@ -43,8 +42,9 @@ function getHealth(entry: DistEntry): PodcastHealth {
     if (feedHealth.status === "ok") feedStatus = "healthy";
     else if (feedHealth.status === "stale") feedStatus = "stale";
     else if (feedHealth.status === "error") feedStatus = "unhealthy";
-  } else if (episodes) {
-    const hoursSinceFetch = (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
+  } else if (episodes?.fetchedAt) {
+    const hoursSinceFetch =
+      (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
     if (hoursSinceFetch < 24) feedStatus = "healthy";
     else if (hoursSinceFetch < 72) feedStatus = "stale";
     else feedStatus = "unhealthy";
@@ -77,19 +77,15 @@ const stats = {
 const description = `État de santé des ${stats.total} flux RSS du catalogue — mis à jour à chaque build.`;
 ---
 
-<BaseLayout
-  title="Santé des flux RSS"
-  description={description}
-  path="/health/"
-  lang="fr"
->
+<BaseLayout title="Santé des flux RSS" description={description} path="/health/" lang="fr">
   <section class="health" aria-labelledby="health-title">
     <header class="health__header">
       <h1 id="health-title">Santé des flux RSS</h1>
       <p class="health__intro">
         Vérification automatique hebdomadaire + indexation toutes les 6h.
         <span>
-          <strong>🟢 Sain</strong> { '<' } 24h · <strong>🟡 Obsolète</strong> 24-72h · <strong>🔴 Défaillant</strong> > 72h ou erreur.
+          <strong>🟢 Sain</strong> {"<"} 24h · <strong>🟡 Obsolète</strong> 24-72h ·{" "}
+          <strong>🔴 Défaillant</strong> > 72h ou erreur.
         </span>
       </p>
       <div class="health__stats" role="status" aria-live="polite">
@@ -101,7 +97,10 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
           <span class="stat__count">{stats.stale}</span>
           <span class="stat__label">Obsolètes</span>
         </span>
-        <span class="stat stat--unhealthy" title="Flux en erreur ou non récupérés depuis plus de 72h">
+        <span
+          class="stat stat--unhealthy"
+          title="Flux en erreur ou non récupérés depuis plus de 72h"
+        >
           <span class="stat__count">{stats.unhealthy}</span>
           <span class="stat__label">Défaillants</span>
         </span>
@@ -113,7 +112,9 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     </header>
 
     <div class="health__controls">
-      <label for="health-filter-status" class="sr-only">Filtrer par statut</label>
+      <label for="health-filter-status" class="sr-only">
+        Filtrer par statut
+      </label>
       <select id="health-filter-status" aria-label="Filtrer par statut">
         <option value="">Tous les statuts</option>
         <option value="unhealthy">🔴 Défaillants</option>
@@ -122,14 +123,18 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
         <option value="unknown">⚪ Inconnus</option>
       </select>
 
-      <label for="health-filter-language" class="sr-only">Filtrer par langue</label>
+      <label for="health-filter-language" class="sr-only">
+        Filtrer par langue
+      </label>
       <select id="health-filter-language" aria-label="Filtrer par langue">
         <option value="">Toutes les langues</option>
         <option value="fr">Français</option>
         <option value="en">English</option>
       </select>
 
-      <label for="health-filter-group" class="sr-only">Filtrer par tranche d'âge</label>
+      <label for="health-filter-group" class="sr-only">
+        Filtrer par tranche d'âge
+      </label>
       <select id="health-filter-group" aria-label="Filtrer par tranche d'âge">
         <option value="">Toutes les tranches</option>
         <option value="tout-petits">Tout-petits (2-5 ans)</option>
@@ -161,8 +166,22 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       <tbody>
         {allHealth.map((health) => {
           const { entry, feedStatus, lastFetch, episodeCount, error, episodes } = health;
-          const statusIcon = feedStatus === "healthy" ? "🟢" : feedStatus === "stale" ? "🟡" : feedStatus === "unhealthy" ? "🔴" : "⚪";
-          const statusLabel = feedStatus === "healthy" ? "Sain" : feedStatus === "stale" ? "Obsolète" : feedStatus === "unhealthy" ? "Défaillant" : "Inconnu";
+          const statusIcon =
+            feedStatus === "healthy"
+              ? "🟢"
+              : feedStatus === "stale"
+                ? "🟡"
+                : feedStatus === "unhealthy"
+                  ? "🔴"
+                  : "⚪";
+          const statusLabel =
+            feedStatus === "healthy"
+              ? "Sain"
+              : feedStatus === "stale"
+                ? "Obsolète"
+                : feedStatus === "unhealthy"
+                  ? "Défaillant"
+                  : "Inconnu";
           const fetchDate = lastFetch ? formatDate(lastFetch) : "—";
           const fetchDay = lastFetch ? isoDay(lastFetch) : null;
 
@@ -171,26 +190,50 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
               data-status={feedStatus}
               data-language={entry.language}
               data-group={entry.groupId}
-              data-search={entry.name.toLowerCase() + " " + entry.publisher.toLowerCase() + " " + (error?.toLowerCase() ?? "")}
+              data-search={
+                entry.name.toLowerCase() +
+                " " +
+                entry.publisher.toLowerCase() +
+                " " +
+                (error?.toLowerCase() ?? "")
+              }
             >
               <td>
-                <a href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)} class="health__podcast-link">
-                  <img src={entry.imageUrl || pageUrl("/placeholder.svg")} alt="" width="32" height="32" loading="lazy" decoding="async" />
+                <a
+                  href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
+                  class="health__podcast-link"
+                >
+                  <img
+                    src={entry.imageUrl || pageUrl("/placeholder.svg")}
+                    alt=""
+                    width="32"
+                    height="32"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <span>{entry.name}</span>
                 </a>
                 <span class="health__publisher">{entry.publisher}</span>
               </td>
-              <td><span class="badge">{entry.language === "fr" ? "Français" : "English"}</span></td>
-              <td><span class="badge">{entry.ageRange}</span></td>
+              <td>
+                <span class="badge">{entry.language === "fr" ? "Français" : "English"}</span>
+              </td>
+              <td>
+                <span class="badge">{entry.ageRange}</span>
+              </td>
               <td class="health__status">
-                <span class="health__status-icon" aria-label={statusLabel}>{statusIcon}</span>
+                <span class="health__status-icon" aria-label={statusLabel}>
+                  {statusIcon}
+                </span>
                 <span class="health__status-label">{statusLabel}</span>
               </td>
               <td>
                 {fetchDate && <time datetime={fetchDay ?? lastFetch}>{fetchDate}</time>}
                 {!fetchDate && <span class="health__never">Jamais</span>}
               </td>
-              <td>{episodeCount} épisode{episodeCount > 1 ? "s" : ""}</td>
+              <td>
+                {episodeCount} épisode{episodeCount > 1 ? "s" : ""}
+              </td>
               <td>
                 {error && (
                   <details class="health__error">
@@ -199,11 +242,19 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
                   </details>
                 )}
                 {episodes && (
-                  <a href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)} class="btn btn--ghost btn--sm">
+                  <a
+                    href={pageUrl(`/${entry.language}/${entry.groupId}/${entry.slug}/`)}
+                    class="btn btn--ghost btn--sm"
+                  >
                     Voir épisodes
                   </a>
                 )}
-                <a href={entry.rssUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--sm">
+                <a
+                  href={entry.rssUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--ghost btn--sm"
+                >
                   Flux RSS
                 </a>
               </td>
@@ -241,18 +292,32 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
       border: 1px solid var(--color-border);
       min-width: 80px;
     }
-    .stat--healthy { border-color: var(--color-success); }
-    .stat--stale { border-color: var(--color-warning); }
-    .stat--unhealthy { border-color: var(--color-error); }
-    .stat--unknown { border-color: var(--color-border); }
+    .stat--healthy {
+      border-color: var(--color-success);
+    }
+    .stat--stale {
+      border-color: var(--color-warning);
+    }
+    .stat--unhealthy {
+      border-color: var(--color-error);
+    }
+    .stat--unknown {
+      border-color: var(--color-border);
+    }
     .stat__count {
       font-size: var(--text-2xl);
       font-weight: 700;
       line-height: 1;
     }
-    .stat--healthy .stat__count { color: var(--color-success); }
-    .stat--stale .stat__count { color: var(--color-warning); }
-    .stat--unhealthy .stat__count { color: var(--color-error); }
+    .stat--healthy .stat__count {
+      color: var(--color-success);
+    }
+    .stat--stale .stat__count {
+      color: var(--color-warning);
+    }
+    .stat--unhealthy .stat__count {
+      color: var(--color-error);
+    }
     .stat__label {
       font-size: var(--text-xs);
       color: var(--color-text-muted);
@@ -360,35 +425,38 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     }
   </style>
 
-  <script is:inline>
-    const table = document.querySelector('[data-health-table]');
-    const rows = table?.querySelectorAll('tbody tr');
-    const statusFilter = document.getElementById('health-filter-status');
-    const languageFilter = document.getElementById('health-filter-language');
-    const groupFilter = document.getElementById('health-filter-group');
-    const searchInput = document.getElementById('health-search');
+  <script>
+    const table = document.querySelector("[data-health-table]");
+    const rows = table?.querySelectorAll<HTMLTableRowElement>("tbody tr");
+    const statusFilter = document.getElementById("health-filter-status") as HTMLSelectElement;
+    const languageFilter = document.getElementById("health-filter-language") as HTMLSelectElement;
+    const groupFilter = document.getElementById("health-filter-group") as HTMLSelectElement;
+    const searchInput = document.getElementById("health-search") as HTMLInputElement;
 
     function applyFilters() {
       if (!rows) return;
       const status = statusFilter?.value;
       const language = languageFilter?.value;
       const group = groupFilter?.value;
-      const search = searchInput?.value.toLowerCase() ?? '';
+      const search = searchInput?.value.toLowerCase() ?? "";
 
       rows.forEach((row) => {
         const matchesStatus = !status || row.dataset.status === status;
         const matchesLanguage = !language || row.dataset.language === language;
         const matchesGroup = !group || row.dataset.group === group;
-        const matchesSearch = !search || row.dataset.search.includes(search);
+        const matchesSearch = !search || row.dataset.search?.includes(search);
 
         row.hidden = !(matchesStatus && matchesLanguage && matchesGroup && matchesSearch);
       });
     }
 
-    [statusFilter, languageFilter, groupFilter].forEach((el) => el?.addEventListener('change', applyFilters));
-    searchInput?.addEventListener('input', () => {
-      clearTimeout((searchInput as any)._timer);
-      (searchInput as any)._timer = setTimeout(applyFilters, 150);
+    let searchDebounceTimer: ReturnType<typeof setTimeout>;
+    [statusFilter, languageFilter, groupFilter].forEach((el) =>
+      el?.addEventListener("change", applyFilters),
+    );
+    searchInput?.addEventListener("input", () => {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(applyFilters, 150);
     });
   </script>
 </BaseLayout>

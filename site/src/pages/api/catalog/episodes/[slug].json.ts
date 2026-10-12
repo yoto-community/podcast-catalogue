@@ -1,7 +1,7 @@
 import { getEpisodes, episodesAvailable, getEntries } from "../../../../lib/catalog";
-import type { APIContext, StaticPath } from "astro";
+import type { APIContext } from "astro";
 
-export async function GET({ params, request }: APIContext) {
+export async function GET({ params }: APIContext) {
   const slug = params.slug as string;
 
   if (!episodesAvailable()) {
@@ -10,7 +10,7 @@ export async function GET({ params, request }: APIContext) {
         error: "Episodes not yet indexed",
         message: "Run 'pnpm build:episodes' to generate episode data",
       }),
-      { status: 503, headers: apiHeaders() }
+      { status: 503, headers: apiHeaders() },
     );
   }
 
@@ -32,7 +32,7 @@ export async function OPTIONS() {
   return new Response(null, { headers: corsHeaders() });
 }
 
-export function getStaticPaths(): StaticPath[] {
+export function getStaticPaths(): Array<{ params: Record<string, string> }> {
   return getEntries().map((entry) => ({
     params: { slug: entry.slug },
   }));

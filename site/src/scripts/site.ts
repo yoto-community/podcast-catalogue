@@ -677,7 +677,11 @@ function bindFiltersToggle(root: HTMLElement): void {
       const visible = runtime.items.filter((item) => !item.hidden).length;
       count.textContent = `${visible} podcast${visible > 1 ? "s" : ""}`;
     });
-    observer.observe(runtime.list, { attributes: true, attributeFilter: ["hidden"], subtree: true });
+    observer.observe(runtime.list, {
+      attributes: true,
+      attributeFilter: ["hidden"],
+      subtree: true,
+    });
   }
 }
 
