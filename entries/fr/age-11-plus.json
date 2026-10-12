@@ -1,7 +1,7 @@
 [
   {
     "name": "Bonjour London",
-    "publisher": "Cheriefm",
+    "publisher": "Chérie FM France",
     "category": "education",
     "rssUrl": "https://feeds.audiomeans.fr/feed/d14e5dff-e6a7-47a3-a2b5-a0b3fc2acdc5.xml",
     "description": "Découvertes culturelles à Londres. Podcast bilingue pour les enfants, qui te raconte une histoire tout en t’apprenant l’anglais !",
@@ -13,7 +13,8 @@
       "arts-culture",
       "langues"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/e2e4eb85-ff12-4472-9f0b-222af7a6719c.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/e2e4eb85-ff12-4472-9f0b-222af7a6719c.jpg",
+    "author": "Chérie FM France"
   },
   {
     "name": "Ma vie d'ado",
@@ -25,16 +26,17 @@
       "emotions-bienetre",
       "humour"
     ],
-    "publisher": "OKAPI - Bayard Jeunesse",
+    "publisher": "Bayard Presse",
     "imageUrl": "https://image.ausha.co/kHVJbtLiX93ieSjcmm3kTPlzQezxvRspxm0UVXlq_1400x1400.jpeg?t=1720527049",
-    "websiteUrl": "https://podcast.ausha.co/ma-vie-d-ado"
+    "websiteUrl": "https://podcast.ausha.co/ma-vie-d-ado",
+    "author": "OKAPI - Bayard Jeunesse"
   },
   {
     "name": "Nature et Zoo - Le Podcast",
     "category": "documentaire",
     "rssUrl": "https://feed.ausha.co/YPmM3sGXx9Om",
     "description": "Dans ce podcast, nous abordons l'actualité des zoos et parcs animaliers en France et évoquons tout un tas de sujets autour de ces derniers. Nous parlons des naissances, des nouveautés, des travaux en cours, des transferts, des espèces menacées et nous mettons l'accent sur les actions de conservation menées par les zoos. Retrouvez-nous au moins une fois par mois pour un épisode retraçant les actualités les plus récentes. Rendez-vous également sur notre site internet, www.natureetzoo.fr (https://natureetzoo.fr) pour suivre toute l'actualité des zoos en France ainsi que sur nos différents réseaux sociaux, Facebook, Instagram et Twitter via @natureetzoo. Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
-    "publisher": "Nature et Zoo - Le Podcast",
+    "publisher": "Victor Lahcen",
     "imageUrl": "https://image.ausha.co/6yI594vplDhv6S6dyT3dsyOIJ4JQc7VBbDVQMxj4_1400x1400.jpeg?t=1671491868",
     "websiteUrl": "https://podcast.ausha.co/nature-et-zoo-le-podcast",
     "tags": [
@@ -44,7 +46,8 @@
       "nature-environnement",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Nature et Zoo - Le Podcast"
   },
   {
     "name": "Pépites d'Histoires",
@@ -56,7 +59,8 @@
     ],
     "publisher": "Studio Biloba",
     "imageUrl": "https://assets.pippa.io/shows/6166b14186d7b1241720b571/1720848966351-538f136556b251baae8ba10cd974ffcd.jpeg",
-    "websiteUrl": "https://www.studiobiloba.fr/pepitesdhistoire"
+    "websiteUrl": "https://www.studiobiloba.fr/pepitesdhistoire",
+    "author": "Studio Biloba"
   },
   {
     "name": "Une autre histoire",
@@ -69,6 +73,7 @@
       "contes-classiques",
       "heros-filles"
     ],
-    "imageUrl": "https://assets.pippa.io/shows/6166bd6786d7b1f6ed20b5c1/1656412620879-ba19ce139ee6e2580ea192f6e222610d.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/6166bd6786d7b1f6ed20b5c1/1656412620879-ba19ce139ee6e2580ea192f6e222610d.jpeg",
+    "author": "Louie Media"
   }
 ]

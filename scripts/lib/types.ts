@@ -158,6 +158,7 @@ export interface ParsedFeed {
   author?: string; // itunes:author — pour publisher (éditeur)
   podcastAuthor?: string; // itunes:author — pour author (animateur/créateur)
   owner?: string; // itunes:owner/itunes:name — organisation propriétaire
+  copyright?: string; // <copyright> — mention de droit, souvent l'éditeur
   categories: string[];
   selfUrl?: string;
   lastBuildDate?: string;

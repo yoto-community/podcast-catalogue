@@ -10,11 +10,12 @@
     "tags": [
       "espace",
       "apprentissages"
-    ]
+    ],
+    "author": "Unique Heritage Media"
   },
   {
     "name": "Animalité",
-    "publisher": "Museedesconfluences",
+    "publisher": "musée des Confluences",
     "category": "education",
     "rssUrl": "https://animalite.lepodcast.fr/rss",
     "description": "Des figures animales mythiques tels que le dragon au Japon, ou Anubis en Égypte, aux espèces animales qui nous entourent comme le loup, écoutez des histoires d’ici et d’ailleurs autour des liens étroits que les humains entretiennent avec les autres animaux.",
@@ -23,7 +24,8 @@
       "animaux",
       "geographie-voyages"
     ],
-    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/c0/06/c00600e11d3e409ef9f8d52e81533c6764354f39.jpg"
+    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/c0/06/c00600e11d3e409ef9f8d52e81533c6764354f39.jpg",
+    "author": "musée des Confluences"
   },
   {
     "name": "Astro-bien",
@@ -40,8 +42,9 @@
       "nature-environnement",
       "humour"
     ],
-    "publisher": "Animal Mystère",
-    "imageUrl": "https://image.ausha.co/KdBnAyI1EInKBrihZ0NEf3DfEMMoyQTd1sUKo54X_1400x1400.jpeg?t=1656599973"
+    "publisher": "Bayard Presse",
+    "imageUrl": "https://image.ausha.co/KdBnAyI1EInKBrihZ0NEf3DfEMMoyQTd1sUKo54X_1400x1400.jpeg?t=1656599973",
+    "author": "Animal Mystère"
   },
   {
     "name": "Belette et Ernest",
@@ -58,7 +61,8 @@
       "nature-environnement"
     ],
     "publisher": "Création Collective",
-    "imageUrl": "https://assets.pippa.io/shows/cover/1725530101221-9fcdd229-0562-48a3-a83e-467441d47b5e.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/cover/1725530101221-9fcdd229-0562-48a3-a83e-467441d47b5e.jpeg",
+    "author": "Création Collective"
   },
   {
     "name": "Bêtes de sciences",
@@ -72,14 +76,15 @@
       "apprentissages"
     ],
     "publisher": "Futura",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/918cec8a-bc9d-4ae0-bd3d-cb40abedcc62.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/918cec8a-bc9d-4ae0-bd3d-cb40abedcc62.jpg",
+    "author": "Futura"
   },
   {
     "name": "Chut, je lis",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/chut-je-lis",
     "description": "Coucou les loulou 😊 Je suis une maman de 2 petites princesses de 10 ans et 2 an passionnée par la lecture & les histoires. Je leurs lis très souvent des histoires et elles adorent ce moment. J'ai donc voulu partager cela avec tous les enfants qui comme elles sont passionnés de lecture. Chacune notre tour avec Lindsay 9 ans nous allons vous racontez de merveilleuses histoires. Abonne-toi pour encore plus de lectures :) N'hésites pas à activer la cloche pour recevoir une notification à chaque nouveaux podcast 😜 ATTENTION LA SUREXPOSITION AUX ÉCRANS EST DANGEREUX POUR VOS ENFANTS. LA LECTURE DE VERITABLES LIVRES EST IRREMPLAÇABLE. BONNES PRATIQUES : PAS D'ECRANS AVANT 3 ANS, LE MATIN, PENDANT LES REPAS & AVANT DE SE COUCHER. LIMITER LES ÉCRANS À 30 MINUTES PAR JOUR. Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
-    "publisher": "Dannyce et Lindsay",
+    "publisher": "Dannyce MONTANEDE",
     "imageUrl": "https://assets.pippa.io/shows/636f537960f7ba00123e3213/1668547633134-885c5d7109a1897e97b95d879cced0e1.jpeg",
     "websiteUrl": "https://feeds.acast.com/public/shows/chut-je-lis",
     "tags": [
@@ -87,11 +92,12 @@
       "contes-classiques",
       "arts-culture",
       "cuisine-alimentation"
-    ]
+    ],
+    "author": "Dannyce et Lindsay"
   },
   {
     "name": "Club Citrouillade",
-    "publisher": "Slate",
+    "publisher": "Marine Baousson",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/club-citrouillade",
     "description": "Une bande de copains et de copines qui jouent, s'amusent, se challengent, s'entraident, sans jamais se disputer! Il y a Vean-Pierre le vampire, Pacôme le fantôme, Momo la momie, Médusa, qui a des cheveux en serpents, Edmond le streumon, Zowie la zombie, Lou le loup-garou.",
@@ -100,7 +106,8 @@
       "animaux",
       "sante-corps"
     ],
-    "imageUrl": "https://assets.pippa.io/shows/62b59c55442a810014be5b51/1657469128536-c259919f1c63b0f7b155f3b95d92388b.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/62b59c55442a810014be5b51/1657469128536-c259919f1c63b0f7b155f3b95d92388b.jpeg",
+    "author": "Romain Baousson"
   },
   {
     "name": "Connais-tu vraiment ?",
@@ -119,7 +126,8 @@
       "arts-culture",
       "humour",
       "technologie"
-    ]
+    ],
+    "author": "Engle"
   },
   {
     "name": "Conte de Noël",
@@ -132,7 +140,8 @@
     ],
     "publisher": "Apprentis d'Auteuil",
     "imageUrl": "https://image.ausha.co/hsvgtxBcsZQQjGT9kFtLEp14rBH2IqIQNmHxKRId_1400x1400.jpeg?t=1698665889",
-    "websiteUrl": "https://podcast.ausha.co/contes-de-noel-2022"
+    "websiteUrl": "https://podcast.ausha.co/contes-de-noel-2022",
+    "author": "Apprentis d'Auteuil"
   },
   {
     "name": "Conte et raconte",
@@ -146,7 +155,8 @@
     ],
     "publisher": "Thomas Buvignier",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/36257581/36257581-1687969327272-e5bd8d0a21ab.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/buvignier"
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/buvignier",
+    "author": "Thomas Buvignier"
   },
   {
     "name": "Conte les moutons",
@@ -156,13 +166,14 @@
     "tags": [
       "contes-classiques"
     ],
-    "publisher": "LILI GOHEL",
+    "publisher": "Aurélie LE MOIGN",
     "imageUrl": "https://assets.pippa.io/shows/cover/1667554487130-2872e0015fa4e0679d8ce2137b1c6689.jpeg",
-    "websiteUrl": "https://feeds.acast.com/public/shows/conte-les-moutons"
+    "websiteUrl": "https://feeds.acast.com/public/shows/conte-les-moutons",
+    "author": "LILI GOHEL"
   },
   {
     "name": "Conte-moi la musique",
-    "publisher": "Philharmoniedeparis",
+    "publisher": "Cité de la musique - Philharmonie de Paris",
     "category": "histoire",
     "rssUrl": "https://feeds.megaphone.fm/conte-moi-la-musique",
     "description": "Des histoires fabuleuses, drôles et poétiques, imaginées à partir des instruments du Musée de la musique.",
@@ -173,11 +184,12 @@
       "arts-culture",
       "humour"
     ],
-    "imageUrl": "https://megaphone.imgix.net/podcasts/04660e7c-6ae5-11eb-a6d5-e3dea643e21c/image/uploads_2F1612893523219-1q5qfc5ee9e-764ede2da79fb8ddb29b571081d63ddf_2FConte-moi-la-musique_1600x1600.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
+    "imageUrl": "https://megaphone.imgix.net/podcasts/04660e7c-6ae5-11eb-a6d5-e3dea643e21c/image/uploads_2F1612893523219-1q5qfc5ee9e-764ede2da79fb8ddb29b571081d63ddf_2FConte-moi-la-musique_1600x1600.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "author": "Philharmonie de Paris | Musée de la musique"
   },
   {
     "name": "Conte-moi l'aventure",
-    "publisher": "Cheriefm",
+    "publisher": "Cherie FM France",
     "category": "histoire",
     "rssUrl": "https://feeds.audiomeans.fr/feed/2634f188-47a0-48e1-b4ae-0ac360ed3ac3.xml",
     "description": "Mondes merveilleux et émotions fortes : bienvenue dans l’univers de Conte-moi l’aventure",
@@ -188,11 +200,12 @@
       "geographie-voyages",
       "emotions-bienetre"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/4ab56215-8a76-4423-aaea-b29e05259aa1.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/4ab56215-8a76-4423-aaea-b29e05259aa1.jpg",
+    "author": "Cherie FM France"
   },
   {
     "name": "Conte-moi l'histoire",
-    "publisher": "Conte-moi-l-histoire",
+    "publisher": "Marie de Frias",
     "category": "education",
     "rssUrl": "https://anchor.fm/s/d98e3e2c/podcast/rss",
     "description": "Podcast qui raconte l'Histoire de France à vos enfants de manière vivante !",
@@ -201,7 +214,8 @@
       "contes-classiques",
       "histoire-france"
     ],
-    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/36399779/36399779-1675261587321-38beffa2575f9.jpg"
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/36399779/36399779-1675261587321-38beffa2575f9.jpg",
+    "author": "Marie de Frias"
   },
   {
     "name": "Conte-moi un mouton",
@@ -214,7 +228,8 @@
     ],
     "publisher": "Ellynn",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/5183295/5183295-1588585993598-e95bcc646ec75.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/ellynnb"
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/ellynnb",
+    "author": "Ellynn"
   },
   {
     "name": "Contes en liberté",
@@ -229,11 +244,12 @@
     ],
     "publisher": "Eve Laudenback",
     "imageUrl": "https://assets.pippa.io/shows/undefined/1606903509140-65ad55e7ebd9f00744244d6f2d1a20fe.jpeg",
-    "websiteUrl": "https://contesenliberte.com/"
+    "websiteUrl": "https://contesenliberte.com/",
+    "author": "Eve Laudenback"
   },
   {
     "name": "Contes musicaux de Passe Partout",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "histoire",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/les-contes-musicaux-de-passe-partout",
     "description": "Passe-Partout, Passe-Carreau et Passe-Montagne invitent petits et grands à bien ouvrir leurs oreilles parce que la musique est partout !",
@@ -244,11 +260,12 @@
       "musique",
       "nature-environnement"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/92bbd295-a28d-4f1a-b2f6-b27c00f64897/5e232ecc-ed8f-4dba-9ce1-b27c00f6489e/image.jpg?t=1738853804&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/92bbd295-a28d-4f1a-b2f6-b27c00f64897/5e232ecc-ed8f-4dba-9ce1-b27c00f6489e/image.jpg?t=1738853804&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Des histoires en musique Elodie Fondacci",
-    "publisher": "Radioclassique",
+    "publisher": "Radio Classique",
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/brvl6HgdLxW8",
     "description": "Découvrez les histoires racontées par Elodie Fondacci sur les plus belles musiques classiques. Pour enchanter les enfants et ceux qui le sont restés…",
@@ -257,23 +274,25 @@
       "contes-classiques",
       "musique"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/651edd1a-37a4-46d1-905a-5d5610af6002.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/651edd1a-37a4-46d1-905a-5d5610af6002.jpg",
+    "author": "Radio Classique"
   },
   {
     "name": "Des histoires merveilleuses",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/d4463877-caa3-4507-9399-f5eb00fde027/podcast_478b479d-f062-4a90-b867-c3f518d234e0.xml",
     "description": "D'hier et d'aujourd'hui, pour grands et petits Vous aimez ce podcast ? Pour écouter tous les épisodes sans limite, rendez-vous sur Radio France",
-    "publisher": "France Culture",
+    "publisher": "Radio France",
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/04/182e234a-b37e-4ec6-9608-43f935f51099/1400x1400_sc_carre.jpg?1791639013556",
     "websiteUrl": "https://www.radiofrance.fr",
     "tags": [
       "histoire-france"
-    ]
+    ],
+    "author": "France Culture"
   },
   {
     "name": "En fin de conte",
-    "publisher": "Theo-et-voo",
+    "publisher": "Théo Lacharmé",
     "category": "histoire",
     "rssUrl": "https://theo-et-voo.lepodcast.fr/rss",
     "description": "Ce conte magique pour enfants met en scène Théo et Voo, respectivement apprenti-magicien et apprentie-fée et qui partent à la découverte du monde afin de répandre le bien tout en combattant des créatures maléfiques!",
@@ -283,11 +302,12 @@
       "contes-classiques",
       "geographie-voyages"
     ],
-    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/8a/55/8a55942803d06f23f248e64c492f57e7d29bd1be.jpg"
+    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/8a/55/8a55942803d06f23f248e64c492f57e7d29bd1be.jpg",
+    "author": "Théo Lacharmé"
   },
   {
     "name": "Enchanté-e",
-    "publisher": "Ramdam",
+    "publisher": "RamDam",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/64a432e060e6100011e21598",
     "description": "RamDam, le réseau national des musiques jeune public présente Enchanté•e ! Une série de podcasts qui raconte la diversité artistique et culturelle de la création musicale jeune public.",
@@ -297,7 +317,8 @@
       "musique",
       "arts-culture"
     ],
-    "imageUrl": "https://assets.pippa.io/shows/64a432e060e6100011e21598/1688544197153-035f04902dcea085a2ea3daf23e809fd.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/64a432e060e6100011e21598/1688544197153-035f04902dcea085a2ea3daf23e809fd.jpeg",
+    "author": "RamDam"
   },
   {
     "name": "Encore une histoire",
@@ -308,13 +329,14 @@
       "contes-classiques",
       "histoires-originales"
     ],
-    "publisher": "Encore une histoire",
+    "publisher": "Benjamin Muller",
     "imageUrl": "https://assets.pippa.io/shows/670d1795df4dd6f896655670/show-cover.jpeg",
-    "websiteUrl": "https://podcast.ausha.co/encore-une-histoire"
+    "websiteUrl": "https://podcast.ausha.co/encore-une-histoire",
+    "author": "Encore une histoire"
   },
   {
     "name": "Envolées contées",
-    "publisher": "Clap",
+    "publisher": "Envolées Contées",
     "category": "histoire",
     "rssUrl": "https://anchor.fm/s/1f354840/podcast/rss",
     "description": "Au travers d'histoires sonores, se déclinant en courts épisodes, laissez vos enfants s'envoler vers d'autres contrées le temps d'un instant. Un brin féministe et écolo.",
@@ -322,7 +344,8 @@
     "tags": [
       "contes-classiques"
     ],
-    "imageUrl": "https://assets.pippa.io/shows/665ddce607c9fe0013d92537/show-cover.jpg"
+    "imageUrl": "https://assets.pippa.io/shows/665ddce607c9fe0013d92537/show-cover.jpg",
+    "author": "Envolées Contées"
   },
   {
     "name": "Et si on se parlait",
@@ -331,11 +354,12 @@
     "description": "Est ce que vous aussi parfois vous vous demandez comment parler des sujets dits « tabous » à vos enfants ? Découvrez le podcast \"Et si on se parlait ?\" créé par Andréa Bescond pour les enfants",
     "publisher": "DISO",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/113ef5c1-8cf5-434e-ba7b-c1659b0d0034.jpg",
-    "websiteUrl": "https://www.instagram.com/etsionseparlait_podcast/"
+    "websiteUrl": "https://www.instagram.com/etsionseparlait_podcast/",
+    "author": "DISO"
   },
   {
     "name": "Graine de Scientifique",
-    "publisher": "Grainedescientifique",
+    "publisher": "Florence Poutriquet",
     "category": "education",
     "rssUrl": "https://anchor.fm/s/45db41ac/podcast/rss",
     "description": "Graine de Scientifique est un podcast scientifique pensé pour les enfants dès 4 ans, voire avant pour les plus curieux. A partir d’expériences ludiques à réaliser avec du matériel disponible dans toutes les maisons comme de la farine, de l’eau ou du sucre, l’enfant expérimente afin de comprendre le fonctionnement du monde. De plus, de petites histoires ou contes viennent consolider l’apprentissage de la semaine et donnent un côté ludique aux sciences.",
@@ -346,7 +370,8 @@
       "geographie-voyages",
       "apprentissages"
     ],
-    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/11619971/11619971-1662065227428-011c03dee7a16.jpg"
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/11619971/11619971-1662065227428-011c03dee7a16.jpg",
+    "author": "Florence Poutriquet"
   },
   {
     "name": "Histoires des enfants / Children's story",
@@ -358,7 +383,8 @@
     ],
     "publisher": "Mes histoires pour grandir",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/7362105/7362105-1610026334875-9517448fac831.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/mes-histoires"
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/mes-histoires",
+    "author": "Mes histoires pour grandir"
   },
   {
     "name": "Histoires du soir",
@@ -370,7 +396,8 @@
     "websiteUrl": "https://podcasters.spotify.com/pod/show/chlo-chanliaud3",
     "tags": [
       "histoires-soir"
-    ]
+    ],
+    "author": "Chloé Chanliaud"
   },
   {
     "name": "Histoires du soir – au dodo",
@@ -383,7 +410,8 @@
     ],
     "description": "Retrouvez ici les meilleures histoires du soir avant de dormir... Hébergé par Audiomeans. Visitez audiomeans.fr/politique-de-confidentialite pour plus d'informations.",
     "publisher": "Engle",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/edecf338-3d6c-44c9-9987-ec17c6c1715d.png"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/edecf338-3d6c-44c9-9987-ec17c6c1715d.png",
+    "author": "Engle"
   },
   {
     "name": "Histoires magiques de Patricia",
@@ -393,9 +421,10 @@
     "tags": [
       "histoires-soir"
     ],
-    "publisher": "Patricia",
+    "publisher": "Patricia MARIE-ANGELIQUE",
     "imageUrl": "https://image.ausha.co/2cA4SXmMjwDHUHrvT6TRLFs0zBGQQlltBfVyeX5J_1400x1400.jpeg?t=1777489304",
-    "websiteUrl": "https://podcast.ausha.co/patricia-histoires-pour-s-endormir-pour-enfants"
+    "websiteUrl": "https://podcast.ausha.co/patricia-histoires-pour-s-endormir-pour-enfants",
+    "author": "Patricia"
   },
   {
     "name": "Histoires magiques -Histoires et contes imaginaires pour les enfants",
@@ -410,7 +439,8 @@
     ],
     "publisher": "AUDIO360",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/b6220aa3-a58c-43ec-9a6e-ba6234ec20d2.jpg",
-    "websiteUrl": "https://www.audio360.fr"
+    "websiteUrl": "https://www.audio360.fr",
+    "author": "AUDIO360"
   },
   {
     "name": "Histoires pour enfants a ecouter",
@@ -419,7 +449,8 @@
     "description": "Histoires pour enfants à écouter rassemble les premiers épisodes de la chaîne de podcasts DISO, pour les enfants de 3 à 9 ans !",
     "publisher": "DISO",
     "imageUrl": "https://assets.pippa.io/shows/64c2a2a9dc471e0011518132/show-cover.jpg",
-    "websiteUrl": "https://paradisopodcasts.com/fr"
+    "websiteUrl": "https://paradisopodcasts.com/fr",
+    "author": "DISO"
   },
   {
     "name": "Histoires pour les oreilles",
@@ -433,7 +464,8 @@
     ],
     "publisher": "François Gibert - Christophe Rio - Illustrations Clémentine Rio",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/45626717/a81dab9a16d00985.jpg",
-    "websiteUrl": "https://soundcloud.com/histoirespourlesoreilles"
+    "websiteUrl": "https://soundcloud.com/histoirespourlesoreilles",
+    "author": "François Gibert - Christophe Rio - Illustrations Clémentine Rio"
   },
   {
     "name": "Histoires racontées par le musée de Bourgoin Jallieu",
@@ -446,9 +478,10 @@
       "arts-culture",
       "sante-corps"
     ],
-    "publisher": "Histoires racontées par le Musée de Bourgoin-Jallieu",
+    "publisher": "Damien Miagoux",
     "imageUrl": "https://image.ausha.co/jK4ln17miXzXdV12UPWkLHRFeX9NWtZKETk1rqTp_1400x1400.jpeg?t=1590399908",
-    "websiteUrl": "https://podcast.ausha.co/histoires-racontees-par-le-musee-de-bourgoin-jallieu"
+    "websiteUrl": "https://podcast.ausha.co/histoires-racontees-par-le-musee-de-bourgoin-jallieu",
+    "author": "Histoires racontées par le Musée de Bourgoin-Jallieu"
   },
   {
     "name": "Il était une histoire",
@@ -460,7 +493,8 @@
     "websiteUrl": "https://iletait-unehistoire.fr/",
     "tags": [
       "histoires-soir"
-    ]
+    ],
+    "author": "Carolane.A"
   },
   {
     "name": "Il était une nouvelle fois",
@@ -472,7 +506,8 @@
       "histoire-france"
     ],
     "publisher": "Engle",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/749907fd-c906-4143-be06-787dfcd86350.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/749907fd-c906-4143-be06-787dfcd86350.jpg",
+    "author": "Engle"
   },
   {
     "name": "Kiddy : les meilleurs podcasts pour enfants",
@@ -480,7 +515,8 @@
     "rssUrl": "https://feeds.megaphone.fm/kidsstory",
     "description": "Kiddy : les meilleurs podcasts pour enfants",
     "publisher": "Engle",
-    "imageUrl": "https://megaphone.imgix.net/podcasts/a1d3aa2e-8c54-11ed-a200-af8865c7a599/image/Kiddy.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
+    "imageUrl": "https://megaphone.imgix.net/podcasts/a1d3aa2e-8c54-11ed-a200-af8865c7a599/image/Kiddy.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "author": "Engle"
   },
   {
     "name": "Kid's story",
@@ -493,7 +529,8 @@
     ],
     "publisher": "Studio KODOMO",
     "imageUrl": "https://artworks.360.audion.fm/aeb15efe-cfef-4128-a9c7-97de0373d0ac.jpg?width=3000&height=3000",
-    "websiteUrl": "https://podcasts.360.audion.fm/en/kidstory-les-meilleurs-contes-pour-enfants-1"
+    "websiteUrl": "https://podcasts.360.audion.fm/en/kidstory-les-meilleurs-contes-pour-enfants-1",
+    "author": "Studio KODOMO"
   },
   {
     "name": "La bande a blou",
@@ -505,11 +542,12 @@
       "apprentissages"
     ],
     "publisher": "Unique Heritage Media",
-    "imageUrl": "https://assets.pippa.io/shows/6385d2413201510011968eb1/1773394748339-bdddce61-1dd7-45bb-9e6d-cc59e404c156.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/6385d2413201510011968eb1/1773394748339-bdddce61-1dd7-45bb-9e6d-cc59e404c156.jpeg",
+    "author": "Unique Heritage Media"
   },
   {
     "name": "La botanique du coeur",
-    "publisher": "Radio",
+    "publisher": "La botanique du coeur pour les enfants",
     "category": "education",
     "rssUrl": "https://anchor.fm/s/3e5def4c/podcast/rss",
     "description": "Pour apprendre aux enfants à réguler leurs émotions et leur donner les clés du bonheur, je propose des podcasts éducatifs basés sur la psychologie positive et toute la psychologie de la 3e vague pour apprendre aux enfants avec bienveillance dès leur plus jeune âge, à prendre soin d'eux même, à faire connaissance avec leurs émotions, leur esprit et apprendre à cultiver leur être comme une belle plante. Avec la botanique du coeur, on apprend à devenir son propre jardinier du coeur, on apprend à vivre en harmonie avec nos émotions, nos pensées et nos ressentis.",
@@ -521,11 +559,12 @@
       "philosophie",
       "sante-corps"
     ],
-    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/10363435/10363435-1605450270965-e4f0169043f01.jpg"
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/10363435/10363435-1605450270965-e4f0169043f01.jpg",
+    "author": "La botanique du coeur pour les enfants"
   },
   {
     "name": "La grande histoire de pomme d'Api",
-    "publisher": "Pommedapi",
+    "publisher": "Bayard Presse",
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/B6r8OclKP6gn",
     "description": "Les plus belles histoires pour enfants du magazine Pomme d'Api. Pour enfants de 3 à 6 ans et à leurs familles, aux petits de la petite à la grande section de maternelle et à tous ceux qui vivent et travaillent avec eux.",
@@ -533,7 +572,8 @@
     "tags": [
       "personnages-recurrents"
     ],
-    "imageUrl": "https://image.ausha.co/ZvneIxFuuDouEZTgDWn7x0K68CMVNtTEohyQDhTx_1400x1400.jpeg?t=1721231834"
+    "imageUrl": "https://image.ausha.co/ZvneIxFuuDouEZTgDWn7x0K68CMVNtTEohyQDhTx_1400x1400.jpeg?t=1721231834",
+    "author": "La grande histoire de Pomme d'Api"
   },
   {
     "name": "La tête dans les histoires",
@@ -547,7 +587,8 @@
     ],
     "publisher": "La Tête dans les Histoires",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/24700920/a3d92370704883fd.jpeg",
-    "websiteUrl": "https://keeku.co/podcasts/emission/17/la-tete-dans-les-histoires"
+    "websiteUrl": "https://keeku.co/podcasts/emission/17/la-tete-dans-les-histoires",
+    "author": "La Tête dans les Histoires"
   },
   {
     "name": "La voix haute",
@@ -559,11 +600,12 @@
     ],
     "publisher": "Matthieu Farcy",
     "imageUrl": "https://uploads.podcloud.fr/uploads/covers/89/4a/894a112237242f378ba2477ce2361af9aa7affd8.jpg",
-    "websiteUrl": "https://lavoixhaute.wordpress.com/"
+    "websiteUrl": "https://lavoixhaute.wordpress.com/",
+    "author": "Matthieu Farcy"
   },
   {
     "name": "L'Afrique en conte",
-    "publisher": "Rfi",
+    "publisher": "France Médias Monde",
     "category": "histoire",
     "rssUrl": "https://www.rfi.fr/fr/podcasts/l-afrique-en-conte/podcast",
     "description": "Contes africains Une série podcast de contes africains collectés en Côte d'Ivoire et adaptés sur place sous forme de fictions sonores.",
@@ -572,7 +614,8 @@
       "contes-classiques",
       "geographie-voyages"
     ],
-    "imageUrl": "https://s.rfi.fr/media/display/29e0d5a6-434a-11ef-9c0a-005056bfb2b6/w:1400/p:1x1/itunes-3000x3000-Afrique-en-conte_v4.jpg"
+    "imageUrl": "https://s.rfi.fr/media/display/29e0d5a6-434a-11ef-9c0a-005056bfb2b6/w:1400/p:1x1/itunes-3000x3000-Afrique-en-conte_v4.jpg",
+    "author": "RFI"
   },
   {
     "name": "Le Chemin des songes",
@@ -588,7 +631,8 @@
     ],
     "publisher": "AUDIO360",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/5f06b58e-eeb2-4e0f-936f-200e8ab44998.jpg",
-    "websiteUrl": "https://www.audio360.fr"
+    "websiteUrl": "https://www.audio360.fr",
+    "author": "AUDIO360"
   },
   {
     "name": "Le Chérie Kids",
@@ -601,11 +645,12 @@
     "tags": [
       "apprentissages",
       "sante-corps"
-    ]
+    ],
+    "author": "Cherie FM France"
   },
   {
     "name": "Le confin des contes",
-    "publisher": "Francebleu",
+    "publisher": "Radio France",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_20982.xml",
     "description": "30 histoires pleines d'humour et de tendresse, comme Nicolas Turon sait si bien les écrire et les raconter, une série de contes à découvrir en famille.",
@@ -615,11 +660,13 @@
       "apprentissages",
       "humour"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/06/21d7df07-334d-4dd0-9192-1f7b7e353c00/1400x1400_sc_sc_sc_carre.jpg?1791614950203"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/06/21d7df07-334d-4dd0-9192-1f7b7e353c00/1400x1400_sc_sc_sc_carre.jpg?1791614950203",
+    "author": "ICI Lorraine (Moselle et Pays Haut)"
   },
   {
     "name": "le long de la rivière",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Musique",
     "category": "histoire",
     "rssUrl": "https://radio-france-rss.aerion.workers.dev/rss/dd73205b-4835-4616-baef-c6638e437d95",
     "description": "Octave et Mélo partent pour une grande aventure jusqu'à la mer en suivant le cours de la rivière. Sur leur route, ils croisent un aigle, un pic-vert, un héron et des mouettes qui vont les aider dans leur quête. Avec les musiciens de l’Orchestre Philharmonique de Radio France.",
@@ -636,7 +683,8 @@
   },
   {
     "name": "le long de la rivière (chansons)",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Musique",
     "category": "histoire",
     "rssUrl": "https://radio-france-rss.aerion.workers.dev/rss/f9fadb1f-b450-421b-beca-a7ce2073bb9b",
     "description": "Chante les comptines des aventures d'Octave et Mélo : le long de la rivière. 6 comptines en compagnie des grives, de l'aigle, du Pic vert, du héron, des mouettes et du goéland. Avec la participation exceptionnelle des musiciens de l’Orchestre Philharmonique de Radio France.",
@@ -657,13 +705,14 @@
     "tags": [
       "contes-classiques"
     ],
-    "publisher": "Marie Corseri",
+    "publisher": "Studio Jean-Grizzly",
     "imageUrl": "https://assets.pippa.io/shows/63de82504261050011bc3852/1677041250039-9478a6c1ff7e4c36f5cff66674f24318.jpeg",
-    "websiteUrl": "https://www.lepetitgarconmagique.com/"
+    "websiteUrl": "https://www.lepetitgarconmagique.com/",
+    "author": "Marie Corseri"
   },
   {
     "name": "Le podcast du musée des confluences",
-    "publisher": "Jeunessemdc",
+    "publisher": "musée des Confluences",
     "category": "histoire",
     "rssUrl": "https://jeunessemdc.lepodcast.fr/rss",
     "description": "Sélections d'ouvrages et contes pour les tout-petits.",
@@ -673,7 +722,8 @@
       "arts-culture",
       "politique-societe"
     ],
-    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/54/9f/549f9e1051acd0d787ca43530beb0b75f83d2e40.jpg"
+    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/54/9f/549f9e1051acd0d787ca43530beb0b75f83d2e40.jpg",
+    "author": "musée des Confluences"
   },
   {
     "name": "Le royaume des contes : histoires audio pour enfants",
@@ -686,7 +736,8 @@
       "contes-classiques"
     ],
     "publisher": "Ouest-France",
-    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/42d17e51-795f-447d-9f78-449648f93423/emission/2092/c724d69f-ec22-4590-b87a-5c2daed95b86.jpg"
+    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/42d17e51-795f-447d-9f78-449648f93423/emission/2092/c724d69f-ec22-4590-b87a-5c2daed95b86.jpg",
+    "author": "Ouest-France"
   },
   {
     "name": "Les aventures de Konpé Manikou",
@@ -698,11 +749,12 @@
       "apprentissages"
     ],
     "publisher": "Tann",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/aa282fb6-e05e-4c7c-9a79-5831e4dffbab.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/aa282fb6-e05e-4c7c-9a79-5831e4dffbab.jpg",
+    "author": "Tann"
   },
   {
     "name": "Les aventures de Rodolphe et Gala",
-    "publisher": "Rodolpheetgala",
+    "publisher": "Studio Fantask",
     "category": "histoire",
     "rssUrl": "https://feeds.360.audion.fm/leZ_H2YSY_PSThl3IR7-O",
     "description": "Les aventures de Rodolphe et Gala, la série audio qui embarque vos enfants dans un monde fantastique, rempli de personnages haut-en-couleur",
@@ -710,11 +762,13 @@
     "tags": [
       "geographie-voyages"
     ],
-    "imageUrl": "https://artworks.360.audion.fm/097ec370-1709-4ae3-a1ac-05fdbed6b98e.webp?width=3000&height=3000"
+    "imageUrl": "https://artworks.360.audion.fm/097ec370-1709-4ae3-a1ac-05fdbed6b98e.webp?width=3000&height=3000",
+    "author": "Cecilia Dorai & Studio Fantask"
   },
   {
     "name": "Les aventures de Tintin",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Culture",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_19904.xml",
     "description": "Des Cigares du Pharaon aux Sept Boules de cristal, écoutez toutes les aventures de Tintin adaptées en fictions radiophoniques et podcasts inédits.",
@@ -727,7 +781,8 @@
   },
   {
     "name": "Les aventures d'Octave et Mélo",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Musique",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_23119.xml",
     "description": "Octave et Mélo deux copains, voisins et musiciens partent à l'aventure ! De la ferme jusqu'à leur bain, du sommet de la montagne jusqu'au jardin. Ils en font des découvertes ! Et la musique est toujours là pour les accompagner !",
@@ -742,7 +797,8 @@
   },
   {
     "name": "Les contes de la maison ronde",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Musique",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_22940.xml",
     "description": "Contes populaires réécrits par des auteurs d’aujourd’hui avec de la belle musique jouée par les formations musicales de Radio France. Des histoires pour les grands et les petits, avec la participation de Claudia Tagbo, Julie Depardieu et Elie Semoun.",
@@ -764,11 +820,12 @@
       "geographie-voyages"
     ],
     "publisher": "Engle",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/0694c1ed-41d2-476b-b526-f40e8b1a2247.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/0694c1ed-41d2-476b-b526-f40e8b1a2247.jpg",
+    "author": "Engle"
   },
   {
     "name": "Les dents et dodo",
-    "publisher": "Bfmtv",
+    "publisher": "BFM",
     "category": "histoire",
     "rssUrl": "https://feeds.simplecast.com/Y_A8bQt7",
     "description": "3 min c’est la durée recommandée pour le brossage de dents, 3 min c’est aussi la durée du podcast « Les dents et dodo » destiné aux enfants pour les accompagner de manière ludique et éducative dans le brossage de dents, en leur faisant découvrir une histoire vraie intemporelle qui s’est passée près ou loin de chez eux.",
@@ -778,7 +835,8 @@
       "apprentissages",
       "sante-corps"
     ],
-    "imageUrl": "https://image.simplecastcdn.com/images/5ceeb011-b263-4734-85a4-e574dbf3a850/6acd0cc5-05a8-46e2-826f-d6c18adbc316/3000x3000/les-dents-et-dodo.jpg?aid=rss_feed"
+    "imageUrl": "https://image.simplecastcdn.com/images/5ceeb011-b263-4734-85a4-e574dbf3a850/6acd0cc5-05a8-46e2-826f-d6c18adbc316/3000x3000/les-dents-et-dodo.jpg?aid=rss_feed",
+    "author": "BFMTV"
   },
   {
     "name": "Les Fables de La Fontaine - Intégrale",
@@ -790,7 +848,8 @@
     "tags": [
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Engle"
   },
   {
     "name": "Les histoires de Papy Pierro",
@@ -802,9 +861,10 @@
       "geographie-voyages",
       "apprentissages"
     ],
-    "publisher": "Les Histoires de Papy Pierro",
+    "publisher": "Pierre Hernando",
     "imageUrl": "https://image.ausha.co/zVm5XF53jwhqADBa0BdHT1yENUzW8Kr9QQQTL5lD_1400x1400.jpeg?t=1631732309",
-    "websiteUrl": "https://podcast.ausha.co/les-histoires-de-papy-pierro"
+    "websiteUrl": "https://podcast.ausha.co/les-histoires-de-papy-pierro",
+    "author": "Les Histoires de Papy Pierro"
   },
   {
     "name": "Les Histoires de Raoul Gomez",
@@ -819,11 +879,11 @@
       "contes-classiques",
       "musique",
       "humour"
-    ]
+    ],
+    "author": "Claire Lou Gaillard"
   },
   {
     "name": "Les histoires du pince oreille",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_20977.xml",
     "description": "Fictions radiophoniques inventives pour les enfants, pleines de bruits et de douceur, pour s'amuser, apprendre et rêver...",
@@ -832,7 +892,9 @@
       "histoires-soir",
       "apprentissages"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2022/10/fa62730b-2510-4ac9-bb25-e1abae2aae2e/1400x1400_sc_les-histoires-du-pince-oreille.jpg?1791561611488"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2022/10/fa62730b-2510-4ac9-bb25-e1abae2aae2e/1400x1400_sc_les-histoires-du-pince-oreille.jpg?1791561611488",
+    "publisher": "Radio France",
+    "author": "France Culture"
   },
   {
     "name": "Les histoires du soir (AirZen Radio)",
@@ -849,11 +911,12 @@
       "apprentissages",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "AirZen Radio"
   },
   {
     "name": "Les Histoires du soir d'Alexandra et Cécile",
-    "publisher": "Leshistoiresdusoir",
+    "publisher": "Alexandra MICHEL et Cécile BATAILLER",
     "category": "histoire",
     "rssUrl": "https://anchor.fm/s/55393000/podcast/rss",
     "description": "Besoin d'une histoire du soir originale ? Les histoires d'Alexandra et Cécile, la chaîne des podcasts pour les petits et les un peu plus grands!",
@@ -863,7 +926,8 @@
       "histoires-originales",
       "sante-corps"
     ],
-    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/14198112/e56bdae7e1d07a1a.png"
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/14198112/e56bdae7e1d07a1a.png",
+    "author": "Alexandra MICHEL et Cécile BATAILLER"
   },
   {
     "name": "Les histoires pour s'endormir",
@@ -876,7 +940,8 @@
     ],
     "publisher": "Les histoires pour enfants",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/37411945/37411945-1681998465354-7d4bbf61ea8ef.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/cakecoffee"
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/cakecoffee",
+    "author": "Les histoires pour enfants"
   },
   {
     "name": "Les histoires terrifiantes des bonbons Haribo",
@@ -885,7 +950,8 @@
     "description": "Retrouvez les incroyables aventures de Tagadingo, Crocobarjo et toute la bande des Dragivampires. Des histoires d’halloween pour petits et grands à écouter en famille. Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
     "publisher": "Haribo",
     "imageUrl": "https://assets.pippa.io/shows/5db020b235ae3942270b3a4d/1571907128328-1a0164f6654ff40319bb74f22535bda0.jpeg",
-    "websiteUrl": "https://www.haribo-halloween.com/"
+    "websiteUrl": "https://www.haribo-halloween.com/",
+    "author": "Haribo"
   },
   {
     "name": "Les mini mondes",
@@ -898,7 +964,8 @@
     ],
     "publisher": "Les Mini Mondes",
     "imageUrl": "https://assets.pippa.io/shows/6798ff9d60e68f77d5aa65b0/1740658242339-9989056a-77e9-4d70-a630-8675ff858d37.jpeg",
-    "websiteUrl": "https://lesminimondes.fr/"
+    "websiteUrl": "https://lesminimondes.fr/",
+    "author": "Les Mini Mondes"
   },
   {
     "name": "LES PETITES VOIX DU MERCREDI | LES QUESTIONS EXISTENTIELLES DES ENFANTS !",
@@ -914,7 +981,8 @@
       "philosophie",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "ACTIV RADIO"
   },
   {
     "name": "Les podcasts d'Auden",
@@ -930,13 +998,13 @@
       "sante-corps",
       "cuisine-alimentation"
     ],
-    "publisher": "Les podcasts d'Auden",
+    "publisher": "jérémie Nicolas",
     "imageUrl": "https://image.ausha.co/YCf93Tj89JyIa3PApZ0OS0T82gZKgP77WVfEgYne_1400x1400.jpeg?t=1780463727",
-    "websiteUrl": "https://podcast.ausha.co/les-podcasts-d-auden"
+    "websiteUrl": "https://podcast.ausha.co/les-podcasts-d-auden",
+    "author": "Les podcasts d'Auden"
   },
   {
     "name": "Les p'tits bateaux",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_10137.xml",
     "description": "Les enfants posent des questions, des spécialistes leur répondent.",
@@ -945,7 +1013,9 @@
       "apprentissages",
       "sante-corps"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production/2023/05/67b86ee2-78c7-41a9-9d89-62c95e619036/1400x1400_sc_les-p-tits-bateaux.jpg?1791581885075"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production/2023/05/67b86ee2-78c7-41a9-9d89-62c95e619036/1400x1400_sc_les-p-tits-bateaux.jpg?1791581885075",
+    "publisher": "Radio France",
+    "author": "France Inter"
   },
   {
     "name": "Les voyages de Petit Nuage",
@@ -962,11 +1032,11 @@
       "geographie-voyages",
       "emotions-bienetre",
       "philosophie"
-    ]
+    ],
+    "author": "Lénora Chenilleau"
   },
   {
     "name": "Les zinstrus",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_22142.xml",
     "description": "Un groupe d’enfants débarque à l’Auditorium de la Maison de la radio et de la musique. Les musiciens de l’orchestre sont partis en pause et leurs instruments les attendent sagement sur scène. Soudain, ils s’animent et se mettent à parler ! Mais qui sont-ils vraiment ?",
@@ -975,11 +1045,13 @@
       "musique",
       "sante-corps"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2024/08/f24dec06-c3ca-4a63-b2f9-8d10b78c16df/1400x1400_sc_zintrus-generique.jpg?1791557870761"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2024/08/f24dec06-c3ca-4a63-b2f9-8d10b78c16df/1400x1400_sc_zintrus-generique.jpg?1791557870761",
+    "publisher": "Radio France",
+    "author": "France Musique"
   },
   {
     "name": "Lotus et Cali des histoires qui font un peu peur",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "histoire",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/lotus-et-cali-des-histoires-qui-font-un-peu-peur",
     "description": "Lotus et Cali partent à l’aventure, à leurs risques et périls. Les deux amis devront affronter une créature des mers, des sorcières, un yéti, des épouvantails fous, un loup-garou et des vampires chauves-souris.",
@@ -988,11 +1060,12 @@
       "animaux",
       "emotions-bienetre"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/509056fa-6609-4dbc-a465-b27c00f64932/0d0a37a9-d755-40e8-80b0-b27c00f6493a/image.jpg?t=1738853804&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/509056fa-6609-4dbc-a465-b27c00f64932/0d0a37a9-d755-40e8-80b0-b27c00f6493a/image.jpg?t=1738853804&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Ma maison magique",
-    "publisher": "Podcastics",
+    "publisher": "Ma Maison Magique",
     "category": "histoire",
     "rssUrl": "https://feeds.podcastics.com/podcastics/podcasts/rss/2006_8c3c572f28a4c76e5e08cfbc33a3a17f.rss",
     "description": "Une version anglaise de ce podcast existe, se referrer au podcast \"My home of wonders\".",
@@ -1000,7 +1073,8 @@
     "tags": [
       "langues"
     ],
-    "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/ma-maison-magique.png.d95c7ded3e0ba3fb443e292c49436349.png"
+    "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/ma-maison-magique.png.d95c7ded3e0ba3fb443e292c49436349.png",
+    "author": "Ma Maison Magique"
   },
   {
     "name": "Merci Rémi",
@@ -1012,16 +1086,18 @@
     ],
     "publisher": "Billy the cast",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/38589588-60b1-4057-a494-fdf14c81081f.jpg",
-    "websiteUrl": "https://billythecast.com/merci-remi/"
+    "websiteUrl": "https://billythecast.com/merci-remi/",
+    "author": "Billy the cast"
   },
   {
     "name": "Mes premières histoires",
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/DPPP5twellX1",
     "description": "Le podcast sur l'éducation inclusive et non genrée, des histoires inclusives pour enfants dès 3 ans.",
-    "publisher": "Mes premières histoires",
+    "publisher": "Nawel Jai",
     "imageUrl": "https://image.ausha.co/KKBH9XW3hUt8jHzqgso5IdkArJszrmL93xncZ2kc_1400x1400.jpeg?t=1693490976",
-    "websiteUrl": "https://podcast.ausha.co/mes-premieres-histoires"
+    "websiteUrl": "https://podcast.ausha.co/mes-premieres-histoires",
+    "author": "Mes premières histoires"
   },
   {
     "name": "Mission Curiosité",
@@ -1038,11 +1114,12 @@
       "nature-environnement",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Mission Curiosité"
   },
   {
     "name": "Mon ami Bulle et moi",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "histoire",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/mon-ami-bulle-et-moi",
     "description": "Bulle est un charmant petit garçon qui aime explorer, parler de ses émotions et s’imaginer dans de drôles de situations. Il est toujours accompagné de Momo, son fidèle et grand ami.",
@@ -1051,7 +1128,8 @@
       "emotions-bienetre",
       "humour"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/0cb06c1b-60f1-443b-947f-b27c00f64986/b5e6deaf-a4e4-4b60-8fd2-b27c00f64995/image.jpg?t=1738853804&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/0cb06c1b-60f1-443b-947f-b27c00f64986/b5e6deaf-a4e4-4b60-8fd2-b27c00f64995/image.jpg?t=1738853804&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Nemrod",
@@ -1066,11 +1144,12 @@
     ],
     "publisher": "Sornac",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/9151913/9151913-1677783084847-7a68ff8058901.jpg",
-    "websiteUrl": "https://nemrod.io/"
+    "websiteUrl": "https://nemrod.io/",
+    "author": "Sornac"
   },
   {
     "name": "Passe Partout les rigolades",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "histoire",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/passe-partout-les-rigolades",
     "description": "Cannelle, Pruneau et leurs amis sont les vedettes de petites histoires cocasses à l’ambiance sonore riche et amusante. Jeux, taquineries et moments plus calmes, se côtoient dans ces courts moments de la journée que connaissent bien les tout-petits.",
@@ -1080,7 +1159,8 @@
       "humour",
       "sante-corps"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/9d138f2c-1270-4f23-8bf1-b27c00f649c4/e5e1ddcf-a268-46d2-aac5-b27c00f649cd/image.jpg?t=1738853804&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/9d138f2c-1270-4f23-8bf1-b27c00f649c4/e5e1ddcf-a268-46d2-aac5-b27c00f649cd/image.jpg?t=1738853804&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Paulette la Belette",
@@ -1093,7 +1173,8 @@
     "tags": [
       "emotions-bienetre",
       "nature-environnement"
-    ]
+    ],
+    "author": "Paulette la Belette"
   },
   {
     "name": "Petit Lapin",
@@ -1106,11 +1187,12 @@
       "humour"
     ],
     "publisher": "Engle",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/824fe1f9-4438-47d8-b74b-b0a7be3a357f.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/824fe1f9-4438-47d8-b74b-b0a7be3a357f.jpg",
+    "author": "Engle"
   },
   {
     "name": "Peut contenir des traces de blagues",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "fiction",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/peut-contenir-des-traces-de-blagues",
     "description": "Spectacle d’improvisation où Anaïs Favron reçoit deux invités qui n’ont aucune idée de ce qui va se passer. Eh oui! Tous les sketchs sont improvisés. Les comédiens créent les histoires en temps réel.",
@@ -1121,7 +1203,8 @@
       "arts-culture",
       "humour"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/735b668e-a3b3-4435-9504-b27c00f64a02/3c0aca74-b737-4e57-a5d8-b27c00f64a0f/image.jpg?t=1738853805&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/735b668e-a3b3-4435-9504-b27c00f64a02/3c0aca74-b737-4e57-a5d8-b27c00f64a0f/image.jpg?t=1738853805&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Pierrot et Poupouche",
@@ -1137,7 +1220,8 @@
     ],
     "publisher": "Encore une histoire",
     "imageUrl": "https://assets.pippa.io/shows/6915fcb37a0043834aea013c/1786179085424-66eec8f5-f685-4223-b5a9-4939300759f3.jpeg",
-    "websiteUrl": "https://shows.acast.com/pierrot-et-poupouche"
+    "websiteUrl": "https://shows.acast.com/pierrot-et-poupouche",
+    "author": "Encore une histoire"
   },
   {
     "name": "Popotin et Popotine",
@@ -1150,9 +1234,10 @@
       "humour",
       "sante-corps"
     ],
-    "publisher": "Cécilia Dorai & Studio Fantask",
+    "publisher": "Studio Fantask",
     "imageUrl": "https://artworks.360.audion.fm/ac17a377-c888-45c0-894e-28c5c9506ea2.jpg?width=3000&height=3000",
-    "websiteUrl": "https://podcasts.360.audion.fm/en/popotin-et-popotine-histoires-pour-enfants"
+    "websiteUrl": "https://podcasts.360.audion.fm/en/popotin-et-popotine-histoires-pour-enfants",
+    "author": "Cécilia Dorai & Studio Fantask"
   },
   {
     "name": "Raconte-moi les animaux",
@@ -1167,11 +1252,12 @@
     ],
     "publisher": "Pitchoun Médias",
     "imageUrl": "https://image.ausha.co/xRBEM44wOwHv67TW7yioMFOf7Wxg0oMqFc3r3KAE_1400x1400.jpeg?t=1674223988",
-    "websiteUrl": "https://podcast.ausha.co/raconte-moi-les-animaux"
+    "websiteUrl": "https://podcast.ausha.co/raconte-moi-les-animaux",
+    "author": "Pitchoun Médias"
   },
   {
     "name": "Raconte-moi une bêtise",
-    "publisher": "Slate",
+    "publisher": "Initial Studio",
     "category": "histoire",
     "rssUrl": "https://feeds.360.audion.fm/Mpn0DSy-92wF1uiPKQe9u",
     "description": "«Raconte-moi une bêtise», le podcast drôle et pas sage où des adultes racontent leur plus belle bêtise d’enfance.",
@@ -1180,11 +1266,12 @@
       "contes-classiques",
       "humour"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/b54dc441-277b-483d-bd94-2022f8c9924b.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/b54dc441-277b-483d-bd94-2022f8c9924b.jpg",
+    "author": "Initial Studio"
   },
   {
     "name": "Sam raconte",
-    "publisher": "Baladodiffusion",
+    "publisher": "Télé-Québec",
     "category": "histoire",
     "rssUrl": "https://baladodiffusion.telequebec.tv/rss/sam-raconte",
     "description": "Sam est une petite fille de 5 ans qui aime s'amuser avec les routines du quotidien. À l'aide de comptines faciles à chanter et à mémoriser, Sam accompagne les tout-petits dans leur apprentissage de l'autonomie!",
@@ -1194,7 +1281,8 @@
       "musique",
       "heros-filles"
     ],
-    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/cf10017d-3eec-4196-9c22-b27c00f64a88/cf45059b-f087-4963-9968-b27c00f64a90/image.jpg?t=1738853805&size=Large"
+    "imageUrl": "https://www.omnycontent.com/d/playlist/11345732-c0a9-41d2-aeab-b042010209bb/cf10017d-3eec-4196-9c22-b27c00f64a88/cf45059b-f087-4963-9968-b27c00f64a90/image.jpg?t=1738853805&size=Large",
+    "author": "Télé-Québec"
   },
   {
     "name": "Savez-vous planter les choux?",
@@ -1208,7 +1296,8 @@
     ],
     "publisher": "Billy the cast",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/a3e91999-9fdb-432b-87ab-d77abbf0c791.jpg",
-    "websiteUrl": "https://podcast.ausha.co/savez-vous-planter-les-choux"
+    "websiteUrl": "https://podcast.ausha.co/savez-vous-planter-les-choux",
+    "author": "Billy the cast"
   },
   {
     "name": "Tilibou",
@@ -1222,9 +1311,10 @@
       "histoire-france",
       "philosophie"
     ],
-    "publisher": "Tilibou · Histoires du soir & podcast pour enfants",
+    "publisher": "Mathias Garand",
     "imageUrl": "https://image.ausha.co/c9mv9OFqnXaSZfnNgksFshmgcVGGeHipr3SjaiHd_1400x1400.jpeg?t=1783673203",
-    "websiteUrl": "https://podcast.ausha.co/tilibou"
+    "websiteUrl": "https://podcast.ausha.co/tilibou",
+    "author": "Tilibou · Histoires du soir & podcast pour enfants"
   },
   {
     "name": "Tintamarre et Gazouillis",
@@ -1238,11 +1328,11 @@
       "apprentissages",
       "sante-corps"
     ],
-    "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/tintamarre-et-gazouillis.jpg.48d55a5f961e1840346c48c3b2fd18ab.jpg"
+    "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/tintamarre-et-gazouillis.jpg.48d55a5f961e1840346c48c3b2fd18ab.jpg",
+    "author": "Lirenjeu"
   },
   {
     "name": "Toudou",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_23713.xml",
     "description": "Un podcast 2 en 1 pour les tout-petits et leurs parents ! Une face A : une histoire pour les enfants de 2 à 4 ans avec Toudou le doudou tout mou, tout chou, tout fou ! Une face B : une notice pour comprendre ce que Toudou éveille dans le cerveau des enfants.",
@@ -1250,11 +1340,13 @@
     "tags": [
       "sciences"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/10/67c444d0-f7b1-4063-8efe-26f360d9172c/1400x1400_sc_carre-histoire-de-doudou.jpg?1791629522015"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/10/67c444d0-f7b1-4063-8efe-26f360d9172c/1400x1400_sc_carre-histoire-de-doudou.jpg?1791629522015",
+    "publisher": "Radio France",
+    "author": "France Inter"
   },
   {
     "name": "Une petite souris a l'opera",
-    "publisher": "Operadeparis",
+    "publisher": "Opéra national de Paris",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/62c2e997723f5300143d9285",
     "websiteUrl": "https://www.operadeparis.fr/info/podcast",
@@ -1263,7 +1355,8 @@
       "geographie-voyages"
     ],
     "description": "Un podcast de l'Opéra de Paris, avec la complicité de Jacadi. Nouvel épisode le vendredi. Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
-    "imageUrl": "https://assets.pippa.io/shows/cover/1656940901293-78db5e718bbaf8dca34439571bebd931.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/cover/1656940901293-78db5e718bbaf8dca34439571bebd931.jpeg",
+    "author": "Opéra national de Paris"
   },
   {
     "name": "Wild, le podcast animalier",
@@ -1275,7 +1368,8 @@
       "espace",
       "nature-environnement"
     ],
-    "publisher": "Ambre Gaudet",
-    "imageUrl": "https://assets.pippa.io/shows/64b6753c923f19001147e161/1693821102753-775080ca66bb09885390461c00632cc2.jpeg"
+    "publisher": "Unique Heritage Media",
+    "imageUrl": "https://assets.pippa.io/shows/64b6753c923f19001147e161/1693821102753-775080ca66bb09885390461c00632cc2.jpeg",
+    "author": "Ambre Gaudet"
   }
 ]

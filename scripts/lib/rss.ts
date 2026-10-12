@@ -283,6 +283,9 @@ function parseRssChannel(channel: Record<string, unknown>): ParsedFeed {
   const owner = channel["itunes:owner"] as Record<string, unknown> | undefined;
   const ownerName = text(owner?.["itunes:name"]);
 
+  // <copyright> — mention de droit, souvent l'éditeur
+  const copyright = text(channel["copyright"]);
+
   return {
     title: text(channel["title"]),
     description: text(channel["description"]) ?? text(channel["itunes:summary"]),
@@ -293,15 +296,14 @@ function parseRssChannel(channel: Record<string, unknown>): ParsedFeed {
       text(image?.["url"]) ??
       text(channel["image"]) ??
       undefined,
-    // author : pour publisher (éditeur) — fallback managingEditor/webMaster
-    author:
-      text(channel["itunes:author"]) ??
-      text(channel["managingEditor"]) ??
-      text(channel["webMaster"]),
-    // podcastAuthor : pour author (animateur/créateur) — itunes:author uniquement
+    // author : itunes:author — pour author (animateur/créateur)
+    author: text(channel["itunes:author"]) ?? text(channel["managingEditor"]) ?? text(channel["webMaster"]),
+    // podcastAuthor : itunes:author — pour author (animateur/créateur)
     podcastAuthor: text(channel["itunes:author"]),
-    // owner : organisation propriétaire (itunes:owner/itunes:name)
+    // owner : organisation propriétaire (itunes:owner/itunes:name) — pour publisher
     owner: ownerName,
+    // copyright : mention de droit — pour publisher
+    copyright,
     categories,
     selfUrl,
     lastBuildDate: parseDate(text(channel["lastBuildDate"])),

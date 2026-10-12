@@ -15,23 +15,28 @@ interface Props {
   authors: FilterOption[];
   /** Filtres déjà imposés par la page (masqués dans l'interface). */
   preset?: { language?: string; group?: string };
+  /** Afficher le filtre auteur en permanence (hors section pliable). */
+  showAuthorFilter?: boolean;
   nav?: { label: string; items: NavItem[] };
 }
 
-const { title, intro, entries, languages, groups, categories, authors, preset, nav } = Astro.props;
+const { title, intro, entries, languages, groups, categories, authors, preset, showAuthorFilter, nav } = Astro.props;
 const sorted = sortByName(entries);
 const showLanguages = !preset?.language && languages.length > 1;
 const ages = ageOptions(entries);
 const showAges = !preset?.group && groups.length > 1 && ages.length > 1;
 const showCategories = categories.length > 1;
 const showAuthors = authors.length > 1;
+
+// Build active filters list for initial render (will be enhanced by JS)
+const activeFilters: Array<{ key: string; label: string; value: string }> = [];
 ---
 
 <section class="catalog" data-catalog aria-labelledby="titre-page">
   <header class="catalog__header">
     <h1 id="titre-page">{title}</h1>
     {intro && <p class="catalog__intro">{intro}</p>}
-    <p class="catalog__count" data-count role="status">
+    <p class="catalog__count" data-count role="status" aria-live="polite" aria-atomic="true">
       {plural(entries.length, "podcast")}
     </p>
   </header>
@@ -51,133 +56,134 @@ const showAuthors = authors.length > 1;
     </nav>
   )}
 
-  <form class="filters" role="search" data-search-form>
+  <form class="filters" role="search" data-search-form aria-controls="catalog-list">
+    <!-- Mobile filter toggle button -->
     <button
-      type="button"
       class="filters__toggle"
+      type="button"
       data-filters-toggle
       aria-expanded="false"
       aria-controls="filters-content"
+      hidden
     >
-      <span class="filters__toggle-label" data-toggle-label>
-        <svg
-          class="filters__toggle-icon"
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          width="18"
-          height="18"
-        >
-          <path
-            d="M7 10l5 5 5-5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+      <span class="filters__toggle-label">
+        <svg class="filters__toggle-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
         Filtres
-      </span>
-      <span class="filters__toggle-count" data-toggle-count aria-live="polite" aria-atomic="true">
-        {plural(entries.length, "podcast")}
+        <span class="filters__toggle-count" data-toggle-count>{plural(entries.length, "podcast")}</span>
       </span>
     </button>
 
-    <div id="filters-content" class="filters__content" hidden>
+    <div class="filters__content" id="filters-content" hidden>
       <div class="filters__row">
         <div class="field field--search">
-          <label for="recherche">Rechercher un podcast</label>
-          <div class="field__control">
-            <input
-              id="recherche"
-              type="search"
-              name="q"
-              data-search
-              placeholder="Nom, éditeur, description, catégorie…"
-              autocomplete="off"
-              aria-describedby="recherche-aide"
-            />
-            <kbd class="field__shortcut" aria-hidden="true">
-              /
-            </kbd>
-          </div>
-          <p class="field__help" id="recherche-aide">
-            Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
-          </p>
-        </div>
-
-        {showLanguages && (
-          <div class="field">
-            <label for="filtre-langue">Langue</label>
-            <select id="filtre-langue" data-filter="language">
-              <option value="">Toutes les langues</option>
-              {languages.map((option) => (
-                <option value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {showAges && (
-          <fieldset class="field field--ages">
-            <legend>Âge de l'enfant</legend>
-            <div class="ages">
-              {ages.map((option) => (
-                <label class="age-chip">
-                  <input
-                    class="age-chip__input"
-                    type="checkbox"
-                    name="ages"
-                    value={option.age}
-                    data-age={option.age}
-                    aria-label={`${option.longLabel} — ${plural(option.count, "podcast")}`}
-                    aria-describedby="filtre-age-aide"
-                  />
-                  <span class="age-chip__face">
-                    <span class="age-chip__label">{option.shortLabel}</span>
-                    <span class="age-chip__count" aria-hidden="true">
-                      {option.count}
-                    </span>
-                  </span>
-                </label>
-              ))}
+            <label for="recherche">Rechercher un podcast</label>
+            <div class="field__control">
+              <input
+                id="recherche"
+                type="search"
+                name="q"
+                data-search
+                placeholder="Nom, éditeur, description, catégorie…"
+                autocomplete="search"
+                aria-describedby="recherche-aide"
+              />
+              <kbd class="field__shortcut" aria-hidden="true">
+                /
+              </kbd>
             </div>
-            <p class="field__help" id="filtre-age-aide">
-              Un ou plusieurs âges : la liste affiche les podcasts adaptés à au moins l'un d'eux.
-              Les âges de frontière (5 et 7 ans) relèvent de deux tranches.
+            <p class="field__help" id="recherche-aide">
+              Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
             </p>
-          </fieldset>
-        )}
-
-        {showCategories && (
-          <div class="field">
-            <label for="filtre-categorie">Catégorie</label>
-            <select id="filtre-categorie" data-filter="category">
-              <option value="">Toutes les catégories</option>
-              {categories.map((option) => (
-                <option value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
           </div>
-        )}
 
-        {showAuthors && (
-          <div class="field">
-            <label for="filtre-auteur">Auteur / animateur</label>
-            <select id="filtre-auteur" data-filter="author">
-              <option value="">Tous les auteurs</option>
-              {authors.map((option) => (
-                <option value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+          {showAuthorFilter && showAuthors && (
+            <div class="field field--author-visible">
+              <label for="filtre-auteur-visible">Auteur / animateur</label>
+              <select id="filtre-auteur-visible" data-filter="author">
+                <option value="">Tous les auteurs</option>
+                {authors.map((option) => (
+                  <option value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {showLanguages && (
+            <div class="field">
+              <label for="filtre-langue">Langue</label>
+              <select id="filtre-langue" data-filter="language">
+                <option value="">Toutes les langues</option>
+                {languages.map((option) => (
+                  <option value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {showAges && (
+            <fieldset class="field field--ages">
+              <legend>Âge de l'enfant</legend>
+              <div class="ages">
+                {ages.map((option) => (
+                  <label class="age-chip">
+                    <input
+                      class="age-chip__input"
+                      type="checkbox"
+                      name="ages"
+                      value={option.age}
+                      data-age={option.age}
+                      aria-label={`${option.longLabel} — ${plural(option.count, "podcast")}`}
+                      aria-describedby="filtre-age-aide"
+                    />
+                    <span class="age-chip__face">
+                      <span class="age-chip__label">{option.shortLabel}</span>
+                      <span class="age-chip__count" aria-hidden="true">
+                        {option.count.toString().trim()}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p class="field__help" id="filtre-age-aide">
+                Un ou plusieurs âges : la liste affiche les podcasts adaptés à au moins l'un d'eux.
+                Les âges de frontière (5 et 7 ans) relèvent de deux tranches.
+              </p>
+            </fieldset>
+          )}
+
+          {showCategories && (
+            <div class="field">
+              <label for="filtre-categorie">Catégorie</label>
+              <select id="filtre-categorie" data-filter="category">
+                <option value="">Toutes les catégories</option>
+                {categories.map((option) => (
+                  <option value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {!showAuthorFilter && showAuthors && (
+            <div class="field">
+              <label for="filtre-auteur">Auteur / animateur</label>
+              <select id="filtre-auteur" data-filter="author">
+                <option value="">Tous les auteurs</option>
+                {authors.map((option) => (
+                  <option value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
       </div>
 
       <div class="filters__row filters__row--footer">
@@ -201,13 +207,29 @@ const showAuthors = authors.length > 1;
     </div>
   </form>
 
+  <!-- Active filter chips (populated by JS) -->
+  <div class="active-filters" id="active-filters" aria-live="polite" aria-atomic="true" hidden></div>
+
   <p class="catalog__empty" data-empty hidden>
     Aucun podcast ne correspond à ces filtres.
   </p>
 
-  <ul class="grid" data-list>
+  <ul class="grid" id="catalog-list" data-list>
     {sorted.map((entry) => (
       <PodcastCard entry={entry} />
     ))}
   </ul>
 </section>
+
+<script is:inline>
+  // Minimal inline script to show mobile filter toggle when needed
+  // Full filter logic is in site.ts (hydrated after navigation)
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('[data-filters-toggle]');
+    const content = document.getElementById('filters-content');
+    if (toggle && content) {
+      // Show toggle on mobile (CSS handles visibility)
+      toggle.hidden = false;
+    }
+  });
+</script>

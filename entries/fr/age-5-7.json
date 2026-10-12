@@ -10,11 +10,12 @@
     "tags": [
       "animaux",
       "sciences"
-    ]
+    ],
+    "author": "Adelie"
   },
   {
     "name": "Anne Bonny La reine des pirates",
-    "publisher": "Arteradio",
+    "publisher": "Arte Radio",
     "category": "fiction",
     "rssUrl": "https://www.arteradio.com/xml_sound_serie?seriename=%22LA%20REINE%20DES%20PIRATES%22",
     "description": "Anne Bonny est une pirate, une vraie : au 18e siècle, elle a vécu déguisée en homme sur le bateau du capitaine Jack Rackham. Anne Bonny est célèbre, certains disent même que c'est la reine des pirates. Alors quand elle voit des gamins qui croient qu'être pirate, c'est se courir après avec des sabres en plastique, ça la fait bien rigoler. Pour leur apprendre comment on fait, elle leur raconte son histoire : comment elle est née bâtarde dans un village d'Irlande, comment elle a traversé l'Atlantique à 12 ans avec son père et sa mère pour rejoindre le Nouveau Monde, et comment elle y a rencontré son destin : les pirates et surtout, Jack Rackham et Mary Read, qui deviendront respectivement son amoureux et son amie.La Reine des pirates est une adaptation pour les enfants de la fiction radio La Dernière Nuit d'Anne Bonny. C'est une histoire d'aventure et de liberté, avec des tempêtes, des abordages, des mouettes et bien sûr, des blagues.",
@@ -27,7 +28,8 @@
       "apprentissages",
       "humour"
     ],
-    "imageUrl": "https://cdn.arteradio.com/permanent/arteradio/sites/default/files/baby-bonny-corner.jpg"
+    "imageUrl": "https://cdn.arteradio.com/permanent/arteradio/sites/default/files/baby-bonny-corner.jpg",
+    "author": "ARTE Radio"
   },
   {
     "name": "Artis et Gousse d'Ail",
@@ -39,12 +41,13 @@
       "histoires-soir",
       "apprentissages"
     ],
-    "publisher": "Artis et Gousse d'ail & Studio Fantask",
-    "imageUrl": "https://artworks.360.audion.fm/315011a3-b6ba-4af6-be98-af8bf7aa8c81.jpg?width=3000&height=3000"
+    "publisher": "Studio Fantask",
+    "imageUrl": "https://artworks.360.audion.fm/315011a3-b6ba-4af6-be98-af8bf7aa8c81.jpg?width=3000&height=3000",
+    "author": "Artis et Gousse d'ail & Studio Fantask"
   },
   {
     "name": "Astronomes en herbe",
-    "publisher": "Ouest-track",
+    "publisher": "Ouest Track Radio",
     "category": "education",
     "rssUrl": "https://ouest-track.com/rss-feed-7-311",
     "description": "Venez découvrir l'univers ensemble a bord de la navette de Ouest Track ! Entre fonctionnement de la Voie Lactée, explication des trous noirs ou encore mythologie... Partons ensemble à la découverte de l'espace ! + Petit décollage sans perturbations pour quelques minutes de pédagogie relaxante +",
@@ -55,7 +58,8 @@
       "contes-classiques",
       "apprentissages"
     ],
-    "imageUrl": "https://ouest-track.com/upload/podcasts/photos_podcasts/rss/5f0c70c629a808.51738303_mini.png"
+    "imageUrl": "https://ouest-track.com/upload/podcasts/photos_podcasts/rss/5f0c70c629a808.51738303_mini.png",
+    "author": "Ouest Track Radio"
   },
   {
     "name": "Au pays des histoires",
@@ -72,11 +76,11 @@
       "apprentissages",
       "humour",
       "cuisine-alimentation"
-    ]
+    ],
+    "author": "Gwenn Kerdraon"
   },
   {
     "name": "Bestioles",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/35099478-7c72-4f9e-a6de-1b928400e9e5/rss_22046.xml",
     "description": "Les aventures du monde animal !",
@@ -86,7 +90,8 @@
       "geographie-voyages"
     ],
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/03/2ab6ee98-f90e-441f-8b88-1104efd7f01a/1400x1400_sc_rf_omm_0000038201_ite.jpg",
-    "author": "France Inter"
+    "author": "France Inter",
+    "publisher": "Radio France"
   },
   {
     "name": "Brèves de Nature Sauvage",
@@ -105,7 +110,8 @@
       "sante-corps"
     ],
     "publisher": "Ville de Paris",
-    "imageUrl": "https://image.ausha.co/MMBhqLyopEQ4wk9PAEfLPcIIMeI1jB2kNP6kKLZx_1400x1400.jpeg?t=1616513467"
+    "imageUrl": "https://image.ausha.co/MMBhqLyopEQ4wk9PAEfLPcIIMeI1jB2kNP6kKLZx_1400x1400.jpeg?t=1616513467",
+    "author": "Ville de Paris"
   },
   {
     "name": "Carabistouilles",
@@ -121,7 +127,8 @@
       "arts-culture",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Nadja Maillard"
   },
   {
     "name": "Chut, j'écoute !",
@@ -135,11 +142,12 @@
       "contes-classiques",
       "emotions-bienetre",
       "apprentissages"
-    ]
+    ],
+    "author": "We Tell Stories"
   },
   {
     "name": "Clara et les Sortilèges",
-    "publisher": "Opera-comique",
+    "publisher": "Opéra-Comique",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/63f3a1248f39660011666fd0",
     "websiteUrl": "https://www.opera-comique.com/fr/actualites/clara-et-les-sortileges-le-podcast-jeunesse",
@@ -150,11 +158,12 @@
       "musique",
       "histoire-france",
       "humour"
-    ]
+    ],
+    "author": "Opéra-Comique"
   },
   {
     "name": "Courvole",
-    "publisher": "Feeds",
+    "publisher": "Aurélien Guillot",
     "category": "histoire",
     "rssUrl": "https://feeds.audiomeans.fr/feed/7867649d-5613-4600-aee0-cf8b2195d015.xml",
     "description": "Entre dans le monde de Courvole : participe à l'écriture et l'enregistrement des histoires lors d'ateliers Courvole. Pour les enfants de 5 à 11 ans. Ici, tout est possible.",
@@ -162,7 +171,8 @@
     "tags": [
       "geographie-voyages"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/d301b8f6-166a-4c78-9ed1-47df99fc715a.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/d301b8f6-166a-4c78-9ed1-47df99fc715a.jpg",
+    "author": "Aurélien Guillot"
   },
   {
     "name": "Culture G",
@@ -175,7 +185,8 @@
       "cuisine-alimentation"
     ],
     "publisher": "Studio Biloba",
-    "imageUrl": "https://assets.pippa.io/shows/63b4c24bf4c10f0011e37032/1756389392780-07f23e4b-0f0e-483e-9135-4e1a5c0f14be.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/63b4c24bf4c10f0011e37032/1756389392780-07f23e4b-0f0e-483e-9135-4e1a5c0f14be.jpeg",
+    "author": "Studio Biloba"
   },
   {
     "name": "Curieux de sciences",
@@ -191,9 +202,10 @@
       "philosophie",
       "arts-culture"
     ],
-    "publisher": "Images Doc et Muséum national d'Histoire naturelle",
+    "publisher": "Bayard Presse",
     "imageUrl": "https://image.ausha.co/6GB8odaFzPKRW8wahSZSAYfcJQGy6kO7Mc8VlgLE_1400x1400.jpeg?t=1787664127",
-    "websiteUrl": "https://podcast.ausha.co/curieux-de-science"
+    "websiteUrl": "https://podcast.ausha.co/curieux-de-science",
+    "author": "Images Doc et Muséum national d'Histoire naturelle"
   },
   {
     "name": "Dans le coin du ciboulot",
@@ -207,14 +219,15 @@
     ],
     "publisher": "Institut du Cerveau",
     "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/dans-le-coin-du-ciboulot.png.b4ee3bba3bc697f38d452bc7ffec59ca.png",
-    "websiteUrl": "https://institutducerveau-icm.org/fr/juniors/"
+    "websiteUrl": "https://institutducerveau-icm.org/fr/juniors/",
+    "author": "Institut du Cerveau"
   },
   {
     "name": "Dior Tales",
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/yv2kgI6vZvZJ",
     "description": "Dior présente le podcast Dior Tales pour les enfants La Maison dévoile une nouvelle série de podcasts baptisée Dior Tales, parenthèse sonore qui enchante les fêtes de fin d’année au gré de fabuleuses histoires, racontées aux enfants – en français et en anglais – par Cordelia de Castellane. Découvrez avec émerveillement les contes écrits par la Directrice Artistique de Baby Dior : Le Royaume de Christian Dior ainsi que Christian et la découverte de la magie, deux tomes inspirés de la vie passionnée – et passionnante – du couturier-fondateur, mais aussi L’Extraordinaire Voyage de Monsieur Dior, une odyssée onirique à travers le monde. Incontournable de la littérature jeunesse, La Petite Poucette – d’après l’œuvre originale de Hans Christian Andersen – entraîne petits et grands dans ses aventures, au cœur de la Nature. Des récits singuliers et envoûtants, qui transportent l’imaginaire jusqu’au pays des rêves. /////////////////////////////////////////////////////////////////////////////…",
-    "publisher": "DIOR",
+    "publisher": "Dior",
     "imageUrl": "https://image.ausha.co/bUTTXbvXgoy5y4WJAr4nHufqCN8PXukFowNowjo2_1400x1400.jpeg?t=1607967704",
     "websiteUrl": "https://podcast.ausha.co/diortales",
     "tags": [
@@ -227,7 +240,8 @@
       "nature-environnement",
       "langues",
       "sante-corps"
-    ]
+    ],
+    "author": "DIOR"
   },
   {
     "name": "Écrivons une histoire",
@@ -239,11 +253,12 @@
     "websiteUrl": "https://podcast.ecrivonsunehistoire.com",
     "tags": [
       "langues"
-    ]
+    ],
+    "author": "Écrivons une histoire"
   },
   {
     "name": "En attendant ma lettre le Poudlard",
-    "publisher": "Rss",
+    "publisher": "Harry Potter Québec",
     "category": "histoire",
     "rssUrl": "https://media.rss.com/enattendantmalettredepoudlard/feed.xml",
     "description": "En attendant ma lettre de Poudlard est le premier balado québécois entièrement dédié à Harry Potter, animé par Frédérique Paré, fondatrice de la page Instagram @potter.quebec. En compagnie d'invités, Frédérique se lance dans des discussions à la fois amusantes, critiques et profondes amenant n'importe quel fan à se questionner et à en apprendre davantage sur l'une des oeuvres de fiction les plus populaires au monde. Ce podcast s'adresse à tous les sorciers et sorcières qui attendent encore leur lettre de Poudlard.",
@@ -255,7 +270,8 @@
       "humour",
       "sante-corps"
     ],
-    "imageUrl": "https://assets.pippa.io/shows/67e44b783f025bbde3e67b61/1758662789512-871f05de-c27f-4310-947e-02f2c199f55d.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/67e44b783f025bbde3e67b61/1758662789512-871f05de-c27f-4310-947e-02f2c199f55d.jpeg",
+    "author": "Harry Potter Québec"
   },
   {
     "name": "En cavale",
@@ -267,7 +283,8 @@
     ],
     "publisher": "Éditions En Cavale",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/43857295/9eff0bc4424c7bce.jpg",
-    "websiteUrl": "https://en-cavale.fr/"
+    "websiteUrl": "https://en-cavale.fr/",
+    "author": "Éditions En Cavale"
   },
   {
     "name": "En Cavale - \"Opération Exploratus\"",
@@ -283,14 +300,15 @@
       "emotions-bienetre",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Éditions En Cavale"
   },
   {
     "name": "France Musique est à vous",
     "category": "musique",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/podcast_29eee2d3-a3b7-42e8-932f-c905b8a79be2.xml",
     "description": "Deux heures et demie de découvertes, de chroniques et d'échanges avec les auditeurs pour un monde musical sans complexe et sans frontières. Vous aimez ce podcast ? Pour écouter tous les épisodes sans limite, rendez-vous sur Radio France",
-    "publisher": "France Musique",
+    "publisher": "Radio France",
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/03/3aeb819b-15ca-4b05-8aaa-97afa344189f/1400x1400_sc_rf_omm_0000040258_ite.jpg?1791673874262",
     "websiteUrl": "https://www.radiofrance.fr",
     "tags": [
@@ -298,11 +316,12 @@
       "musique",
       "histoire-france",
       "geographie-voyages"
-    ]
+    ],
+    "author": "France Musique"
   },
   {
     "name": "Histoires d'Animaux",
-    "publisher": "Api",
+    "publisher": "INA",
     "category": "education",
     "rssUrl": "https://api.octopus.saooti.com/rss/emission/15736.rss",
     "description": "Pourquoi les œufs de poules éclosent-ils en même temps ? Les animaux rêvent-ils ? Combien d’heures par jour un chat consacre-t-il à sa toilette ? Savez-vous que les blaireaux avaient des salons de réceptions dans leur terrier ? Jacques Trémolin, chroniqueur animalier hors pair, répond avec humour et sérieux à toutes les questions que peuvent se poser les enfants de 6 à 10 ans sur l’étonnant monde animal. Dans cette première saison, ils découvriront les animaux de la montagne : le chamois, la marmotte, l'ours brun, le lièvre, le vautour et le bouquetin. Un voyage instructif et ludique, pour apprendre en s’amusant ! \"Histoires d'animaux” est une chronique diffusée entre 1976 et 1986, à la radio dans \"Les après-midi de France Inter\" et à la télévision dans “Les visiteurs du mercredi”.",
@@ -317,7 +336,8 @@
       "philosophie",
       "humour"
     ],
-    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/cd5258ba-ddf2-4d85-8e1c-29c5456567dd/emission/15736/c2d3cf7a-4162-4bb4-a267-f2202a3fcfd4.jpg"
+    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/cd5258ba-ddf2-4d85-8e1c-29c5456567dd/emission/15736/c2d3cf7a-4162-4bb4-a267-f2202a3fcfd4.jpg",
+    "author": "INA"
   },
   {
     "name": "Histoires pour enfants de la famille M.",
@@ -330,7 +350,8 @@
     "tags": [
       "contes-classiques",
       "humour"
-    ]
+    ],
+    "author": "lesHistoiresDeLaFamilleM"
   },
   {
     "name": "Histoires pour enfants - La voie des livres",
@@ -345,7 +366,8 @@
       "geographie-voyages",
       "arts-culture",
       "politique-societe"
-    ]
+    ],
+    "author": "Gwenn Lebreton"
   },
   {
     "name": "Il était une fois｜Histoires du soir · Histoires pour enfants · Fables · Histoires originales",
@@ -362,7 +384,8 @@
       "musique",
       "geographie-voyages",
       "sante-corps"
-    ]
+    ],
+    "author": "Pour ceux qui aiment encore les histoires"
   },
   {
     "name": "JE SUIS BIEN ! Histoires Du Soir",
@@ -377,7 +400,8 @@
       "contes-classiques",
       "geographie-voyages",
       "apprentissages"
-    ]
+    ],
+    "author": "JE SUIS BIEN !"
   },
   {
     "name": "Jules et le monde d'Harmonia - Histoire magique et musicale pour les enfants",
@@ -391,21 +415,23 @@
       "musique",
       "geographie-voyages",
       "apprentissages"
-    ]
+    ],
+    "author": "Potion Of Creativity"
   },
   {
     "name": "Katilou, histoires pour les enfants sages... mais pas trop quand même :)",
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/dJPwRHVzY0DX",
     "description": "J’ai écrit ces histoires pour tous les enfants sages (mais pas trop quand même) de 3 à 8 ans. Il y a aussi quelques contes connus que j’ai écrits à ma façon. Et puis j’y ai glissé des petits clins d’oeil pour vous, parents héroïques, qui allez les écouter une fois… mais peut-être deux fois… mille fois (oui je sais 😉🤪). Il parait que des petits de moins de 3 ans, et des plus grands de plus de 8 ans les écoutent aussi et sont contents ! On raconte même qu’une certaine Madame V. les écoute dans sa voiture en allant travailler et qu’ainsi, elle commence sa journée plus détendue… Alors ouvrez grands vos yeux, ça s’passe dans vos oreilles ! 🎧 Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
-    "publisher": "Katilou",
+    "publisher": "kateel dedeyan",
     "imageUrl": "https://image.ausha.co/m6f0FqSmO2sU7yR6LIGygp9rwWCFtk40WttHIzYK_1400x1400.jpeg?t=1752335630",
     "websiteUrl": "https://podcast.ausha.co/la-chevre-et-les-7-chevreaux-enfin-presque",
     "tags": [
       "contes-classiques",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Katilou"
   },
   {
     "name": "KIDICO : l'encyclopédie sonore pour les enfants",
@@ -417,7 +443,8 @@
     "websiteUrl": "https://podcasts.360.audion.fm/en/kidico-l-encyclopedie-sonore-pour-les-enfants-1",
     "tags": [
       "apprentissages"
-    ]
+    ],
+    "author": "Studio Kodomo"
   },
   {
     "name": "La bibliothèque des YOUYOU",
@@ -426,11 +453,11 @@
     "description": "Livres de la bibliothèque de mes enfants lus par leur maman",
     "publisher": "Younsi Marie",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/13182453/13182453-1619213173712-d963e9ffa02b2.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/younsi"
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/younsi",
+    "author": "Younsi Marie"
   },
   {
     "name": "La Discomobile",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_24630.xml",
     "description": "Les légendes de la musique racontées à vos enfants. Le premier podcast de FIP pour les 7 ans et plus, animé par Émilie Blon-Metzinger et réalisé par Alexandre Girard.",
@@ -439,7 +466,9 @@
       "contes-classiques",
       "musique"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/12/db9bff9e-bb6a-453f-8f53-a0dff02ffe81/1400x1400_sc_sc_fip-discomobile-3000x3000.jpg?1791614950100"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/12/db9bff9e-bb6a-453f-8f53-a0dff02ffe81/1400x1400_sc_sc_fip-discomobile-3000x3000.jpg?1791614950100",
+    "publisher": "Radio France",
+    "author": "FIP"
   },
   {
     "name": "La fée Caraboose",
@@ -456,7 +485,8 @@
     ],
     "publisher": "Studio Biloba",
     "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/la-fee-carabosse-histoires-pour-enfants.jpeg.b01afcdd2bf4ff20662fb51eb2588137.jpeg",
-    "websiteUrl": "https://www.podcastics.com/podcast/la-fee-carabosse-histoires-pour-enfants/"
+    "websiteUrl": "https://www.podcastics.com/podcast/la-fee-carabosse-histoires-pour-enfants/",
+    "author": "Studio Biloba"
   },
   {
     "name": "La Grimm Academie",
@@ -470,14 +500,15 @@
     ],
     "publisher": "Guillaume Haubois & Studio Fantask",
     "imageUrl": "https://artworks.360.audion.fm/32d40362-5e3b-4b33-85b5-746388420882.jpg?width=3000&height=3000",
-    "websiteUrl": "https://podcasts.360.audion.fm/en/la-grimm-academie-histoires-pour-enfants"
+    "websiteUrl": "https://podcasts.360.audion.fm/en/la-grimm-academie-histoires-pour-enfants",
+    "author": "Guillaume Haubois & Studio Fantask"
   },
   {
     "name": "L'Amérique pour les kids",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_21797.xml",
     "description": "Et si votre enfant faisait mieux connaissance avec la société américaine avant la présidentielle du 3 novembre ? Il entend souvent parler des États-Unis, surtout en ce moment. Alors donnons-lui quelques clés pour mieux comprendre les enjeux du scrutin. Vous aimez ce podcast ? Pour écouter tous les épisodes sans limite, rendez-vous sur Radio France",
-    "publisher": "France Inter",
+    "publisher": "Radio France",
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2024/10/f359cc05-a349-4954-9b98-cb1af9b330c3/1400x1400_sc_lameriquepourleskids.jpg?1791590051563",
     "websiteUrl": "https://www.radiofrance.fr/franceinter/podcasts/l-amerique-pour-les-kids",
     "tags": [
@@ -485,7 +516,8 @@
       "apprentissages",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "France Inter"
   },
   {
     "name": "Le Chevalier Orange",
@@ -498,14 +530,15 @@
     "tags": [
       "nature-environnement",
       "arts-culture"
-    ]
+    ],
+    "author": "Loïc BURLOT"
   },
   {
     "name": "Le Club de Lulu",
     "category": "education",
     "rssUrl": "https://feed.ausha.co/BNjmJIJLMeM4",
     "description": "Salut, moi c’est Lulu ! J’ai 9 ans et je suis en CM1. J’ai une grande sœur Vaness et mes parents s’appellent Hélène et Jean-Louis…. J’ai aussi plein de copains et de copines... Et il nous arrive plein de trucs tous les jours. Des trucs super chouettes, des petits problèmes aussi ! Comme à toi ! Alors je t’invite au “Club de Lulu”. Là, deux fois par mois, je te raconterai mes histoires et puis tu pourras aussi me raconter les tiennes. Par exemple on pourra s’entre-aider pour savoir comment faire quand on est fâché avec une copine ou un copain ou quand les parents se disputent. Comment faire aussi si on se ronge les ongles ou quand on est en colère parce qu’on ne peut pas jouer avec la tablette... Tu peux aussi écouter ce podcast sur le site lulu.astrapi.com et me laisser tes commentaires. J’y réponds toujours ! Je suis aussi sur Bayam, l’appli de Bayard Jeunesse Enfin, tu peux me retrouver en BD dans le magazine Astrapi, 2 fois par mois. Qui fait ce podcast ? Textes : Lara Mercier et…",
-    "publisher": "Bayard-jeunesse",
+    "publisher": "Bayard Jeunesse",
     "imageUrl": "https://image.ausha.co/Lho6cEO9fowkUdvOI1341M5CQ9WRl08l1YwzFZI3_1400x1400.jpeg?t=1719825450",
     "websiteUrl": "https://podcast.ausha.co/le-club-de-lulu",
     "tags": [
@@ -513,11 +546,12 @@
       "histoire-france",
       "emotions-bienetre",
       "apprentissages"
-    ]
+    ],
+    "author": "Bayard Jeunesse"
   },
   {
     "name": "Le petit bouquineur",
-    "publisher": "Smartlinks",
+    "publisher": "Le Petit Bouquineur - Des aventures sonores pour explorer le monde (Podcast jeunesse)",
     "category": "histoire",
     "rssUrl": "https://feeds.audiomeans.fr/feed/41f5051c-e5b1-4a1b-aa53-37799d52eeff.xml",
     "description": "Des histoires audio ludiques qui éveillent la curiosité de l’enfant sur le monde qui l’entoure !",
@@ -525,7 +559,8 @@
     "tags": [
       "geographie-voyages"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/fe89ec5e-ded2-4e7e-8ba5-d9d63c322022.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/fe89ec5e-ded2-4e7e-8ba5-d9d63c322022.jpg",
+    "author": "Le Petit Bouquineur - Des aventures sonores pour explorer le monde (Podcast jeunesse)"
   },
   {
     "name": "Le quizz du petit quotidien",
@@ -537,16 +572,17 @@
       "apprentissages",
       "humour"
     ],
-    "publisher": "PlayBac",
+    "publisher": "Fanny Zarifi",
     "imageUrl": "https://image.ausha.co/KaIvzqSTiRfeC8GYvwVaQexwMEj70fkZN2n5G5sS_1400x1400.jpeg?t=1586957481",
-    "websiteUrl": "https://podcast.ausha.co/le-quiz-des-incollables"
+    "websiteUrl": "https://podcast.ausha.co/le-quiz-des-incollables",
+    "author": "PlayBac"
   },
   {
     "name": "Les aventures de Bella la vache, (histoires pour enfants)",
     "category": "histoire",
     "rssUrl": "https://feeds.libsyn.com/348275/rss",
     "description": "Les aventures de bella la vache est un podcast indépendant composé d'histoires d'une dizaine de minutes destinées aux enfants, qui racontent les aventures de Bella la vache. Bella est une vache un peu spéciale qui vit d'incroyables aventures avec ses amies Berthan Joséphine et Hilda. Elle vit à Obergurgl, dans les montagnes autrichiennes avec le fermier Gust et son épouse Greta. Et... elle yodle quand elle est heureuse. Les histoires sont écrites et enregistrées par Kristien Kaelen (tante kiki) et illustrées par Sylviane Maisonny. Bella la vache est née en 2012. A peine arrivée à Obergurgl pour quelques jours de vacances en Autriche, Kristien réalisa que les livres des enfants étaient restés à la maison. Impossible de partager ce moment de lecture avec eux, elle inventa alors ce personnage de vache autrichienne qui chante. Bella la vache était née. Découvrez les dessins et coloriages sur le site de Bella : www.bellapodcast.com Et son compte instagram :…",
-    "publisher": "Tante Kiki",
+    "publisher": "kristien Kaelen",
     "imageUrl": "https://static.libsyn.com/p/assets/f/7/f/0/f7f0b4499e3c390b40be95ea3302a6a1/0001-621903119631676587.jpg",
     "tags": [
       "animaux",
@@ -554,7 +590,8 @@
       "musique",
       "nature-environnement",
       "arts-culture"
-    ]
+    ],
+    "author": "Tante Kiki"
   },
   {
     "name": "Les aventures de Papoush et petit pouce mythologie grecque",
@@ -567,7 +604,8 @@
       "geographie-voyages"
     ],
     "publisher": "Ouest-France",
-    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/42d17e51-795f-447d-9f78-449648f93423/emission/1475/5b84460e-cc5f-4a66-9cb9-9af36182a1df.jpg"
+    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/42d17e51-795f-447d-9f78-449648f93423/emission/1475/5b84460e-cc5f-4a66-9cb9-9af36182a1df.jpg",
+    "author": "Ouest-France"
   },
   {
     "name": "Les Aventures de Tintin (60's)",
@@ -581,11 +619,11 @@
       "personnages-recurrents",
       "apprentissages",
       "arts-culture"
-    ]
+    ],
+    "author": "INA"
   },
   {
     "name": "Les aventures du petit nicolas",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_22975.xml",
     "description": "Dans cette série radiophonique, le petit écolier créé par René Goscinny et Jean-Jacques Sempé, nous raconte son monde avec ses yeux d’enfant : son école, Papa, Maman, son chouette tas de copains, Mémé, ses colères ou ses grandes joies. Et nous suivons ses aventures avec un plaisir",
@@ -597,20 +635,23 @@
       "emotions-bienetre",
       "apprentissages"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2021/12/b6ab66da-7b8e-4943-b949-40ade61bce06/1400x1400_rf_omm_0000032727_ite.jpg"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2021/12/b6ab66da-7b8e-4943-b949-40ade61bce06/1400x1400_rf_omm_0000032727_ite.jpg",
+    "publisher": "Radio France",
+    "author": "France Culture"
   },
   {
     "name": "Les aventures du professeur Caillou",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/podcast_9cfc0cf4-6d0d-4ffa-a327-0c099c366d3c.xml",
     "description": "Les aventures de deux géologues pour découvrir le rôle des métaux dans notre quotidien, leurs origines géologiques et certains enjeux associés à leur production et leur recyclage. Vous aimez ce podcast ? Pour écouter tous les épisodes sans limite, rendez-vous sur Radio France",
-    "publisher": "France Inter",
+    "publisher": "Radio France",
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/10/e57a2315-8a52-42d2-8fd7-7acaa3d157b8/1400x1400_sc_carre-les-aventures-du-professeur-caillou.jpg?1791615240192",
     "websiteUrl": "https://www.radiofrance.fr/franceinter/podcasts/les-aventures-du-professeur-caillou",
     "tags": [
       "histoire-france",
       "apprentissages"
-    ]
+    ],
+    "author": "France Inter"
   },
   {
     "name": "Les Aventures Nature de Camille et Léo",
@@ -628,7 +669,8 @@
       "sante-corps",
       "politique-societe",
       "cuisine-alimentation"
-    ]
+    ],
+    "author": "Ekolien"
   },
   {
     "name": "Les CONTES farfelus",
@@ -641,11 +683,11 @@
       "contes-classiques",
       "histoires-originales",
       "humour"
-    ]
+    ],
+    "author": "Relax Petso"
   },
   {
     "name": "Les curieuses histoires du museum",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_22138.xml",
     "description": "L’histoire d’une météorite de 4,6 milliards d’années, ou celle d’une momie Chachapoya. Celle, encore, de Sarcosuchus imperator, un impressionnant crocodile fossile. Tous ces récits vous transportent au plus près de la diversité du vivant.",
@@ -654,7 +696,9 @@
       "dinosaures",
       "sante-corps"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2022/10/6dc23b87-7ed2-4089-8f72-41f80a724392/1400x1400_sc_les-curieuses-histoires-du-muse-um.jpg?1791598993570"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2022/10/6dc23b87-7ed2-4089-8f72-41f80a724392/1400x1400_sc_les-curieuses-histoires-du-muse-um.jpg?1791598993570",
+    "publisher": "Radio France",
+    "author": "France Culture"
   },
   {
     "name": "Les curieux du monde",
@@ -669,7 +713,8 @@
       "geographie-voyages",
       "apprentissages",
       "philosophie"
-    ]
+    ],
+    "author": "Ito Studio"
   },
   {
     "name": "Les Histoires de Nonno",
@@ -685,14 +730,15 @@
       "apprentissages",
       "nature-environnement",
       "humour"
-    ]
+    ],
+    "author": "Sam Malloth"
   },
   {
     "name": "Les histoires de Touk Touk",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/5ec6102aec3e41392d1192a8",
     "description": "Les histoires de Touk Touk : Plongez avec vos enfants dans un podcast captivant où les jeunes explorateurs voyagent à travers la France et le monde. À chaque épisode, ils explorent soit les richesses de la biodiversité, soit s'immergent dans des cultures fascinantes, soit rencontrent des personnages hors du commun. Deux à trois fois par mois, embarquez pour des récits inédits axés sur le voyage, la culture, les traditions, et l'importance de préserver notre environnement. Le podcasts sont souvent liés à nos kits de jeu et d'activités pour aller encore plus loin dans le jeu, l'apprentissage, l'immersion. Retrouvez notre podcast sur notre site internet : www.touk-touk.com et sur Apple Podcast , Google Podcast , Spotify , Deezer , Soundcloud, Stitcher , Acast , Tune in et tous les autres. Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
-    "publisher": "Touk Touk",
+    "publisher": "Florie Deswaziere de Castro",
     "imageUrl": "https://assets.pippa.io/shows/5ec6102aec3e41392d1192a8/1697360837414-dcfc4c17f43fec6fff3c89f7e0f3618b.jpeg",
     "websiteUrl": "https://touk-touk.com",
     "tags": [
@@ -701,11 +747,12 @@
       "geographie-voyages",
       "nature-environnement",
       "arts-culture"
-    ]
+    ],
+    "author": "Touk Touk"
   },
   {
     "name": "Les insectes ont le cafard (Canada) (7-9 ans)",
-    "publisher": "M",
+    "publisher": "Espace pour la vie",
     "category": "histoire",
     "rssUrl": "https://feeds.captivate.fm/balados-jeunesse-espace-pour-la-vie/",
     "description": "Des insectes en détresse reprennent confiance en eux lors de thérapies. Ils réalisent leurs capacités exceptionnelles et leur importance pour la planète.",
@@ -716,7 +763,8 @@
       "emotions-bienetre",
       "nature-environnement"
     ],
-    "imageUrl": "https://artwork.captivate.fm/0ea9c19d-2f73-4d95-a61d-5e17e2d8f183/g_mr-xK1D7TJ7YSLw0HchXUb.jpg"
+    "imageUrl": "https://artwork.captivate.fm/0ea9c19d-2f73-4d95-a61d-5e17e2d8f183/g_mr-xK1D7TJ7YSLw0HchXUb.jpg",
+    "author": "Espace pour la vie"
   },
   {
     "name": "Les intrépides",
@@ -735,11 +783,13 @@
       "apprentissages",
       "humour",
       "sante-corps"
-    ]
+    ],
+    "author": "Sonia Hossenny"
   },
   {
     "name": "Les Maléfiques",
-    "publisher": "Radiofrance",
+    "publisher": "Radio France",
+    "author": "France Bleu",
     "category": "histoire",
     "rssUrl": "https://radio-france-rss.aerion.workers.dev/rss/d86db6cb-1f64-4308-88f3-aaec93320341?fbclid=IwY2xjawRepUxleHRuA2FlbQIxMABicmlkETEzOW1lb0ZBQ3hPa0xiT2tMc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHrydZEukMDyUX8NYl_5-h3Fgr2qgLV_lnf0hv_RZYHyUuYR0jvUBs-whCM_m_aem_5WrNmwYKy07hS-sBXbyMOg",
     "description": "\"Les Maléfiques\", ce sont ces créatures fantastiques qui animent les contes et les légendes partout en France. Des créatures effrayantes... et amusantes dans la voix de Willy Rovelli ! \"Les Maléfiques\", un podcast ICI, disponible notamment sur ici.fr et l'application Radio France. Dragons, elfes, fées ou gnomes, avec des écailles de serpent ou des ailes sur le dos, toutes ces créatures peuplent notre mythologie, de l'Alsace au Rhône, de la Bretagne aux Landes. Dans \"Les Maléfiques\", découvrez leur portrait, raconté par Willy Rovelli, sur la base de recherches documentaires... et d'un peu d'imagination. \"Les Maléfiques\", c'est un podcast pour les enfants de 6 à 11 ans qui ont envie de se raconter des histoires et de se faire peur... mais pas trop !",
@@ -755,7 +805,6 @@
   },
   {
     "name": "Les Odyssées",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_20108.xml",
     "description": "France Inter invite les enfants à se plonger dans les aventures des grandes figures de l'histoire.",
@@ -763,7 +812,9 @@
     "tags": [
       "histoire-france"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/04/2bab1da1-f313-4183-88f3-d31acfdb9079/1400x1400_sc_carre-les-odyssees-avril-2026.jpg?1791628845524"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/04/2bab1da1-f313-4183-88f3-d31acfdb9079/1400x1400_sc_carre-les-odyssees-avril-2026.jpg?1791628845524",
+    "publisher": "Radio France",
+    "author": "France Inter"
   },
   {
     "name": "Les podcasts Okoo",
@@ -778,7 +829,8 @@
       "histoire-france",
       "nature-environnement",
       "arts-culture"
-    ]
+    ],
+    "author": "France Télévisions"
   },
   {
     "name": "Les Pokémon de Sam",
@@ -790,7 +842,8 @@
     "websiteUrl": "https://storage.googleapis.com/podcast-pokemon-public-sam",
     "tags": [
       "apprentissages"
-    ]
+    ],
+    "author": "Les Pokémon de Sam"
   },
   {
     "name": "Les P'tites Histoires",
@@ -802,11 +855,12 @@
       "histoires-originales"
     ],
     "publisher": "Taleming",
-    "imageUrl": "https://assets.voxeus.com/podcasts/assets/images/rs/program/1500/b01cbb0f01a571048956cc2e7f0b31e5a8178535/6cbd3944.png"
+    "imageUrl": "https://assets.voxeus.com/podcasts/assets/images/rs/program/1500/b01cbb0f01a571048956cc2e7f0b31e5a8178535/6cbd3944.png",
+    "author": "Taleming"
   },
   {
     "name": "Les voyages d'Amelia au coeur de l'histoire",
-    "publisher": "Europe1",
+    "publisher": "Europe 1",
     "category": "education",
     "rssUrl": "https://feeds.audiomeans.fr/feed/2524ca60-66fb-42e5-9193-1f4fdc2eb65f.xml",
     "description": "Fiction conçu comme une déclinaison pour les 7-11 ans du podcast natif de référence d’Europe 1 \"Au Cœur de l’Histoire\".",
@@ -814,7 +868,8 @@
     "tags": [
       "geographie-voyages"
     ],
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/f643c6c0-0bbf-4872-a48b-b72f04059c07.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/f643c6c0-0bbf-4872-a48b-b72f04059c07.jpg",
+    "author": "Europe 1"
   },
   {
     "name": "L'Heure du Conteur",
@@ -829,7 +884,8 @@
       "contes-classiques",
       "geographie-voyages",
       "emotions-bienetre"
-    ]
+    ],
+    "author": "L'Heure du Conteur"
   },
   {
     "name": "Lis-moi une histoire",
@@ -844,7 +900,8 @@
       "sante-corps",
       "politique-societe",
       "cuisine-alimentation"
-    ]
+    ],
+    "author": "RTL"
   },
   {
     "name": "Madeleines de Chef.fes",
@@ -859,7 +916,8 @@
       "cuisine-alimentation"
     ],
     "publisher": "Kidsono",
-    "imageUrl": "https://assets.pippa.io/shows/65d8b4b3efcf5f0016f43ca0/1708702379583-c33807a84c1a6a77429148ecfa816b6e.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/65d8b4b3efcf5f0016f43ca0/1708702379583-c33807a84c1a6a77429148ecfa816b6e.jpeg",
+    "author": "Kidsono"
   },
   {
     "name": "Manneken etles inventions belges",
@@ -876,7 +934,8 @@
     ],
     "publisher": "RTBF",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/c8f342df-feb2-4dd7-a2aa-bd67b3c2793d.jpg",
-    "websiteUrl": "https://auvio.rtbf.be/emission/manneken-et-les-inventions-belges-31276"
+    "websiteUrl": "https://auvio.rtbf.be/emission/manneken-et-les-inventions-belges-31276",
+    "author": "RTBF"
   },
   {
     "name": "Méditation chakras pour enfants",
@@ -889,14 +948,15 @@
     "tags": [
       "emotions-bienetre",
       "sante-corps"
-    ]
+    ],
+    "author": "MARION COGNARD"
   },
   {
     "name": "Mille et une histoires",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/19334001-b713-4e78-b490-9a7028c0f412",
     "description": "Laissez-vous emporter dans l’univers de Mille et une histoires, des contes du monde entier, mis en musique et lu par des comédiens. Les contes Mille et une histoires sont issus du magazine éponyme édité par Fleurus Presse, marque du groupe Unique Heritage Média Un podcast produit par Unique Heritage Media Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
-    "publisher": "Unique Heritage Media",
+    "publisher": "Ossant Samuel",
     "imageUrl": "https://assets.pippa.io/shows/61a7b8480fef25e1808decd8/1696434344781-3b7e56891c1dc32f71fc028a4f5c08c6.jpeg",
     "websiteUrl": "https://www.fleuruspresse.com/magazines/pour-les-plus-petits/mille-et-une-histoires",
     "tags": [
@@ -904,7 +964,8 @@
       "contes-classiques",
       "musique",
       "geographie-voyages"
-    ]
+    ],
+    "author": "Unique Heritage Media"
   },
   {
     "name": "Millie D. et Farfelu ‐ RTS",
@@ -919,7 +980,8 @@
       "geographie-voyages",
       "apprentissages",
       "heros-filles"
-    ]
+    ],
+    "author": "RTS - Radio Télévision Suisse"
   },
   {
     "name": "Mission Pourquoi",
@@ -935,7 +997,8 @@
     ],
     "publisher": "AUDIO360",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/d4f3d2ef-8883-4f26-866b-31654d7a2b89.jpg",
-    "websiteUrl": "https://www.audio360.fr"
+    "websiteUrl": "https://www.audio360.fr",
+    "author": "AUDIO360"
   },
   {
     "name": "Mythes et légendes",
@@ -948,7 +1011,8 @@
     ],
     "publisher": "Marc Jer",
     "imageUrl": "https://uploads.podcloud.fr/uploads/covers/be/aa/beaaed518bb71101194ea81915e94b528f12b50c.jpg",
-    "websiteUrl": "https://mythes-et-legendes.lepodcast.fr/"
+    "websiteUrl": "https://mythes-et-legendes.lepodcast.fr/",
+    "author": "Marc Jer"
   },
   {
     "name": "MYTHOLOGIE - Mes histoires",
@@ -960,7 +1024,8 @@
     ],
     "publisher": "Studio Kodomo",
     "imageUrl": "https://artworks.360.audion.fm/33440d92-d938-4d63-b98c-b52f999a705e.jpg?width=3000&height=3000",
-    "websiteUrl": "https://podcasts.360.audion.fm/en/mythologie-mes-histoires"
+    "websiteUrl": "https://podcasts.360.audion.fm/en/mythologie-mes-histoires",
+    "author": "Studio Kodomo"
   },
   {
     "name": "Orbinéa Le Monde des Odyssées | Documentaire Podcast Histoire pour dormir Livre Audio Enfant & Adulte",
@@ -975,7 +1040,8 @@
       "histoires-soir",
       "geographie-voyages",
       "apprentissages"
-    ]
+    ],
+    "author": "Orbinea Studio"
   },
   {
     "name": "Petit vulgaire",
@@ -985,13 +1051,13 @@
     "tags": [
       "sciences"
     ],
-    "publisher": "Marine baousson",
+    "publisher": "Marine Baousson",
     "imageUrl": "https://assets.pippa.io/shows/61694f8286d7b17b4c20b80c/1756888815005-e5ff25e6-9bf3-4783-8e9b-e88143dde71b.jpeg",
-    "websiteUrl": "https://www.instagram.com/vulgaire_lepodcast/"
+    "websiteUrl": "https://www.instagram.com/vulgaire_lepodcast/",
+    "author": "Marine baousson"
   },
   {
     "name": "Une histoire et Oli",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_19721.xml",
     "description": "Vous cherchez des histoires du soir pour vos enfants ? Découvrez les nouveaux épisodes de la série audio France Inter : des contes pour les 5-7 ans, imaginés et racontés par de nombreux auteurs tels que Chloé Delaume, Katherine Pancol, Zep, Delphine de Vigan, Guillaume Meurice, Alain Mabanckou…",
@@ -1001,6 +1067,8 @@
       "contes-classiques",
       "histoire-france"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/10/e9ad5830-54bd-4400-b908-5a51daa2b96c/1400x1400_sc_carre-une-histoire-et-oli-generique.jpg?1791628813017"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2025/10/e9ad5830-54bd-4400-b908-5a51daa2b96c/1400x1400_sc_carre-une-histoire-et-oli-generique.jpg?1791628813017",
+    "publisher": "Radio France",
+    "author": "France Inter"
   }
 ]

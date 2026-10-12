@@ -40,9 +40,14 @@ export async function enrichFromFeed(
   if (!entry.imageUrl && parsed.imageUrl && !urlProblem(parsed.imageUrl)) {
     fill.imageUrl = parsed.imageUrl.trim();
   }
-  if (!entry.publisher && parsed.author) {
-    fill.publisher = truncate(parsed.author, LIMITS.publisher);
+  // publisher : organisation propriétaire (itunes:owner/itunes:name) ou <copyright>
+  if (!entry.publisher) {
+    const publisher = parsed.owner ?? parsed.copyright ?? parsed.author;
+    if (publisher) {
+      fill.publisher = truncate(publisher, LIMITS.publisher);
+    }
   }
+  // author : animateur/créateur (itunes:author)
   if (!entry.author && parsed.podcastAuthor) {
     fill.author = truncate(parsed.podcastAuthor, LIMITS.publisher);
   }

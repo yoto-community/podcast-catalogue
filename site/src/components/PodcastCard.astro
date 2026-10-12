@@ -3,7 +3,7 @@ import { categoryLabel, entryPath, getGroups, languageLabel } from "../lib/catal
 import { agesOfGroup, formatAges } from "../lib/ages";
 import { searchIndex, normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
-import { slugifyAuthor } from "../lib/url";
+import { slugifyAuthor, slugifyPublisher } from "../lib/url";
 import FavoriteButton from "./FavoriteButton.astro";
 import type { DistEntry } from "../lib/types";
 
@@ -31,6 +31,7 @@ const searchText = searchIndex(
 const sortName = normalizeText(entry.name);
 const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.language))} ${sortName}`;
 const authorSlug = entry.author !== "Inconnu" ? slugifyAuthor(entry.author) : "";
+const publisherSlug = slugifyPublisher(entry.publisher);
 ---
 
 <li
@@ -58,7 +59,9 @@ const authorSlug = entry.author !== "Inconnu" ? slugifyAuthor(entry.author) : ""
       />
       <h2 class="card__title">{entry.name}</h2>
     </a>
-    <p class="card__publisher">{entry.publisher}</p>
+    <p class="card__publisher">
+      <a href={pageUrl(`/editeurs/${publisherSlug}/`)}>{entry.publisher}</a>
+    </p>
     {entry.author !== "Inconnu" && (
       <p class="card__author">
         <a href={pageUrl(`/auteurs/${slugifyAuthor(entry.author)}/`)}>{entry.author}</a>

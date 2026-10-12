@@ -1,7 +1,7 @@
 [
   {
     "name": "Circle Round",
-    "publisher": "Wbur",
+    "publisher": "WBUR",
     "category": "histoire",
     "rssUrl": "https://rss.wbur.org/circleround/podcast",
     "description": "WBUR's Circle Round adapts carefully-selected folktales from around the world into sound- and music-rich radio plays for kids ages 3-103. Each 15 to 25-minute episode explores important issues like kindness, persistence and generosity.",
@@ -9,7 +9,8 @@
     "tags": [
       "contes-classiques"
     ],
-    "imageUrl": "https://media.wbur.org/wp/2017/06/Circle-Round_3000x3000_Summer.jpg"
+    "imageUrl": "https://media.wbur.org/wp/2017/06/Circle-Round_3000x3000_Summer.jpg",
+    "author": "WBUR"
   },
   {
     "name": "Draw Along Stories",
@@ -18,11 +19,12 @@
     "description": "\"Draw Along Stories\" encourages the inner artist in all young ones! In each episode La La shares an original story or poem and invites kiddos to draw the images they see in their imagination while listening in.",
     "publisher": "La La Lindsey",
     "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/6262041/6262041-1591912612008-f5e7336d6d645.jpg",
-    "websiteUrl": "https://www.lalalindsey.com"
+    "websiteUrl": "https://www.lalalindsey.com",
+    "author": "La La Lindsey"
   },
   {
     "name": "Story Train: Magical Bedtime Stories for Kids",
-    "publisher": "Gokidgo",
+    "publisher": "Jennifer Clary",
     "category": "histoire",
     "rssUrl": "https://www.spreaker.com/show/5196976/episodes/feed",
     "description": "Storytelling escapades designed specifically for children aged four and up! Dive into fantastic, G-rated tales that transport young listeners on magical journeys to far-off places across the globe.",
@@ -30,6 +32,7 @@
     "tags": [
       "sante-corps"
     ],
-    "imageUrl": "https://megaphone.imgix.net/podcasts/bf66c91e-4cd8-11ee-a661-a3d6991628c1/image/5515221af1297ab79740ac4e4351c3cb.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
+    "imageUrl": "https://megaphone.imgix.net/podcasts/bf66c91e-4cd8-11ee-a661-a3d6991628c1/image/5515221af1297ab79740ac4e4351c3cb.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "author": "GoKidGo: Great Stories for Kids"
   }
 ]

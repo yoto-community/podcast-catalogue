@@ -4,7 +4,7 @@
     "category": "histoire",
     "rssUrl": "https://feed.ausha.co/jMA3Nu8rRvKW",
     "description": "Plongez au cœur du ciel français et apprenez à distinguer le vol plané majestueux des aigles et des buses, rapaces diurnes chassant en pleine lumière. La nuit tombée, laissez-vous fasciner par le silence des chouettes et des hiboux, aux sens affûtés pour traquer dans l'obscurité. Leurs techniques de chasse, leur régime alimentaire et leur habitat révèlent des adaptations étonnantes à leur mode de vie. Explorez la diversité de ces prédateurs essentiels à nos écosystèmes. Un monde fascinant à découvrir juste au-dessus de nos têtes ! Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
-    "publisher": "La Voix des Plumes",
+    "publisher": "Julie-“Orfraie” Bouchard",
     "imageUrl": "https://image.ausha.co/mBX5HTOKsRuW7liMoQcqlrtgwpXI9q5vXxKy11jJ_1400x1400.jpeg?t=1747912948",
     "websiteUrl": "https://podcast.ausha.co/a-la-decouverte-des-rapaces-de-france",
     "tags": [
@@ -17,7 +17,8 @@
       "philosophie",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "La Voix des Plumes"
   },
   {
     "name": "À l'écoute!",
@@ -35,35 +36,38 @@
       "nature-environnement",
       "arts-culture",
       "politique-societe"
-    ]
+    ],
+    "author": "La puce à l'oreille"
   },
   {
     "name": "Allo, 1jour1actu ?",
     "category": "education",
     "rssUrl": "https://feed.ausha.co/brpJqfRDPk1E",
     "description": "Un podcast d’1jour1actu, média d’actualité pour les 8-12 ans édité par Milan Presse. Chaque semaine, Allo 1jour1actu répond aux questions des enfants. Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
-    "publisher": "Allo, 1jour1actu ?",
+    "publisher": "Milan presse",
     "imageUrl": "https://image.ausha.co/96yzIBRqpSGLam7SNLN6uSnB8vUsq63utrSdx7WE_1400x1400.jpeg?t=1601473285",
     "websiteUrl": "https://podcast.ausha.co/allo-1jour1actu",
     "tags": [
       "apprentissages",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Allo, 1jour1actu ?"
   },
   {
     "name": "Bonjour MARLO",
     "category": "education",
     "rssUrl": "https://feed.ausha.co/2rm35sdgXqKw",
     "description": "Découvrez, jouez, grandissez avec MARLO : des histoires, des jeux, des poèmes, des personnages historiques, et bien d'autres choses encore ! Pour petits et grands enfants à partir de 4ans. N'hésitez pas à vous abonner pour ne manquer aucun épisode. Ensemble, découvrons le plaisir d'apprendre ! Embarquez avec nous sur les réseaux sociaux pour ne rien rater ! Instagram : https://www.instagram.com/bonjourmarlo Hébergé par Ausha. Visitez ausha.co/fr/politique-de-confidentialite pour plus d'informations.",
-    "publisher": "Marguerite van Roosendaal et Louise Fruchard",
+    "publisher": "Louise Fruchard",
     "imageUrl": "https://image.ausha.co/jAVy4vG9HDhGW5i1hNCptcAqbCqPTWc2EV4x8xbi_1400x1400.jpeg?t=1718184976",
     "websiteUrl": "https://podcast.ausha.co/les-aventures-de-marlo",
     "tags": [
       "apprentissages",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Marguerite van Roosendaal et Louise Fruchard"
   },
   {
     "name": "Et si tu étais maire ?",
@@ -77,14 +81,15 @@
       "emotions-bienetre",
       "apprentissages",
       "politique-societe"
-    ]
+    ],
+    "author": "Bloom la radio des enfants"
   },
   {
     "name": "Frissons",
     "category": "fiction",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/35099478-7c72-4f9e-a6de-1b928400e9e5/rss_24532.xml",
     "description": "Fantômes, ovnis, zombies et failles spatio-temporelles…Du surnaturel, de l’étrange et des affaires drôlement inquiétantes pour ceux qui aiment jouer à se faire peur ! Conseillé à partir de 8 ans. Vous aimez ce podcast ? Pour écouter tous les épisodes sans limite, rendez-vous sur Radio France .",
-    "publisher": "France Inter",
+    "publisher": "Radio France",
     "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/10/c720e2cc-29ae-41b3-bc94-624c39968961/1400x1400_sc_rf_omm_0000040574_ite.jpg",
     "websiteUrl": "https://www.radiofrance.fr/franceinter/podcasts/frissons",
     "tags": [
@@ -92,7 +97,8 @@
       "emotions-bienetre",
       "nature-environnement",
       "humour"
-    ]
+    ],
+    "author": "France Inter"
   },
   {
     "name": "Il était un Roman",
@@ -107,7 +113,8 @@
       "contes-classiques",
       "musique",
       "geographie-voyages"
-    ]
+    ],
+    "author": "Severine Chu"
   },
   {
     "name": "Les aventures d'Arsene Lupin",
@@ -122,11 +129,11 @@
     ],
     "description": "Version extraordinairement restaurée des \"Aventures d'Arsène Lupin\", le feuilleton radiophonique de Maurice Renault. On ne présente plus Arsène Lupin, le fameux gentleman cambrioleur sorti tout droit de l’imagination de Maurice Leblanc. Connu pour son talent à prendre des personnalités multiples, il manie à la perfection l'art du déguisement. Ce personnage populaire, à la fois charmeur et railleur, est le héros d'intrigues nimbées de mystères. Dans les années cinquante, on le rencontre sur les ondes de la radio incarné par le jeune comédien Michel Roux, dans des aventures qui vont, vous aussi, vous tenir en haleine. Série de 54 épisodes. Retrouvez plus de fictions à suivre avec les podcasts Les Maîtres du mystère , Les Grands classiques et Les Enquêtes de Sherlock Holmes sur toutes les plateformes d’écoute et sur podcasts.ina.fr *** Fiction radiophonique diffusée dans l’émission “Les Aventures d'Arsène Lupin” de Maurice Renault - D'après une nouvelle de Maurice Leblanc - Réalisation…",
     "publisher": "INA",
-    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/cd5258ba-ddf2-4d85-8e1c-29c5456567dd/emission/15163/0b5eb459-7b32-4b7e-a8c3-dc815b2429c9.jpg"
+    "imageUrl": "https://prod-s3-main.s3.eu-west-par.io.cloud.ovh.net/cd5258ba-ddf2-4d85-8e1c-29c5456567dd/emission/15163/0b5eb459-7b32-4b7e-a8c3-dc815b2429c9.jpg",
+    "author": "INA"
   },
   {
     "name": "Les mondes de Chloé à la belle étoile",
-    "publisher": "Radiofrance",
     "category": "histoire",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_23313.xml",
     "description": "Repérez les constellations et voyagez dans l'espace avec Chloé, sa grand-mère un peu sorcière et l'astrophysicienne Françoise Combes. Un voyage initiatique en 12 nuits, à écouter en famille dès 8 ans.",
@@ -136,7 +143,9 @@
       "histoires-soir",
       "geographie-voyages"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/03/2eb67eee-0880-42c2-8600-30b71d019ebe/1400x1400_sc_sc_fc-podcast-alabelleetoile-3000x3000px.jpg?1791608952948"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/03/2eb67eee-0880-42c2-8600-30b71d019ebe/1400x1400_sc_sc_fc-podcast-alabelleetoile-3000x3000px.jpg?1791608952948",
+    "publisher": "Radio France",
+    "author": "France Culture"
   },
   {
     "name": "Mets tes écoute coeur",
@@ -149,14 +158,15 @@
       "histoires-originales",
       "musique",
       "geographie-voyages"
-    ]
+    ],
+    "author": "Myriam de Beaurepaire"
   },
   {
     "name": "Mija Podcast (French)",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/084f8cc7-34eb-46a0-8634-dd11f26e13f8",
     "description": "Une fille d’immigrés raconte l’histoire de sa famille, de ceux qui sont toujours en vie, ceux qui sont partis et ceux qui rêvent de meilleurs jours. Mija raconte l’histoire de sa famille, un épisode, une personne différente.Mija podcast sera disponible en trois version: anglais, français, et espagnol. C'est une production de Studio Ochenta, studio de production de podcast multilingues. Pour plus d'informations rendez-vous sur le site ochentastudio.com ou sur les réseaux sociaux: @ochentapodcasts & @mijapodcast. Musique originale par Gabriel Dalmasso. Hébergé par Acast. Visitez acast.com/privacy pour plus d'informations.",
-    "publisher": "Studio Ochenta",
+    "publisher": "Hoyos Catalina",
     "imageUrl": "https://assets.pippa.io/shows/60dce106dd59a3ddc63d7e39/show-cover.jpg",
     "websiteUrl": "https://ochentastudio.com/mija-podcast",
     "tags": [
@@ -167,7 +177,8 @@
       "histoire-france",
       "langues",
       "heros-filles"
-    ]
+    ],
+    "author": "Studio Ochenta"
   },
   {
     "name": "Mission info",
@@ -180,7 +191,8 @@
     "tags": [
       "enquetes-mysteres",
       "apprentissages"
-    ]
+    ],
+    "author": "Okoo - France Télévisions"
   },
   {
     "name": "Moi Président(e), le podcast politique des enfants",
@@ -199,7 +211,8 @@
       "arts-culture",
       "sante-corps",
       "politique-societe"
-    ]
+    ],
+    "author": "Kidsono"
   },
   {
     "name": "Mystères et légendes",
@@ -213,7 +226,8 @@
     ],
     "publisher": "Studio Biloba",
     "imageUrl": "https://assets.pippa.io/shows/688877e26ba6bf2e17ae077b/show-cover.jpeg",
-    "websiteUrl": "https://studiobiloba.fr/mysteresetlegendes"
+    "websiteUrl": "https://studiobiloba.fr/mysteresetlegendes",
+    "author": "Studio Biloba"
   },
   {
     "name": "MYTHOLOGIE GRECQUE",
@@ -229,7 +243,8 @@
       "contes-classiques",
       "musique",
       "arts-culture"
-    ]
+    ],
+    "author": "ASLANIAN"
   },
   {
     "name": "Nouvelles héroines (histoires vraies)",
@@ -242,11 +257,11 @@
     ],
     "publisher": "Céline Steyer",
     "imageUrl": "https://static.audiomeans.fr/img/podcast/b7f41e18-114c-4f07-b82d-66cd12496b41.jpg",
-    "websiteUrl": "https://podcasts.audiomeans.fr/nouvelles-heroines-des-histoires-vraies-de-femmes-inspirantes-pour-grandir-en-confiance-4482c48abae0"
+    "websiteUrl": "https://podcasts.audiomeans.fr/nouvelles-heroines-des-histoires-vraies-de-femmes-inspirantes-pour-grandir-en-confiance-4482c48abae0",
+    "author": "Céline Steyer"
   },
   {
     "name": "Olma",
-    "publisher": "Radiofrance",
     "category": "education",
     "rssUrl": "https://radiofrance-podcast.net/podcast09/rss_21770.xml",
     "description": "France Inter invite les enfants de 8 à 12 ans à partir à la découverte des sciences",
@@ -255,7 +270,9 @@
       "sciences",
       "histoire-france"
     ],
-    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/03/8a91cf06-11ef-476a-86a4-f6fae27e287e/1400x1400_olma-arbres-nouveaux-e-pisodes.jpg?1791629522134"
+    "imageUrl": "https://www.radiofrance.fr/s3/cruiser-production-eu3/2026/03/8a91cf06-11ef-476a-86a4-f6fae27e287e/1400x1400_olma-arbres-nouveaux-e-pisodes.jpg?1791629522134",
+    "publisher": "Radio France",
+    "author": "France Inter"
   },
   {
     "name": "Politikids",
@@ -270,11 +287,12 @@
       "politique-societe"
     ],
     "publisher": "Billy the cast",
-    "imageUrl": "https://static.audiomeans.fr/img/podcast/fda6085c-02f3-4f81-92df-62c9efbdd6ab.jpg"
+    "imageUrl": "https://static.audiomeans.fr/img/podcast/fda6085c-02f3-4f81-92df-62c9efbdd6ab.jpg",
+    "author": "Billy the cast"
   },
   {
     "name": "Qui a inventé?",
-    "publisher": "Bayard-jeunesse",
+    "publisher": "Bayard Presse",
     "category": "education",
     "rssUrl": "https://feed.ausha.co/ygdr9TNV059K",
     "description": "Podcast qui raconte les petites et les grandes histoires des inventions qui ont changé l'humanité... le cinéma, l'ampoule, la poubelle, la démocratie, le microscope, la boussole…",
@@ -285,7 +303,8 @@
       "technologie",
       "politique-societe"
     ],
-    "imageUrl": "https://image.ausha.co/imZxx6GWRH7YcADZtJEad5PUpyTR84f3gLnrfmqc_1400x1400.jpeg?t=1787760585"
+    "imageUrl": "https://image.ausha.co/imZxx6GWRH7YcADZtJEad5PUpyTR84f3gLnrfmqc_1400x1400.jpeg?t=1787760585",
+    "author": "Qui a inventé ?"
   },
   {
     "name": "Raconte-moi l'espace",
@@ -300,11 +319,12 @@
     ],
     "publisher": "CNES",
     "imageUrl": "https://podcast.cnes.fr/wp-content/uploads/2023/08/podcast-raconte-moi-lespace.png",
-    "websiteUrl": "https://podcast.cnes.fr/raconte-moi-lespace"
+    "websiteUrl": "https://podcast.cnes.fr/raconte-moi-lespace",
+    "author": "CNES"
   },
   {
     "name": "Raconte-moi Paris",
-    "publisher": "Racontemoiparis",
+    "publisher": "Olivia Caminade",
     "category": "education",
     "rssUrl": "https://feeds.acast.com/public/shows/649e91f9a38f0d0011f64322",
     "description": "L'histoire des monuments",
@@ -313,7 +333,8 @@
       "contes-classiques",
       "geographie-voyages"
     ],
-    "imageUrl": "https://image.ausha.co/gNASC8sgMD1CmaCqhSN6gugryzpfyVUlCY1IFS9P_1400x1400.jpeg?t=1778308435"
+    "imageUrl": "https://image.ausha.co/gNASC8sgMD1CmaCqhSN6gugryzpfyVUlCY1IFS9P_1400x1400.jpeg?t=1778308435",
+    "author": "Raconte-moi Paris"
   },
   {
     "name": "Science infuse",
@@ -329,6 +350,7 @@
     ],
     "publisher": "Studio Biloba",
     "imageUrl": "https://medias.podcastics.com/podcastics/podcasts/artwork/science-infuse-culture-scientifique-et-curiosites-etonnantes.png.7edbeb0bfee7ee087838ffb595b50844.png",
-    "websiteUrl": "https://studiobiloba.fr"
+    "websiteUrl": "https://studiobiloba.fr",
+    "author": "Studio Biloba"
   }
 ]

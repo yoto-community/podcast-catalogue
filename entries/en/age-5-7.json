@@ -8,38 +8,42 @@
       "contes-classiques"
     ],
     "publisher": "ABF Creative",
-    "imageUrl": "https://megaphone.imgix.net/podcasts/dd7b741a-a1f8-11ea-bf3b-1fb979c3406a/image/af_cover_4.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
+    "imageUrl": "https://megaphone.imgix.net/podcasts/dd7b741a-a1f8-11ea-bf3b-1fb979c3406a/image/af_cover_4.png?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "author": "ABF Creative"
   },
   {
     "name": "Big Life Kids Podcast",
-    "publisher": "Biglifejournal",
+    "publisher": "Big Life Journal",
     "category": "education",
     "rssUrl": "https://feeds.acast.com/public/shows/5cb71b81fe324a2e6bebb634",
     "description": "The *Big Life Kids podcas*t teaches children to stay resilient, believe in themselves, and face life's challenges with confidence! In each episode, Zara and Leo travel the world to discover the living heroes that are making a difference in the world today.",
     "websiteUrl": "https://biglifejournal.com/podcast",
-    "imageUrl": "https://assets.pippa.io/shows/5cb71b81fe324a2e6bebb634/1592594231004-0ffb2e624b9d1b31f7989fc2b451ccdd.jpeg"
+    "imageUrl": "https://assets.pippa.io/shows/5cb71b81fe324a2e6bebb634/1592594231004-0ffb2e624b9d1b31f7989fc2b451ccdd.jpeg",
+    "author": "Big Life Journal"
   },
   {
     "name": "Keyshawn Solves It",
-    "publisher": "Play",
+    "publisher": "GBH Kids",
     "category": "histoire",
     "rssUrl": "https://feeds.wgbh.org/3822/feed-rss.xml",
     "description": "8-episode serialized mystery about a 10-year-old African-American boy who inherits a set of keys that can unlock almost any door. With help from his friend Kiki, Keyshawn uses these keys to help solve a mystery.",
     "websiteUrl": "https://play.prx.org/listen?uf=https%3A%2F%2Ffeeds.wgbh.org%2F3822%2Ffeed-rss.xml",
-    "imageUrl": "https://f.prxu.org/3822/images/ccdfd73b-bca3-4523-92c2-a8984229657a/Keyshawn3000x3000_PBS.jpg"
+    "imageUrl": "https://f.prxu.org/3822/images/ccdfd73b-bca3-4523-92c2-a8984229657a/Keyshawn3000x3000_PBS.jpg",
+    "author": "GBH & PBS Kids"
   },
   {
     "name": "The holidays",
-    "publisher": "Spreaker",
+    "publisher": "GoKidGo",
     "category": "histoire",
     "rssUrl": "https://feeds.megaphone.fm/SBP4218457195",
     "websiteUrl": "https://www.spreaker.com/show/the-holidays",
     "description": "Introducing a family called the Holidays. Yup, you guessed it - they run a party planning store. And they celebrate a different holiday every day. It’s their thing. There’s shoe day, the day of the banana, karaoke day, talk like a pirate day, and more! The Holidays are the coolest family ever when you’re in grade school. Every day is a party! But when you’re about to turn 12, it becomes totally embarrassing. Enter Clementine Holiday. It’s an awkward family to be a part of when you want to be a kid, but you also want to grow up. For ages 7-12",
-    "imageUrl": "https://megaphone.imgix.net/podcasts/c52519aa-4cd8-11ee-9871-973f540962a6/image/add8ac54ad0a1ad0d4d872f312491552.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress"
+    "imageUrl": "https://megaphone.imgix.net/podcasts/c52519aa-4cd8-11ee-9871-973f540962a6/image/add8ac54ad0a1ad0d4d872f312491552.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    "author": "GoKidGo"
   },
   {
     "name": "The Plate Show",
-    "publisher": "Pbslearningmedia",
+    "publisher": "PRX",
     "category": "education",
     "rssUrl": "https://publicfeeds.net/f/4977/feed-rss.xml",
     "description": "Comedy podcast about cultures around the world and the foods that are important to them. Join Spoonie, everyone’s favorite talking spoon, and her BFF sidekick Tongs, as they put on a show from their very own kitchen to learn about – and taste – amazing food from around the world!",
@@ -47,6 +51,7 @@
     "tags": [
       "arts-culture"
     ],
-    "imageUrl": "https://f.prxu.org/4977/images/0901e929-feea-40b4-b6ba-ba113b06d986/Show_Cover_ThePlateShow_3.jpg"
+    "imageUrl": "https://f.prxu.org/4977/images/0901e929-feea-40b4-b6ba-ba113b06d986/Show_Cover_ThePlateShow_3.jpg",
+    "author": "The Plate Show"
   }
 ]
