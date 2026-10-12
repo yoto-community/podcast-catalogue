@@ -29,15 +29,29 @@ const ogImage = image
       : pageUrl(image)
   : pageUrl("/placeholder.svg");
 const cleanPath = path.replace(/\/+$/, "") || "/";
+
+/** `aria-current="page"` si `prefix` correspond à la page affichée. */
+function isCurrent(prefix: string): "page" | undefined {
+  if (prefix === "/") {
+    return cleanPath === "/" || cleanPath === "/index" ? "page" : undefined;
+  }
+  return cleanPath === prefix || cleanPath.startsWith(`${prefix}/`) ? "page" : undefined;
+}
+
 const navItems = [
   { prefix: "/", label: "Catalogue", href: pageUrl("/") },
   { prefix: "/editeurs", label: "Éditeurs", href: pageUrl("/editeurs/") },
-  { prefix: "/search", label: "Recherche", href: pageUrl("/search/") },
-  { prefix: "/health", label: "Santé flux", href: pageUrl("/health/") },
   { prefix: "/favoris", label: "Favoris", href: pageUrl("/favoris/") },
+];
+
+/** Liens regroupés dans le menu « Communauté ». */
+const communityItems = [
   { prefix: "/developers", label: "API", href: pageUrl("/developers/") },
+  { prefix: "/health", label: "Santé flux", href: pageUrl("/health/") },
   { prefix: "/contribuer", label: "Contribuer", href: pageUrl("/contribuer/") },
 ];
+const communityCurrent = communityItems.some((item) => isCurrent(item.prefix) === "page");
+const repoUrl = "https://github.com/yoto-community/podcast-catalogue";
 const updated = formatDateLong(manifest.updatedAt);
 
 /** Génère les liens `hreflang` pour les langues disponibles. */
@@ -104,22 +118,56 @@ const hreflangLinks = getHreflangLinks();
           <ul>
             {navItems.map((item) => (
               <li>
-                <a
-                  href={item.href}
-                  aria-current={
-                    item.prefix === "/"
-                      ? cleanPath === "/" || cleanPath === "/index"
-                        ? "page"
-                        : undefined
-                      : cleanPath === item.prefix || cleanPath.startsWith(`${item.prefix}/`)
-                        ? "page"
-                        : undefined
-                  }
-                >
+                <a href={item.href} aria-current={isCurrent(item.prefix)}>
                   {item.label}
                 </a>
               </li>
             ))}
+            <li>
+              <details
+                class:list={["site-nav__group", { "is-active": communityCurrent }]}
+                data-nav-group
+              >
+                <summary class="site-nav__summary">
+                  Communauté
+                  <svg
+                    class="site-nav__caret"
+                    viewBox="0 0 24 24"
+                    width="14"
+                    height="14"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M6 9l6 6 6-6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                </summary>
+                <ul class="site-nav__panel" data-nav-panel>
+                  {communityItems.map((item) => (
+                    <li>
+                      <a href={item.href} aria-current={isCurrent(item.prefix)}>
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                  <li class="site-nav__panel-external">
+                    <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+                      GitHub
+                      <span class="site-nav__external-mark" aria-hidden="true">
+                        ↗
+                      </span>
+                      <span class="sr-only">(nouvel onglet)</span>
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
           </ul>
         </nav>
       </div>

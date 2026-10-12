@@ -17,7 +17,6 @@ export async function GET({ site }: APIContext) {
 
   // Pages statiques
   urls.push(new URL(pageUrl("/"), site).href);
-  urls.push(new URL(pageUrl("/search/"), site).href);
   urls.push(new URL(pageUrl("/health/"), site).href);
   urls.push(new URL(pageUrl("/favoris/"), site).href);
   urls.push(new URL(pageUrl("/developers/"), site).href);
