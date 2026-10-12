@@ -40,6 +40,74 @@
   }
 }
 
+/*
+ * Jetons sémantiques : alias des jetons de base ci-dessus, utilisés par les
+ * pages /health/, /search/ et la page éditeur. Une seule source de vérité (les
+ * jetons ci-dessus) : le thème clair/sombre suit automatiquement.
+ */
+:root {
+  /* Couleurs de surface et de texte */
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-2);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+
+  /* Accent (CTA, filtres actifs) — en cohérence avec .catalog__nav[aria-current] */
+  --color-primary: var(--accent);
+  --color-primary-contrast: #fff;
+  --color-primary-dark: var(--accent-strong);
+  --color-primary-light: var(--accent-soft);
+  --color-primary-focus: rgb(255 107 0 / 30%);
+  /* forme « r, g, b » avec virgules : utilisé dans rgba(var(--…), 0.1) */
+  --color-primary-rgb: 255, 107, 0;
+
+  /* États de santé des flux (badges + compteurs) */
+  --color-success: #15803d;
+  --color-success-contrast: #fff;
+  --color-warning: #b45309;
+  --color-warning-contrast: #fff;
+  --color-warning-rgb: 180, 83, 9;
+  --color-error: var(--danger);
+  --color-error-contrast: #fff;
+
+  /* Espacements (échelle de 4 px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-12: 4rem;
+
+  /* Typographie */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-lg: 1.125rem;
+  --text-2xl: 1.5rem;
+
+  /* Divers */
+  --radius-full: 999px;
+  --shadow-md: 0 4px 14px rgb(0 0 0 / 12%);
+  --transition-fast: 0.15s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-focus: rgb(255 140 51 / 35%);
+    --color-primary-rgb: 255, 140, 51;
+    --color-primary-contrast: #101012;
+    --color-success: #4ade80;
+    --color-success-contrast: #06281a;
+    --color-warning: #fbbf24;
+    --color-warning-contrast: #2b1c00;
+    --color-warning-rgb: 251, 191, 36;
+    --color-error-contrast: #101012;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -522,6 +590,7 @@ main:focus {
   pointer-events: none;
 }
 
+/* Search input: border color adjusted for WCAG AA contrast (3:1 minimum) */
 .field input[type="search"],
 .field select {
   width: 100%;
@@ -529,7 +598,7 @@ main:focus {
   font: inherit;
   color: var(--text);
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, #000);
   border-radius: var(--radius-sm);
 }
 

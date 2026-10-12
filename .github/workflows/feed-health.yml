@@ -58,7 +58,8 @@ jobs:
         if: always() && github.event_name == 'schedule'
         run: |
           if [ -f .cache/feed-health.json ]; then
-            git add .cache/feed-health.json
+            # -f : le fichier est exceptionnellement versionné (voir .gitignore)
+            git add -f .cache/feed-health.json
             if ! git diff --cached --quiet; then
               git commit -m "chore: update feed-health cache [skip ci]"
               git push

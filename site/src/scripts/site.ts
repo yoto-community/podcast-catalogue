@@ -704,10 +704,9 @@ function sortList(runtime: CatalogRuntime, key: string): void {
 function bindFiltersToggle(root: HTMLElement): void {
   const toggle = qs<HTMLButtonElement>("[data-filters-toggle]", root);
   const content = qs<HTMLElement>("#filters-content", root);
-  const label = qs<HTMLElement>("[data-toggle-label]", root);
   const count = qs<HTMLElement>("[data-toggle-count]", root);
 
-  if (!toggle || !content || !label || !count) return;
+  if (!toggle || !content || !count) return;
 
   toggle.addEventListener("click", () => {
     const expanded = toggle.getAttribute("aria-expanded") === "true";
@@ -876,7 +875,7 @@ async function copyToClipboard(text: string): Promise<boolean> {
   field.select();
   let copied = false;
   try {
-    copied = document.execCommand("copy");
+    copied = (document as any).execCommand("copy");
   } catch {
     copied = false;
   }

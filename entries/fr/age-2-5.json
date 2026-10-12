@@ -14,21 +14,7 @@
     "author": "Unique Heritage Media"
   },
   {
-    "name": "Animalité",
-    "publisher": "musée des Confluences",
-    "category": "education",
-    "rssUrl": "https://animalite.lepodcast.fr/rss",
-    "description": "Des figures animales mythiques tels que le dragon au Japon, ou Anubis en Égypte, aux espèces animales qui nous entourent comme le loup, écoutez des histoires d’ici et d’ailleurs autour des liens étroits que les humains entretiennent avec les autres animaux.",
-    "websiteUrl": "https://www.museedesconfluences.fr/fr/le-musee/actualites/animalite-le-nouveau-podcast-du-musee-des-confluences",
-    "tags": [
-      "animaux",
-      "geographie-voyages"
-    ],
-    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/c0/06/c00600e11d3e409ef9f8d52e81533c6764354f39.jpg",
-    "author": "musée des Confluences"
-  },
-  {
-    "name": "Astro-bien",
+    "name": "Animal Mystère",
     "category": "education",
     "rssUrl": "https://feed.ausha.co/b7zAOcepezRn",
     "description": "Animal Mystère est le podcast interactif du magazine Youpi - J'ai compris ! qui s'adresse aux petites oreilles, dès 3 ans. Dans chaque épisode, Ambre Gaudet, reporter animalier, rencontre un animal qui va te donner des indices sur son mode de vie, ce qu'il mange, ce qu'il aime faire. Avec ces indices tu vas devoir trouver de qui il s'agit. L'occasion d'en apprendre plus sur les animaux extraordinaires qui peuplent la planète, tout en s'amusant ! Tu es prêt ? À toi de jouer ! Tu as aimé les 3 premiers épisodes de ce podcast ? Fonce écouter les autres et découvrir plein d’autres contenus amusants sur BayaM, l’appli de Bayard Jeunesse qui éveille la curiosité des 3-10 ans !",
@@ -45,6 +31,20 @@
     "publisher": "Bayard Presse",
     "imageUrl": "https://image.ausha.co/KdBnAyI1EInKBrihZ0NEf3DfEMMoyQTd1sUKo54X_1400x1400.jpeg?t=1656599973",
     "author": "Animal Mystère"
+  },
+  {
+    "name": "Animalité",
+    "publisher": "musée des Confluences",
+    "category": "education",
+    "rssUrl": "https://animalite.lepodcast.fr/rss",
+    "description": "Des figures animales mythiques tels que le dragon au Japon, ou Anubis en Égypte, aux espèces animales qui nous entourent comme le loup, écoutez des histoires d’ici et d’ailleurs autour des liens étroits que les humains entretiennent avec les autres animaux.",
+    "websiteUrl": "https://www.museedesconfluences.fr/fr/le-musee/actualites/animalite-le-nouveau-podcast-du-musee-des-confluences",
+    "tags": [
+      "animaux",
+      "geographie-voyages"
+    ],
+    "imageUrl": "https://uploads.podcloud.fr/uploads/covers/c0/06/c00600e11d3e409ef9f8d52e81533c6764354f39.jpg",
+    "author": "musée des Confluences"
   },
   {
     "name": "Belette et Ernest",
@@ -128,20 +128,6 @@
       "technologie"
     ],
     "author": "Engle"
-  },
-  {
-    "name": "Conte de Noël",
-    "category": "histoire",
-    "rssUrl": "https://feed.ausha.co/BQnL8IXZEZMk",
-    "description": "24 contes audio éducatifs pour faire patienter vos enfants jusqu’à Noël",
-    "tags": [
-      "contes-classiques",
-      "apprentissages"
-    ],
-    "publisher": "Apprentis d'Auteuil",
-    "imageUrl": "https://image.ausha.co/hsvgtxBcsZQQjGT9kFtLEp14rBH2IqIQNmHxKRId_1400x1400.jpeg?t=1698665889",
-    "websiteUrl": "https://podcast.ausha.co/contes-de-noel-2022",
-    "author": "Apprentis d'Auteuil"
   },
   {
     "name": "Conte et raconte",
@@ -232,6 +218,20 @@
     "author": "Ellynn"
   },
   {
+    "name": "Contes de Paco",
+    "category": "histoire",
+    "rssUrl": "https://feed.ausha.co/BQnL8IXZEZMk",
+    "description": "24 contes audio éducatifs pour faire patienter vos enfants jusqu’à Noël",
+    "tags": [
+      "contes-classiques",
+      "apprentissages"
+    ],
+    "publisher": "Apprentis d'Auteuil",
+    "imageUrl": "https://image.ausha.co/hsvgtxBcsZQQjGT9kFtLEp14rBH2IqIQNmHxKRId_1400x1400.jpeg?t=1698665889",
+    "websiteUrl": "https://podcast.ausha.co/contes-de-noel-2022",
+    "author": "Apprentis d'Auteuil"
+  },
+  {
     "name": "Contes en liberté",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/5fc774bf3fb48602cba03e8a",
@@ -307,7 +307,7 @@
   },
   {
     "name": "Enchanté-e",
-    "publisher": "RamDam",
+    "publisher": "Ramdam",
     "category": "histoire",
     "rssUrl": "https://feeds.acast.com/public/shows/64a432e060e6100011e21598",
     "description": "RamDam, le réseau national des musiques jeune public présente Enchanté•e ! Une série de podcasts qui raconte la diversité artistique et culturelle de la création musicale jeune public.",
@@ -930,20 +930,6 @@
     "author": "Alexandra MICHEL et Cécile BATAILLER"
   },
   {
-    "name": "Les histoires pour s'endormir",
-    "category": "histoire",
-    "rssUrl": "https://anchor.fm/s/df96af84/podcast/rss",
-    "description": "Rejoignez notre monde imaginaire et découvrez des histoires douces et réconfortantes pour aider votre enfant à s'endormir.",
-    "tags": [
-      "histoires-soir",
-      "geographie-voyages"
-    ],
-    "publisher": "Les histoires pour enfants",
-    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/37411945/37411945-1681998465354-7d4bbf61ea8ef.jpg",
-    "websiteUrl": "https://podcasters.spotify.com/pod/show/cakecoffee",
-    "author": "Les histoires pour enfants"
-  },
-  {
     "name": "Les histoires terrifiantes des bonbons Haribo",
     "category": "histoire",
     "rssUrl": "https://feed.pippa.io/public/shows/5db020b235ae3942270b3a4d",
@@ -966,6 +952,20 @@
     "imageUrl": "https://assets.pippa.io/shows/6798ff9d60e68f77d5aa65b0/1740658242339-9989056a-77e9-4d70-a630-8675ff858d37.jpeg",
     "websiteUrl": "https://lesminimondes.fr/",
     "author": "Les Mini Mondes"
+  },
+  {
+    "name": "Les petites histoires pour s'endormir",
+    "category": "histoire",
+    "rssUrl": "https://anchor.fm/s/df96af84/podcast/rss",
+    "description": "Rejoignez notre monde imaginaire et découvrez des histoires douces et réconfortantes pour aider votre enfant à s'endormir.",
+    "tags": [
+      "histoires-soir",
+      "geographie-voyages"
+    ],
+    "publisher": "Les histoires pour enfants",
+    "imageUrl": "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/37411945/37411945-1681998465354-7d4bbf61ea8ef.jpg",
+    "websiteUrl": "https://podcasters.spotify.com/pod/show/cakecoffee",
+    "author": "Les histoires pour enfants"
   },
   {
     "name": "LES PETITES VOIX DU MERCREDI | LES QUESTIONS EXISTENTIELLES DES ENFANTS !",

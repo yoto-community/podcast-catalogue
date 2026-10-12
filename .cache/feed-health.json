@@ -1,0 +1,1946 @@
+{
+  "timestamp": "2026-10-12T10:07:36.789Z",
+  "bySlug": {
+    "circle-round": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "draw-along-stories": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "story-train-magical-bedtime-stories-for-kids": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "african-folktales-with-miss-jo-jo": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "big-life-kids-podcast": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "keyshawn-solves-it": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "the-holidays": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "the-plate-show": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "bonjour-london": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "ma-vie-dado": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "nature-et-zoo-le-podcast": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "pepites-dhistoires": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "une-autre-histoire": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "abricot-presente": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "animalite": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "astro-bien": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "belette-et-ernest": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "betes-de-sciences": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "chut-je-lis": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "club-citrouillade": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "connais-tu-vraiment": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-de-noel": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-et-raconte": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "conte-les-moutons": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-moi-la-musique": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-moi-laventure": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-moi-lhistoire": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "conte-moi-un-mouton": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "contes-en-liberte": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "contes-musicaux-de-passe-partout": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "des-histoires-en-musique-elodie-fondacci": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "des-histoires-merveilleuses": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "en-fin-de-conte": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "enchante-e": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "encore-une-histoire": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "envolees-contees": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "et-si-on-se-parlait": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "graine-de-scientifique": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-des-enfants-childrens-story": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-du-soir": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "histoires-du-soir-au-dodo": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-magiques-de-patricia": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-magiques-histoires-et-contes-imaginaires-pour-les-enfants": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "histoires-pour-enfants-a-ecouter": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-pour-les-oreilles": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "histoires-racontees-par-le-musee-de-bourgoin-jallieu": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "il-etait-une-histoire": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "il-etait-une-nouvelle-fois": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "kiddy-les-meilleurs-podcasts-pour-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "kids-story": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-bande-a-blou": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-botanique-du-coeur": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-grande-histoire-de-pomme-dapi": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-tete-dans-les-histoires": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-voix-haute": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "lafrique-en-conte": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-chemin-des-songes": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "le-cherie-kids": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-confin-des-contes": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-long-de-la-riviere": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-long-de-la-riviere-chansons": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-petit-garcon-magique": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "le-podcast-du-musee-des-confluences": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-royaume-des-contes-histoires-audio-pour-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-konpe-manikou": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-rodolphe-et-gala": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-tintin": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-doctave-et-melo": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-contes-de-la-maison-ronde": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-contes-dun-autre-temps": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-dents-et-dodo": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-fables-de-la-fontaine-integrale": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-histoires-de-papy-pierro": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-histoires-de-raoul-gomez": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-histoires-du-pince-oreille": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-histoires-du-soir-airzen-radio": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-histoires-du-soir-dalexandra-et-cecile": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-histoires-pour-sendormir": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-histoires-terrifiantes-des-bonbons-haribo": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-mini-mondes": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-petites-voix-du-mercredi-les-questions-existentielles-des-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-podcasts-dauden": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-ptits-bateaux": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-voyages-de-petit-nuage": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-zinstrus": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "lotus-et-cali-des-histoires-qui-font-un-peu-peur": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "ma-maison-magique": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "merci-remi": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "mes-premieres-histoires": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mission-curiosite": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "mon-ami-bulle-et-moi": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "nemrod": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "passe-partout-les-rigolades": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "paulette-la-belette": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "petit-lapin": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "peut-contenir-des-traces-de-blagues": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "pierrot-et-poupouche": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "popotin-et-popotine": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "raconte-moi-les-animaux": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "raconte-moi-une-betise": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "sam-raconte": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "savez-vous-planter-les-choux": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "tilibou": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "tintamarre-et-gazouillis": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "toudou": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "une-petite-souris-a-lopera": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "wild-le-podcast-animalier": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "animomoches": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "anne-bonny-la-reine-des-pirates": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "artis-et-gousse-dail": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "astronomes-en-herbe": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "au-pays-des-histoires": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "bestioles": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "breves-de-nature-sauvage": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "carabistouilles": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "chut-jecoute": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "clara-et-les-sortileges": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "courvole": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "culture-g": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "curieux-de-sciences": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "dans-le-coin-du-ciboulot": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "dior-tales": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "ecrivons-une-histoire": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "en-attendant-ma-lettre-le-poudlard": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "en-cavale": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "en-cavale-operation-exploratus": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "france-musique-est-a-vous": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "histoires-danimaux": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-pour-enfants-de-la-famille-m": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "histoires-pour-enfants-la-voie-des-livres": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "il-etait-une-fois-histoires-du-soir-histoires-pour-enfants-fables-histoires-originales": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "je-suis-bien-histoires-du-soir": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "jules-et-le-monde-dharmonia-histoire-magique-et-musicale-pour-les-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "katilou-histoires-pour-les-enfants-sages-mais-pas-trop-quand-meme": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "kidico-lencyclopedie-sonore-pour-les-enfants": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "la-bibliotheque-des-youyou": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-discomobile": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-fee-caraboose": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "la-grimm-academie": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "lamerique-pour-les-kids": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-chevalier-orange": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "le-club-de-lulu": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "le-petit-bouquineur": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "le-quizz-du-petit-quotidien": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-bella-la-vache-histoires-pour-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-papoush-et-petit-pouce-mythologie-grecque": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-de-tintin-60s": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-aventures-du-petit-nicolas": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-du-professeur-caillou": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-aventures-nature-de-camille-et-leo": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-contes-farfelus": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-curieuses-histoires-du-museum": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-curieux-du-monde": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-histoires-de-nonno": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-histoires-de-touk-touk": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-insectes-ont-le-cafard-canada-7-9-ans": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-intrepides": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-malefiques": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-odyssees": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-podcasts-okoo": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-pokemon-de-sam": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-ptites-histoires": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "les-voyages-damelia-au-coeur-de-lhistoire": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "lheure-du-conteur": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "lis-moi-une-histoire": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "madeleines-de-chef-fes": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "manneken-etles-inventions-belges": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "meditation-chakras-pour-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mille-et-une-histoires": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "millie-d-et-farfelu-rts": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "mission-pourquoi": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "mythes-et-legendes": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mythologie-mes-histoires": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "orbinea-le-monde-des-odyssees-documentaire-podcast-histoire-pour-dormir-livre-audio-enfant-adulte": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "petit-vulgaire": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "une-histoire-et-oli": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "a-la-decouverte-des-oiseaux-de-france": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "a-lecoute": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "allo-1jour1actu": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "bonjour-marlo": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "et-si-tu-etais-maire": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "frissons": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "il-etait-un-roman": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-aventures-darsene-lupin": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "les-mondes-de-chloe-a-la-belle-etoile": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mets-tes-ecoute-coeur": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mija-podcast-french": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mission-info": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "moi-president-e-le-podcast-politique-des-enfants": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "mysteres-et-legendes": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "mythologie-grecque": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    },
+    "nouvelles-heroines-histoires-vraies": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "olma": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "politikids": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "qui-a-invente": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "raconte-moi-lespace": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "raconte-moi-paris": {
+      "status": "stale",
+      "lastChecked": "2026-10-12T10:07:36.789Z",
+      "error": "Status: warn"
+    },
+    "science-infuse": {
+      "status": "ok",
+      "lastChecked": "2026-10-12T10:07:36.789Z"
+    }
+  },
+  "byEntryName": {
+    "African Folktales with Miss Jo Jo": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-03-26 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Draw Along Stories": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-06-21 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Keyshawn Solves It": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Play » ≠ itunes:author « GBH & PBS Kids »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-12-05 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Story Train: Magical Bedtime Stories for Kids": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Gokidgo » ≠ itunes:author « GoKidGo: Great Stories for Kids »"
+      }
+    ],
+    "Bonjour London": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Cheriefm » ≠ itunes:author « Chérie FM France »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.cheriefm.fr/podcasts/bonjour-london"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-11-05 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Big Life Kids Podcast": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Biglifejournal » ≠ itunes:author « Big Life Journal »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-06-30 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Une autre histoire": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Louiemedia » ≠ itunes:author « Louie Media »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-08-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "The Plate Show": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Pbslearningmedia » ≠ itunes:author « The Plate Show »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-08-08 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Connais-tu vraiment ?": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Belette et Ernest": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-09-06 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Club Citrouillade": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Slate » ≠ itunes:author « Romain Baousson »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.slate.fr/audio/club-citrouillade/"
+      }
+    ],
+    "Animalité": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Museedesconfluences » ≠ itunes:author « musée des Confluences »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-07-04 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Conte les moutons": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-03-07 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Conte-moi la musique": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Philharmoniedeparis » ≠ itunes:author « Philharmonie de Paris | Musée de la musique »"
+      }
+    ],
+    "The holidays": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Spreaker » ≠ itunes:author « GoKidGo »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-04-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Astro-bien": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Animal Mystère » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-06-30 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Conte de Noël": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Contes de Paco » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "Conte-moi l'aventure": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Cheriefm » ≠ itunes:author « Cherie FM France »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.cheriefm.fr/podcasts/conte-moi-l-aventure"
+      }
+    ],
+    "Contes en liberté": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-08-27 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Des histoires en musique Elodie Fondacci": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Des histoires en musique d'Elodie Fondacci » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radioclassique » ≠ itunes:author « Radio Classique »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.radioclassique.fr/podcasts-et-emissions/histoires-en-musique/"
+      }
+    ],
+    "Conte-moi l'histoire": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Conte-moi-l-histoire » ≠ itunes:author « Marie de Frias »"
+      }
+    ],
+    "En fin de conte": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Theo-et-voo » ≠ itunes:author « Théo Lacharmé »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-09-20 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Envolées contées": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Clap » ≠ itunes:author « Envolées Contées »"
+      }
+    ],
+    "Histoires du soir – au dodo": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Conte-moi un mouton": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-05-13 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Et si on se parlait": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-11-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Histoires des enfants / Children's story": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-12-09 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Histoires pour enfants a ecouter": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-08-27 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Enchanté-e": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-09-13 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Il était une nouvelle fois": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-05-06 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Histoires racontées par le musée de Bourgoin Jallieu": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-05-25 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Kiddy : les meilleurs podcasts pour enfants": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-01-04 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Histoires magiques de Patricia": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Histoires pour dormir de Patricia » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "Graine de Scientifique": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Grainedescientifique » ≠ itunes:author « Florence Poutriquet »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-12-19 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La bande a blou": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Abricot Présente » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "La botanique du coeur": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radio » ≠ itunes:author « La botanique du coeur pour les enfants »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.radio.fr/podcast/www.juliadecugis.com"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-01-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La voix haute": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-03-26 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Contes musicaux de Passe Partout": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-08-10 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Kid's story": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « KIDSTORY : Les meilleurs contes pour enfants » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "L'Afrique en conte": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-07-16 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La grande histoire de pomme d'Api": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Pommedapi » ≠ itunes:author « La grande histoire de Pomme d'Api »"
+      }
+    ],
+    "Le Chérie Kids": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.cheriefm.fr/podcasts/le-cherie-kids"
+      }
+    ],
+    "le long de la rivière": [
+      {
+        "rule": "LANG_UNDECLARED",
+        "message": "flux sans <language> déclaré"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-06-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Le confin des contes": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Francebleu » ≠ itunes:author « ICI Lorraine (Moselle et Pays Haut) »"
+      }
+    ],
+    "le long de la rivière (chansons)": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Les comptines d&#39;Octave et Mélo : le long de la rivière » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "LANG_UNDECLARED",
+        "message": "flux sans <language> déclaré"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-06-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les aventures de Konpé Manikou": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Le podcast du musée des confluences": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Le podcast jeunesse du musée des Confluences » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Jeunessemdc » ≠ itunes:author « musée des Confluences »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-02-15 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La tête dans les histoires": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-04-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Le royaume des contes : histoires audio pour enfants": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://podcasts.ouest-france.fr/main/pub/emission/2092"
+      }
+    ],
+    "Les aventures de Tintin": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Culture »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-02-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les contes d'un autre temps": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Les contes de la maison ronde": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Musique »"
+      }
+    ],
+    "Les aventures d'Octave et Mélo": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Musique »"
+      }
+    ],
+    "Les Fables de La Fontaine - Intégrale": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Les aventures de Rodolphe et Gala": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Rodolpheetgala » ≠ itunes:author « Cecilia Dorai & Studio Fantask »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-04-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les histoires du soir (AirZen Radio)": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://airzen.fr/mieux-etre/enfants/collections/les-histoires-du-soir"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-12-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les histoires du pince oreille": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Culture »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-09-27 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les Histoires du soir d'Alexandra et Cécile": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Leshistoiresdusoir » ≠ itunes:author « Alexandra MICHEL et Cécile BATAILLER »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-10-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les histoires terrifiantes des bonbons Haribo": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2019-10-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "LES PETITES VOIX DU MERCREDI | LES QUESTIONS EXISTENTIELLES DES ENFANTS !": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-06-26 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les histoires pour s'endormir": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Les petites histoires pour s'endormir » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "Les p'tits bateaux": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      }
+    ],
+    "Les zinstrus": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Musique »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-11-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Ma maison magique": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Podcastics » ≠ itunes:author « Ma Maison Magique »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-06-02 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Mes premières histoires": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-10-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Petit Lapin": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Lotus et Cali des histoires qui font un peu peur": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-03-31 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Mon ami Bulle et moi": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-03-31 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Raconte-moi une bêtise": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Slate » ≠ itunes:author « Initial Studio »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.slate.fr/audio/raconte-moi-une-betise/"
+      }
+    ],
+    "Raconte-moi les animaux": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-06-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Une petite souris a l'opera": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Operadeparis » ≠ itunes:author « Opéra national de Paris »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-10-14 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Toudou": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Histoires de doudou » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      }
+    ],
+    "Passe Partout les rigolades": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-03-01 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Peut contenir des traces de blagues": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-03-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Tintamarre et Gazouillis": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://lirenjeu.ch/tintamarre-emission/"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-05-30 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Artis et Gousse d'Ail": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://feed.ausha.co/bVYxSgqdl8gy"
+      }
+    ],
+    "Astronomes en herbe": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Astronome en herbe » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Ouest-track » ≠ itunes:author « Ouest Track Radio »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-09-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Bestioles": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      }
+    ],
+    "Anne Bonny La reine des pirates": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Arteradio » ≠ itunes:author « ARTE Radio »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-12-16 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Brèves de Nature Sauvage": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-10-05 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Chut, j'écoute !": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-03-04 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Clara et les Sortilèges": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-03-07 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Sam raconte": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Baladodiffusion » ≠ itunes:author « Télé-Québec »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-03-31 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Courvole": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Feeds » ≠ itunes:author « Aurélien Guillot »"
+      }
+    ],
+    "En attendant ma lettre le Poudlard": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « En attendant ma lettre de Poudlard » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Rss » ≠ itunes:author « Harry Potter Québec »"
+      }
+    ],
+    "En cavale": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://en-cavale.fr/"
+      }
+    ],
+    "En Cavale - \"Opération Exploratus\"": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://en-cavale.fr/"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-04-03 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Jules et le monde d'Harmonia - Histoire magique et musicale pour les enfants": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-05-27 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Histoires d'Animaux": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Api » ≠ itunes:author « INA »"
+      }
+    ],
+    "Histoires pour enfants de la famille M.": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-07-07 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La Discomobile": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « FIP »"
+      }
+    ],
+    "La fée Caraboose": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « La Fée Carabosse 🪄 (Histoires pour enfants) » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "L'Amérique pour les kids": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-01-19 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "JE SUIS BIEN ! Histoires Du Soir": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-10-31 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La bibliothèque des YOUYOU": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-07-18 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "La Grimm Academie": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-11-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Le petit bouquineur": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Smartlinks » ≠ itunes:author « Le Petit Bouquineur - Des aventures sonores pour explorer le monde (Podcast jeunesse) »"
+      }
+    ],
+    "Les aventures de Bella la vache, (histoires pour enfants)": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-04-14 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les aventures de Papoush et petit pouce mythologie grecque": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://podcasts.ouest-france.fr/main/pub/emission/1475"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-12-23 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Le quizz du petit quotidien": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Le Quiz du Petit Quotidien » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-07-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les CONTES farfelus": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Les aventures du petit nicolas": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Culture »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-12-14 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les curieuses histoires du museum": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Culture »"
+      }
+    ],
+    "Les histoires de Touk Touk": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://touk-touk.com"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-10-16 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les Aventures Nature de Camille et Léo": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-11-21 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les insectes ont le cafard (Canada) (7-9 ans)": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Balados jeunesse Espace pour la vie » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « M » ≠ itunes:author « Espace pour la vie »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://m.espacepourlavie.ca/les-insectes-ont-le-cafard"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2021-09-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les Odyssées": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      }
+    ],
+    "Les Maléfiques": [
+      {
+        "rule": "LANG_UNDECLARED",
+        "message": "flux sans <language> déclaré"
+      }
+    ],
+    "Les voyages d'Amelia au coeur de l'histoire": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Europe1 » ≠ itunes:author « Europe 1 »"
+      },
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.europe1.fr/emissions/les-voyages-damelia-au-coeur-de-lhistoire"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-04-04 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Méditation chakras pour enfants": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-03-03 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Manneken etles inventions belges": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Manneken et les inventions belges » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "Mille et une histoires": [
+      {
+        "rule": "WEBSITE_DEAD",
+        "message": "site en échec (4xx/5xx) : https://www.fleuruspresse.com/magazines/pour-les-plus-petits/mille-et-une-histoires"
+      }
+    ],
+    "Mythes et légendes": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Mythes, légendes et histoire » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-03-10 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Une histoire et Oli": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      }
+    ],
+    "Et si tu étais maire ?": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2020-03-11 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Orbinéa Le Monde des Odyssées | Documentaire Podcast Histoire pour dormir Livre Audio Enfant & Adulte": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-07-29 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Allo, 1jour1actu ?": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-02-28 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Il était un Roman": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-03-06 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Mets tes écoute coeur": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-04-25 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les mondes de Chloé à la belle étoile": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Culture »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-08-13 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Moi Président(e), le podcast politique des enfants": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-05-09 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Mija Podcast (French)": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-01-11 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Les aventures d'Arsene Lupin": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-04-16 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Nouvelles héroines (histoires vraies)": [
+      {
+        "rule": "NAME_MISMATCH",
+        "message": "titre du flux « Nouvelles Héroïnes, des histoires vraies de femmes qui sont allées au bout de leurs rêves pour inspirer les jeunes générations » ≠ nom de l'entrée (titres curés/localisés : vérifiez que c'est bien le même podcast)"
+      }
+    ],
+    "Politikids": [
+      {
+        "rule": "WEBSITE_MISSING",
+        "message": "aucun site web (source ni <link> du canal)"
+      }
+    ],
+    "Olma": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Radiofrance » ≠ itunes:author « France Inter »"
+      },
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2022-06-22 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "Qui a inventé?": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Bayard-jeunesse » ≠ itunes:author « Qui a inventé ? »"
+      }
+    ],
+    "Raconte-moi Paris": [
+      {
+        "rule": "PUBLISHER_MISMATCH",
+        "message": "éditeur « Racontemoiparis » ≠ itunes:author « Raconte-moi Paris »"
+      }
+    ],
+    "Raconte-moi l'espace": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2024-01-24 (> 24 mois) — flux probablement abandonné"
+      }
+    ],
+    "À l'écoute!": [
+      {
+        "rule": "FEED_STALE",
+        "message": "dernier épisode du 2023-03-01 (> 24 mois) — flux probablement abandonné"
+      }
+    ]
+  },
+  "summary": {
+    "errors": 0,
+    "warnings": 188,
+    "total": 198
+  }
+}

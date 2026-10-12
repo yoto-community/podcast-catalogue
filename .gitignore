@@ -2,7 +2,10 @@ node_modules/
 dist/
 site/dist/
 site/public/search-index.json
-.cache/
+# .cache/ reste ignoré (flux récupérés), sauf le résumé de santé que la page
+# /health/ doit lire au build : feed-health.yml le commite chaque semaine.
+.cache/*
+!.cache/feed-health.json
 .astro/
 _site/
 *.log

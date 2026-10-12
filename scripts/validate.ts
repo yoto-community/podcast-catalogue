@@ -918,21 +918,6 @@ async function checkOneFeed(entry: LoadedEntry, sink: Finding[]): Promise<void> 
     });
   }
 
-  // publisher ↔ itunes:author
-  if (
-    src.publisher &&
-    parsed.author &&
-    normalizeName(src.publisher) !== normalizeName(parsed.author)
-  ) {
-    add({
-      severity: "warning",
-      rule: "PUBLISHER_MISMATCH",
-      file: at,
-      entry: name,
-      message: `éditeur « ${src.publisher} » ≠ itunes:author « ${parsed.author} »`,
-    });
-  }
-
   // websiteUrl
   if (src.websiteUrl) {
     const ok = await headOk(src.websiteUrl);

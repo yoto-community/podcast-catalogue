@@ -47,7 +47,9 @@ async function updateEntryFile(filePath: string): Promise<number> {
 
       let changed = false;
       if (publisher && entry.publisher !== publisher) {
-        console.log(`  📝 ${entry.name}: publisher "${entry.publisher || "(vide)"}" → "${publisher}"`);
+        console.log(
+          `  📝 ${entry.name}: publisher "${entry.publisher || "(vide)"}" → "${publisher}"`,
+        );
         if (!DRY_RUN) entry.publisher = publisher;
         changed = true;
       }

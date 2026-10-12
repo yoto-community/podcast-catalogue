@@ -297,7 +297,10 @@ function parseRssChannel(channel: Record<string, unknown>): ParsedFeed {
       text(channel["image"]) ??
       undefined,
     // author : itunes:author — pour author (animateur/créateur)
-    author: text(channel["itunes:author"]) ?? text(channel["managingEditor"]) ?? text(channel["webMaster"]),
+    author:
+      text(channel["itunes:author"]) ??
+      text(channel["managingEditor"]) ??
+      text(channel["webMaster"]),
     // podcastAuthor : itunes:author — pour author (animateur/créateur)
     podcastAuthor: text(channel["itunes:author"]),
     // owner : organisation propriétaire (itunes:owner/itunes:name) — pour publisher
