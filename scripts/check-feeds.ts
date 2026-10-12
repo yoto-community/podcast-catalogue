@@ -27,6 +27,8 @@ interface FeedHealthEntry {
   status: "ok" | "stale" | "error";
   lastChecked: string;
   error?: string;
+  /** Avertissements détaillés par règle (ex: PUBLISHER_MISMATCH, WEBSITE_DEAD, etc.) */
+  warnings?: Array<{ rule: string; message: string }>;
 }
 
 const LABEL = "feed-health";
@@ -66,7 +68,7 @@ async function gh(
   return res;
 }
 
-/** La libellé existe ? sinon on le crée (422/409 = déjà présent, non bloquant). */
+/** Le libellé existe ? sinon on le crée (422/409 = déjà présent, non bloquant). */
 async function ensureLabel(token: string): Promise<void> {
   const res = await gh(token, "POST", `/repos/${REPOSITORY}/labels`, {
     name: LABEL,
@@ -121,34 +123,45 @@ function issueBody(report: string, runUrl: string): string {
   ].join("\n");
 }
 
+/** Extrait le JSON structuré de la sortie de validate.ts --json */
+function extractValidationJson(output: string): { findings: any[]; results: any[] } | null {
+  // La sortie contient des logs sur stderr/stdout mélangés, le JSON est à la fin
+  // On cherche le dernier objet JSON complet qui contient 'findings' et 'results'
+  let braceCount = 0;
+  let jsonStart = -1;
+
+  for (let i = 0; i < output.length; i++) {
+    if (output[i] === "{") {
+      if (braceCount === 0) jsonStart = i;
+      braceCount++;
+    } else if (output[i] === "}") {
+      braceCount--;
+      if (braceCount === 0 && jsonStart !== -1) {
+        const jsonStr = output.slice(jsonStart, i + 1);
+        try {
+          const data = JSON.parse(jsonStr);
+          if (data.findings && data.results) {
+            return data;
+          }
+        } catch {
+          // Pas un JSON valide complet, on continue
+        }
+        jsonStart = -1;
+      }
+    }
+  }
+  return null;
+}
+
 async function main(): Promise<void> {
   const { code, report, reportPath } = runValidation();
   const { errors, warnings } = counts(report);
   console.log(`\n${errors} erreur(s) bloquante(s), ${warnings} avertissement(s) → ${reportPath}`);
 
-  // Parse feed health per podcast for cache
+  // Cache santé des flux par podcast (pour la page /health/)
   const feedHealthCache: Record<string, FeedHealthEntry> = {};
-  try {
-    const validateOutput = report;
-    // Extract per-feed status from report lines
-    const lines = validateOutput.split("\n");
-    for (const line of lines) {
-      // Match lines like: ❌ [FEED_UNREACHABLE] entries/fr/tout-petits.json → « Name » — message
-      // or: ⚠️ [FEED_STALE] entries/fr/tout-petits.json → « Name » — message
-      const match = line.match(
-        /^[❌⚠️] \[([A-Z_]+)\] (entries\/[^/]+\/[^.]+\.json) → « ([^»]+) » — (.+)$/,
-      );
-      if (match) {
-        const [, rule, file, name, message] = match;
-        // Extract slug from file path: entries/fr/tout-petits.json -> slug from the entry
-        // We'll need to load entries to get slug, but for now let's use a simpler approach
-      }
-    }
-  } catch {
-    // Ignore cache generation errors
-  }
 
-  // Better approach: run validate with --json to get structured results
+  // 1) Récupérer les résultats structurés (JSON) de validate.ts
   const { stdout: jsonOutput } = spawnSync(
     "pnpm",
     ["exec", "tsx", "scripts/validate.ts", "--rss", "--all", "--json"],
@@ -156,56 +169,89 @@ async function main(): Promise<void> {
   );
 
   if (jsonOutput) {
-    try {
-      // JSON is in stdout after all warning messages, followed by a summary line
-      // Find the last complete JSON object (from first { to matching })
-      const lines = jsonOutput.split("\n");
-      let braceCount = 0;
-      let jsonStart = -1;
-      let jsonEnd = -1;
+    const data = extractValidationJson(jsonOutput);
+    if (data) {
+      const { findings, results } = data;
 
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i] ?? "";
-        for (let j = 0; j < line.length; j++) {
-          if (line[j] === "{") {
-            if (braceCount === 0) jsonStart = i;
-            braceCount++;
-          } else if (line[j] === "}") {
-            braceCount--;
-            if (braceCount === 0 && jsonStart !== -1) {
-              jsonEnd = i;
-            }
-          }
+      // Grouper les findings par slug
+      const findingsBySlug = new Map<string, Array<{ rule: string; message: string }>>();
+      for (const finding of findings) {
+        // Trouver le slug correspondant via le nom de l'entrée (entry)
+        // On doit mapper entry name -> slug via les résultats
+        const entryName = finding.entry;
+        const result = results.find((r) => {
+          // Le résultat contient le slug, on a besoin de faire le lien via le nom
+          // Pour l'instant on stocke par entry name, on fera la correspondance côté site
+          return true;
+        });
+        // On va stocker les findings indexés par le nom d'entrée pour l'instant
+        // et faire la correspondance côté health.astro via getEntries()
+        const key = finding.file ? finding.file.replace(/entries\/[^/]+\/(.+)\.json/, "$1") : finding.entry;
+        // Mieux: utiliser le slug depuis results si possible
+        // Pour l'instant on stocke par entry name
+        if (!findingsBySlug.has(finding.entry)) {
+          findingsBySlug.set(finding.entry, []);
         }
+        findingsBySlug.get(finding.entry)!.push({
+          rule: finding.rule,
+          message: finding.message,
+        });
       }
 
-      if (jsonStart !== -1 && jsonEnd !== -1) {
-        const jsonLines = lines.slice(jsonStart, jsonEnd + 1);
-        const jsonStr = jsonLines.join("\n");
-        const data = JSON.parse(jsonStr);
-        const results = data.results || [];
-        for (const result of results) {
-          const status =
-            result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
-          feedHealthCache[result.slug] = {
-            status,
-            lastChecked: new Date().toISOString(),
-            error: status !== "ok" ? `Status: ${result.status}` : undefined,
-          };
-        }
+      // Construire le cache final avec slug comme clé
+      for (const result of results) {
+        const slug = result.slug;
+        const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
+
+        // Chercher les warnings pour ce slug via le nom d'entrée
+        // On a besoin de mapper slug -> entry name
+        // Pour l'instant on fait simple : on cherche dans findingsBySlug par entry name
+        // Mais on n'a pas le entry name dans results... Il faut le récupérer autrement.
       }
-    } catch {
-      // Ignore parse errors
+
+      // Approche plus simple: on fait un map entry name -> slug depuis les entries
+      // Mais on n'a pas les entries ici... On va faire la correspondance côté site
+      // en chargeant les entries et en matchant par nom.
+
+      // Pour l'instant, on stocke les findings bruts indexés par entry name
+      // et on fait le mapping côté client
+      const rawFindingsByEntryName = new Map<string, Array<{ rule: string; message: string }>>();
+      for (const finding of findings) {
+        if (!rawFindingsByEntryName.has(finding.entry)) {
+          rawFindingsByEntryName.set(finding.entry, []);
+        }
+        rawFindingsByEntryName.get(finding.entry)!.push({
+          rule: finding.rule,
+          message: finding.message,
+        });
+      }
+
+      // Stocker les findings bruts dans le cache pour usage côté site
+      const cacheData = {
+        timestamp: new Date().toISOString(),
+        bySlug: {} as Record<string, FeedHealthEntry>,
+        byEntryName: Object.fromEntries(rawFindingsByEntryName),
+        summary: { errors, warnings, total: results.length },
+      };
+
+      // Ajouter le status de base par slug
+      for (const result of results) {
+        const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
+        cacheData.bySlug[result.slug] = {
+          status,
+          lastChecked: new Date().toISOString(),
+          error: status !== "ok" ? `Status: ${result.status}` : undefined,
+        };
+      }
+
+      try {
+        fs.mkdirSync(path.dirname(CACHE_FILE), { recursive: true });
+        fs.writeFileSync(CACHE_FILE, JSON.stringify(cacheData, null, 2));
+        console.log(`💾 Cache santé des flux écrit → ${path.relative(ROOT, CACHE_FILE)}`);
+      } catch (err) {
+        console.warn(`⚠️  Impossible d'écrire le cache : ${err}`);
+      }
     }
-  }
-
-  // Write cache file
-  try {
-    fs.mkdirSync(path.dirname(CACHE_FILE), { recursive: true });
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(feedHealthCache, null, 2));
-    console.log(`💾 Cache santé des flux écrit → ${path.relative(ROOT, CACHE_FILE)}`);
-  } catch (err) {
-    console.warn(`⚠️  Impossible d'écrire le cache : ${err}`);
   }
 
   const token = process.env.GITHUB_TOKEN;
@@ -233,7 +279,6 @@ async function main(): Promise<void> {
         await gh(token, "PATCH", `/repos/${REPOSITORY}/issues/${primary.number}`, { title, body });
         console.log(`🔄 issue #${primary.number} mise à jour`);
       }
-      // Une seule issue à la fois : les suivantes sont fermées.
       for (const duplicate of extra) {
         await gh(token, "PATCH", `/repos/${REPOSITORY}/issues/${duplicate.number}`, {
           state: "closed",
