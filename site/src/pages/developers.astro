@@ -1,0 +1,600 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { pageUrl } from "../lib/url";
+import { getManifest } from "../lib/catalog";
+
+const title = "API développeurs — Catalogue de podcasts";
+const description =
+  "Documentation de l'API publique : catalogue, épisodes, recherche et santé des flux. Réutilisez les données dans vos applications.";
+const path = "/developers/";
+const manifest = getManifest();
+const siteUrl = Astro.site ? new URL(pageUrl("/developers/"), Astro.site).href : undefined;
+const searchActionUrl = Astro.site
+  ? new URL(pageUrl("/api/search.json"), Astro.site).href + "?q={search_term_string}"
+  : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "API Catalogue podcasts enfants",
+  description,
+  ...(siteUrl && { url: siteUrl }),
+  ...(searchActionUrl && {
+    potentialAction: {
+      "@type": "SearchAction",
+      target: searchActionUrl,
+      "query-input": "required name=search_term_string",
+    },
+  }),
+};
+
+const baseUrl = Astro.site ? new URL(pageUrl("/"), Astro.site).href : "https://yoto-community.github.io/podcast-catalogue/";
+
+const endpoints = [
+  {
+    method: "GET",
+    path: "/api/catalog.json",
+    description: "Manifeste complet du catalogue",
+    response: "Manifest",
+    cache: "1 h / 24 h",
+  },
+  {
+    method: "GET",
+    path: "/api/catalog/{lang}.json",
+    description: "Catalogue par langue (fr, en)",
+    response: "CatalogLang",
+    cache: "1 h / 24 h",
+  },
+  {
+    method: "GET",
+    path: "/api/catalog/episodes/index.json",
+    description: "Index des podcasts avec nombre d'épisodes",
+    response: "EpisodeIndex",
+    cache: "1 h / 24 h",
+  },
+  {
+    method: "GET",
+    path: "/api/catalog/episodes/{slug}.json",
+    description: "Épisodes d'un podcast (10 derniers)",
+    response: "EpisodesFile",
+    cache: "1 h / 24 h",
+  },
+  {
+    method: "GET",
+    path: "/api/search.json",
+    description: "Recherche texte + filtres",
+    response: "SearchResults",
+    cache: "5 min / 10 min",
+  },
+  {
+    method: "GET",
+    path: "/api/health.json",
+    description: "Santé des flux RSS",
+    response: "HealthReport",
+    cache: "1 h / 24 h",
+  },
+  {
+    method: "GET",
+    path: "/search-index.json",
+    description: "Index de recherche (1847 épisodes)",
+    response: "SearchIndex",
+    cache: "1 h / 24 h",
+  },
+];
+
+// Code samples defined as strings to avoid Astro template parsing issues
+const quickstart = `# Définir la base URL
+export BASE=${baseUrl}
+
+# Récupérer le manifeste (198 podcasts, ${manifest.counts.total} total)
+curl $BASE/api/catalog.json | jq '.counts'
+
+# Rechercher des podcasts en français sur les dinosaures
+curl "$BASE/api/search.json?q=dinosaures&lang=fr" | jq '.results[] | .name'
+
+# Obtenir les épisodes d'un podcast
+curl $BASE/api/catalog/episodes/animalite.json | jq '.episodes[0].title'`;
+
+const searchDocs = `# Requête de base (au moins un paramètre requis)
+GET /api/search.json?q=mots+cles
+
+# Paramètres disponibles
+q       — Texte à rechercher (nom, description, éditeur, catégorie)
+lang    — Filtrer par langue (fr, en)
+cat     — Filtrer par catégorie (histoire, education, fiction, documentaire, musique, science)
+age     — Filtrer par tranche d'âge (tout-petits, maternelle-cp, primaire, college-plus)
+limit   — Nombre max de résultats (défaut : 50, max : 200)
+episodes — Inclure les 5 derniers épisodes (true/false)
+
+# Exemples
+curl "$BASE/api/search.json?q=animaux&lang=fr&limit=10"
+curl "$BASE/api/search.json?cat=histoire&age=primaire"
+curl "$BASE/api/search.json?q=espace&episodes=true"`;
+
+const manifestSchema = `{
+  "schemaVersion": 1,
+  "catalogVersion": "${manifest.catalogVersion}",
+  "commit": "${manifest.commit}",
+  "updatedAt": "${manifest.updatedAt}",
+  "counts": {
+    "total": ${manifest.counts.total},
+    "byLanguage": { "fr": ${manifest.counts.byLanguage.fr}, "en": ${manifest.counts.byLanguage.en} },
+    "byGroup": { "tout-petits": ${manifest.counts.byGroup["tout-petits"]}, "maternelle-cp": ${manifest.counts.byGroup["maternelle-cp"]}, "primaire": ${manifest.counts.byGroup["primaire"]}, "college-plus": ${manifest.counts.byGroup["college-plus"]} }
+  },
+  "groups": [
+    {
+      "id": "tout-petits",
+      "order": 1,
+      "label": "Tout-petits",
+      "ageRange": "0 – 3 ans",
+      "ageMin": 0,
+      "ageMax": 3
+    }
+  ],
+  "languages": [
+    { "code": "fr", "label": "Français" },
+    { "code": "en", "label": "English" }
+  ],
+  "shards": [
+    {
+      "path": "fr/tout-petits.json",
+      "language": "fr",
+      "group": "tout-petits",
+      "count": 45,
+      "bytes": 123456,
+      "sha256": "abc..."
+    }
+  ]
+}`;
+
+const entrySchema = `{
+  "slug": "animalite",
+  "name": "Animalité",
+  "language": "fr",
+  "groupId": "primaire",
+  "ageRange": "7 – 10 ans",
+  "category": "science",
+  "tags": ["animaux", "nature-environnement"],
+  "publisher": "Radio France",
+  "rssUrl": "https://radiofrance-podcastorage.googleapis.com/...",
+  "imageUrl": "https://...",
+  "websiteUrl": "https://www.radiofrance.fr/...",
+  "description": "Découverte du monde animal..."
+}`;
+
+const episodesSchema = `{
+  "schemaVersion": 1,
+  "catalogVersion": "${manifest.catalogVersion}",
+  "slug": "animalite",
+  "fetchedAt": "2026-10-12T06:00:00.000Z",
+  "feedTitle": "Animalité",
+  "count": 10,
+  "episodes": [
+    {
+      "id": "abc123...",
+      "title": "Le secret des renards polaires",
+      "pubDate": "2026-10-10T23:20:02.000Z",
+      "durationSec": 720,
+      "description": "Découverte de l'adaptation...",
+      "audioUrl": "https://...",
+      "audioType": "audio/mpeg",
+      "imageUrl": "https://...",
+      "episodeNumber": 42,
+      "seasonNumber": 3
+    }
+  ]
+}`;
+
+const searchResultsSchema = `{
+  "query": {
+    "q": "dinosaures",
+    "lang": "fr",
+    "cat": "",
+    "age": "",
+    "limit": 50,
+    "includeEpisodes": false
+  },
+  "count": 12,
+  "results": [
+    {
+      "slug": "dino-rhyme",
+      "name": "Dino Rythm",
+      "language": "fr",
+      "groupId": "maternelle-cp",
+      "ageRange": "3 – 6 ans",
+      "category": "education",
+      "tags": ["dinosaures", "musique"],
+      "publisher": "…",
+      "rssUrl": "…",
+      "imageUrl": "…",
+      "websiteUrl": "…",
+      "description": "Chansons et histoires sur les dinosaures..."
+    }
+  ]
+}`;
+
+const healthSchema = `{
+  "generatedAt": "2026-10-12T06:54:40.906Z",
+  "stats": {
+    "total": 198,
+    "healthy": 190,
+    "stale": 8,
+    "unhealthy": 0,
+    "unknown": 0
+  },
+  "podcasts": [
+    {
+      "slug": "animalite",
+      "name": "Animalité",
+      "language": "fr",
+      "groupId": "primaire",
+      "ageRange": "7 – 10 ans",
+      "category": "science",
+      "publisher": "Radio France",
+      "status": "healthy",
+      "lastFetch": "2026-10-12T06:00:00.000Z",
+      "episodeCount": 10
+    }
+  ]
+}`;
+
+const jsExample = `// Récupérer le catalogue et filtrer
+const catalog = await fetch(\`\${BASE}/api/catalog.json\`).then(r => r.json());
+console.log(\`Catalogue \${catalog.catalogVersion} — \${catalog.counts.total} podcasts\`);
+
+// Recherche avec résultats enrichis
+const search = await fetch(
+  \`\${BASE}/api/search.json?q=histoires&lang=fr&episodes=true&limit=10\`
+).then(r => r.json());
+
+for (const podcast of search.results) {
+  console.log(\`\${podcast.name} — \${podcast.latestEpisodes.length} épisodes récents\`);
+}`;
+
+const pythonExample = `import requests
+
+base_url = "https://yoto-community.github.io/podcast-catalogue"
+
+# Recherche
+response = requests.get(
+    f"{base_url}/api/search.json",
+    params={"q": "animaux", "lang": "fr", "limit": 20}
+)
+data = response.json()
+
+for podcast in data["results"]:
+    print(f"{podcast['name']} ({podcast['ageRange']})")`;
+
+const nodeCacheExample = `import { LRUCache } from 'lru-cache';
+
+const cache = new LRUCache({
+  max: 100,
+  ttl: 1000 * 60 * 60, // 1 h
+});
+
+async function fetchCatalog() {
+  const cached = cache.get('catalog');
+  if (cached) return cached;
+
+  const response = await fetch(\`\${BASE}/api/catalog.json\`);
+  const data = await response.json();
+  cache.set('catalog', data);
+  return data;
+}`;
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+  <main class="dev">
+    <h1>API développeurs</h1>
+    <p class="lead">
+      Réutilisez les données du catalogue dans vos applications, sites ou outils. Toutes les
+      endpoints sont publiques, gratuites et sans clé d'API. Les métadonnées sont sous licence MIT.
+    </p>
+
+    <section class="dev__section">
+      <h2>🚀 Démarrage rapide</h2>
+      <pre><code set:html={quickstart} /></pre>
+    </section>
+
+    <section class="dev__section">
+      <h2>📡 Endpoints</h2>
+      <div class="dev__table-wrapper">
+        <table class="dev__table">
+          <thead>
+            <tr>
+              <th>Méthode</th>
+              <th>Endpoint</th>
+              <th>Description</th>
+              <th>Cache</th>
+            </tr>
+          </thead>
+          <tbody>
+            {endpoints.map((ep) => (
+              <tr>
+                <td><code class="dev__method">{ep.method}</code></td>
+                <td><code>{ep.path}</code></td>
+                <td>{ep.description}</td>
+                <td><span class="dev__cache">{ep.cache}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        <strong>CORS :</strong> Toutes les endpoints acceptent les requêtes cross-origin
+        (<code>Access-Control-Allow-Origin: *</code>). Méthodes : <code>GET</code>, <code>HEAD</code>, <code>OPTIONS</code>.
+      </p>
+    </section>
+
+    <section class="dev__section">
+      <h2>🔍 Recherche</h2>
+      <p>
+        L'endpoint de recherche accepte plusieurs paramètres combinables :
+      </p>
+      <pre><code set:html={searchDocs} /></pre>
+    </section>
+
+    <section class="dev__section">
+      <h2>📄 Schemas de réponse</h2>
+
+      <h3>Manifest (/api/catalog.json)</h3>
+      <pre><code set:html={manifestSchema} /></pre>
+
+      <h3>Entry (dans tous les endpoints catalogue)</h3>
+      <pre><code set:html={entrySchema} /></pre>
+
+      <h3>{"EpisodesFile (/api/catalog/episodes/{slug}.json)"}</h3>
+      <pre><code set:html={episodesSchema} /></pre>
+
+      <h3>SearchResults (/api/search.json)</h3>
+      <pre><code set:html={searchResultsSchema} /></pre>
+
+      <h3>HealthReport (/api/health.json)</h3>
+      <pre><code set:html={healthSchema} /></pre>
+    </section>
+
+    <section class="dev__section">
+      <h2>💻 Exemples de code</h2>
+
+      <h3>JavaScript / TypeScript</h3>
+      <pre><code set:html={jsExample} /></pre>
+
+      <h3>Python</h3>
+      <pre><code set:html={pythonExample} /></pre>
+
+      <h3>Node.js avec cache</h3>
+      <pre><code set:html={nodeCacheExample} /></pre>
+    </section>
+
+    <section class="dev__section">
+      <h2>⚡ Performance & limites</h2>
+      <ul>
+        <li>
+          <strong>Caching agressif :</strong> Tous les endpoints incluent des en-têtes
+          <code>Cache-Control</code> et <code>stale-while-revalidate</code>. Mettez en cache côté client.
+        </li>
+        <li>
+          <strong>Pas de rate limiting :</strong> L'API est statique (GitHub Pages). Aucune limite
+          stricte, mais soyez raisonnable (&lt; 100 req/min recommandé).
+        </li>
+        <li>
+          <strong>Données figées :</strong> Le catalogue est reconstruit automatiquement une fois par
+          semaine. Utilisez <code>catalogVersion</code> pour détecter les mises à jour.
+        </li>
+        <li>
+          <strong>Recherche côté client alternative :</strong> Téléchargez{" "}
+          <code>/search-index.json</code> (1.6 MB) une seule fois et recherchez localement.
+        </li>
+      </ul>
+    </section>
+
+    <section class="dev__section">
+      <h2>🔄 Versioning</h2>
+      <p>
+        L'API suit un versioning par <code>catalogVersion</code> (format <code>YYYY.MM.DD-N</code>).
+        Les changements de schéma (<code>schemaVersion</code>) sont indiqués dans le manifeste.
+      </p>
+      <ul>
+        <li>
+          <strong>schemaVersion 1 :</strong> Schéma actuel (stable depuis {manifest.catalogVersion})
+        </li>
+        <li>
+          <strong>Ajouts de champs :</strong> Non considérés comme breaking changes
+        </li>
+        <li>
+          <strong>Renommage / suppression :</strong> Prévu avec bump de <code>schemaVersion</code>
+        </li>
+      </ul>
+      <p class="note">
+        <strong>Stabilité :</strong> Les endpoints <code>/api/catalog*</code> et{" "}
+        <code>/api/search.json</code> sont stables. Les endpoints <code>/api/health.json</code>{" "}
+        et <code>/search-index.json</code> peuvent évoluer pour ajouter des métriques.
+      </p>
+    </section>
+
+    <section class="dev__section">
+      <h2>📝 Licence & attribution</h2>
+      <p>
+        Les métadonnées éditoriales (noms, descriptions, tags, URLs RSS) sont sous{" "}
+        <a href="https://github.com/yoto-community/podcast-catalogue/blob/main/LICENSE">
+          licence MIT
+        </a>{" "}
+        — libres de réutilisation commerciale.
+      </p>
+      <p>
+        <strong>Attribution recommandée :</strong> Mentionnez le catalogue dans les crédits de
+        votre application ou sur la page « À propos ».
+      </p>
+      <p class="note">
+        <strong>Contenus audio :</strong> Les flux RSS et fichiers audio restent la propriété de
+        leurs éditeurs respectifs. L'API ne fournit que les métadonnées.
+      </p>
+    </section>
+
+    <section class="dev__section">
+      <h2>🔗 Ressources</h2>
+      <ul>
+        <li>
+          <a href={pageUrl("/developers/")}>Documentation API</a> — cette page
+        </li>
+        <li>
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/tree/main/site/src/pages/api"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Code source des endpoints
+          </a>{" "}
+          — Astro API routes
+        </li>
+        <li>
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/blob/main/site/src/lib/types.ts"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Types TypeScript
+          </a>{" "}
+          — définitions précises des schemas
+        </li>
+        <li>
+          <a
+            href="https://github.com/yoto-community/podcast-catalogue/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Signaler un bug API
+          </a>{" "}
+          — GitHub Issues
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <style>
+    .dev {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .dev h1 {
+      font-size: clamp(2rem, 1.5rem + 2vw, 2.8rem);
+      margin-bottom: 0.5rem;
+    }
+    .lead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: var(--measure);
+      margin-bottom: 2.5rem;
+    }
+    .dev__section {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dev__section:last-child {
+      border-bottom: none;
+    }
+    .dev__section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .dev__section h3 {
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--text);
+    }
+    .dev__section p {
+      margin-bottom: 0.75rem;
+    }
+    .dev__section ul {
+      margin: 0.75rem 0 0 1.5rem;
+      padding: 0;
+    }
+    .dev__section li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    .dev__section code {
+      background: var(--surface-2);
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .dev__section pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
+    .dev__section pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .dev__table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    .dev__table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .dev__table th,
+    .dev__table td {
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .dev__table th {
+      background: var(--surface-2);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .dev__table code {
+      font-size: 0.85em;
+    }
+    .dev__method {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8em;
+    }
+    .dev__cache {
+      display: inline-block;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      margin-top: 0.75rem;
+    }
+    .note strong {
+      color: var(--accent-strong);
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    a:hover {
+      color: var(--accent-strong);
+    }
+  </style>
+</BaseLayout>

@@ -1,6 +1,7 @@
 # Audit hebdomadaire de TOUS les flux (plan §7.4) : c'est lui qui détecte les flux
 # devenus morts après contribution. Un seul rapport = une seule issue `feed-health`
 # (ouverte/mise à jour en cas d'erreur, fermée au retour au vert) — pas de spam.
+# Génère aussi .cache/feed-health.json commité pour la page /health/ du site.
 name: Santé des flux
 
 on:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 concurrency:
@@ -22,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v4
 
@@ -44,6 +47,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm check-feeds
+
+      - name: Configurer git pour commit du cache
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit et push du cache feed-health
+        if: always() && github.event_name == 'schedule'
+        run: |
+          if [ -f .cache/feed-health.json ]; then
+            git add .cache/feed-health.json
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: update feed-health cache [skip ci]"
+              git push
+              echo "✅ Cache feed-health commité et poussé"
+            else
+              echo "ℹ️  Cache feed-health inchangé"
+            fi
+          else
+            echo "⚠️  Pas de fichier cache généré"
+          fi
 
       - name: Publier le rapport comme artefact
         if: always()
