@@ -93,10 +93,11 @@ function generateChangelog(previousTag: string, newTag: string, dryRun: boolean)
 
   for (const line of lines) {
     const match = line.match(/^- (feat|fix|chore|docs|refactor)(?:\(.+\))?: (.+)$/);
-    if (match) {
-      sections[match[1]].push(`- ${match[2]}`);
+    if (match?.[1] && match[2]) {
+      const key = match[1];
+      sections[key]?.push(`- ${match[2]}`);
     } else {
-      sections.other.push(line);
+      sections.other?.push(line);
     }
   }
 

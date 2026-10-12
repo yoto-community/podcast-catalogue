@@ -114,10 +114,10 @@ async function main(): Promise<void> {
         allEpisodes.push({
           id: ep.id,
           podcastSlug: entry.slug,
-          podcastName: entry.name,
+          podcastName: entry.source.name,
           language: entry.language,
           groupId: entry.groupId,
-          category: entry.category,
+          category: entry.source.category,
           title: ep.title ?? "",
           description: ep.description ?? "",
           pubDate: ep.pubDate ?? "",

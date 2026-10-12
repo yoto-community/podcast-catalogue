@@ -163,7 +163,7 @@ async function main(): Promise<void> {
       let jsonEnd = -1;
 
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
+        const line = lines[i] ?? "";
         for (let j = 0; j < line.length; j++) {
           if (line[j] === "{") {
             if (braceCount === 0) jsonStart = i;
