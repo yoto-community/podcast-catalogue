@@ -1,8 +1,11 @@
 /**
- * `dist/search-index.json` — index de recherche full-text sur les épisodes.
+ * `site/public/search-index.json` — index de recherche full-text sur les épisodes.
  *
- * Généré à la construction (après build:episodes), chargé côté client pour
- * recherche instantanée sans backend. ~2000 épisodes = ~200 Ko JSON gzip.
+ * Généré à la construction (après build:episodes), servi par le site comme un
+ * asset statique et chargé côté client pour recherche instantanée sans backend.
+ * Écrit dans `site/public/` (et non `dist/`) : c'est le seul répertoire qu'Astro
+ * publie — sans cela, `/search-index.json` répond 404 en prod.
+ * ~2000 épisodes = ~200 Ko JSON gzip.
  *
  * Usage : pnpm build:search-index
  */
@@ -210,7 +213,7 @@ async function main(): Promise<void> {
     episodes: allEpisodes,
   };
 
-  const outFile = path.join(paths.dist, "search-index.json");
+  const outFile = path.join(paths.sitePublic, "search-index.json");
   writeJson(outFile, index);
 
   const sizeKb = (fs.statSync(outFile).size / 1024).toFixed(1);

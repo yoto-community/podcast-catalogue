@@ -50,7 +50,8 @@ function getHealth(entry: DistEntry): PodcastHealth {
     else if (feedHealth.status === "stale") feedStatus = "stale";
     else if (feedHealth.status === "error") feedStatus = "unhealthy";
   } else if (episodes?.fetchedAt) {
-    const hoursSinceFetch = (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
+    const hoursSinceFetch =
+      (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
     if (hoursSinceFetch < 24) feedStatus = "healthy";
     else if (hoursSinceFetch < 72) feedStatus = "stale";
     else feedStatus = "unhealthy";

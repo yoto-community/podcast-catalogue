@@ -316,8 +316,11 @@ const groups = getGroups().map((group) => ({
   <script type="application/json" id="search-groups" set:html={JSON.stringify(groups)} />
   <!-- Script traité par Astro (TS compilé) — un `is:inline` laisserait tel quel le TypeScript, invalide en JS -->
   <script>
+    import { pageUrl } from "../lib/url";
+
     // Configuration
-    const INDEX_URL = "/search-index.json";
+    // `pageUrl` préfixe le `base` Astro : GitHub Pages publie sous `/nom-du-dépôt/`.
+    const INDEX_URL = pageUrl("/search-index.json");
     const DEBOUNCE_MS = 80;
 
     // État

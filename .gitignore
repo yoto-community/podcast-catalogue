@@ -1,6 +1,7 @@
 node_modules/
 dist/
 site/dist/
+site/public/search-index.json
 .cache/
 .astro/
 _site/

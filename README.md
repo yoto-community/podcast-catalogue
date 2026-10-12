@@ -151,6 +151,7 @@ Un fichier vide n'existe pas.
 ```bash
 pnpm build            # dist/ : manifeste + éclats + bundle complet
 pnpm build:episodes   # dist/episodes/ : index.json + <slug>.json
+pnpm build:search-index  # site/public/search-index.json : index plein-texte de /search/
 pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 ```
 

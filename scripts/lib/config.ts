@@ -14,6 +14,8 @@ export const paths = {
   dist: path.join(ROOT, "dist"),
   cache: path.join(ROOT, ".cache", "feeds"),
   site: path.join(ROOT, "site"),
+  /** Assets servis par le site (`site/public/`) — c'est là que vit l'index de recherche. */
+  sitePublic: path.join(ROOT, "site", "public"),
 };
 
 /** Âge minimum du catalogue (une tranche ne peut pas commencer en dessous). */
