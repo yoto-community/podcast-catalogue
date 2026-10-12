@@ -1,0 +1,54 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":label(dependencies)",
+    ":semanticCommits",
+    ":prConcurrentLimit(10)"
+  ],
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore(deps)",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitBodyTable": true,
+  "schedule": ["every monday at 04:00"],
+  "timezone": "Europe/Paris",
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "devDependencies",
+      "groupSlug": "dev-deps",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "allowedTests": ["build", "typecheck", "lint"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["typescript", "astro", "prettier", "@astrojs/check"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "requiredStatusChecks": ["ci"]
+    }
+  ],
+  "github-actions": {
+    "fileMatch": [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+  },
+  "npm": {
+    "fileMatch": ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "site/package.json"]
+  },
+  "prCreation": "immediate",
+  "prHourlyLimit": 5,
+  "rebaseWhen": "conflicted",
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Renovate - Mise à jour des dépendances",
+  "dependencyDashboardHeader": "Ce tableau de bord suit les mises à jour de dépendances automatisées.",
+  "dependencyDashboardFooter": "Géré par [Renovate](https://github.com/renovatebot/renovate)."
+}

@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsx scripts/build.ts",
     "build:episodes": "tsx scripts/build-episodes.ts",
+    "build:search-index": "tsx scripts/build-search-index.ts",
     "validate": "tsx scripts/validate.ts",
     "validate:changed": "tsx scripts/validate.ts --rss --changed",
     "validate:all": "tsx scripts/validate.ts --rss --all",
@@ -23,6 +24,7 @@
     "auto-tag": "tsx scripts/auto-tag.ts",
     "import-legacy": "tsx scripts/import-legacy.ts",
     "gen:types": "tsx scripts/gen-types.ts",
+    "release": "tsx scripts/release.ts",
     "site:dev": "pnpm --filter site dev",
     "site:build": "pnpm --filter site build",
     "typecheck": "tsc --noEmit",

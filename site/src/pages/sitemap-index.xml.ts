@@ -15,8 +15,16 @@ export async function GET({ site }: APIContext) {
 
   const urls: string[] = [];
 
-  // Page d'accueil
+  // Pages statiques
   urls.push(new URL(pageUrl("/"), site).href);
+  urls.push(new URL(pageUrl("/search/"), site).href);
+  urls.push(new URL(pageUrl("/health/"), site).href);
+  urls.push(new URL(pageUrl("/favoris/"), site).href);
+  urls.push(new URL(pageUrl("/developers/"), site).href);
+  urls.push(new URL(pageUrl("/contribuer/"), site).href);
+  urls.push(new URL(pageUrl("/api/catalog.json"), site).href);
+  urls.push(new URL(pageUrl("/api/search.json"), site).href);
+  urls.push(new URL(pageUrl("/api/health.json"), site).href);
 
   // Pages par langue
   for (const language of languages) {

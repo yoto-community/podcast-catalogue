@@ -8,6 +8,8 @@
  * Une seule issue ouverte à la fois : pas de spam hebdomadaire. Les avertissements
  * (flux périmés, éditeur divergent…) sont affichés mais ne bloquent pas.
  *
+ * Génère aussi un cache JSON `.cache/feed-health.json` pour la page `/health/` du site.
+ *
  * Usage : pnpm check-feeds
  * CI     : .github/workflows/feed-health.yml (cron + workflow_dispatch)
  *          GitHub n'est touché que si GITHUB_TOKEN + GITHUB_REPOSITORY sont fournis ;
@@ -18,6 +20,14 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { ROOT, REPOSITORY } from "./lib/config.ts";
+
+const CACHE_FILE = path.join(ROOT, ".cache", "feed-health.json");
+
+interface FeedHealthEntry {
+  status: "ok" | "stale" | "error";
+  lastChecked: string;
+  error?: string;
+}
 
 const LABEL = "feed-health";
 const API = "https://api.github.com";
@@ -115,6 +125,85 @@ async function main(): Promise<void> {
   const { code, report, reportPath } = runValidation();
   const { errors, warnings } = counts(report);
   console.log(`\n${errors} erreur(s) bloquante(s), ${warnings} avertissement(s) → ${reportPath}`);
+
+  // Parse feed health per podcast for cache
+  const feedHealthCache: Record<string, FeedHealthEntry> = {};
+  try {
+    const validateOutput = report;
+    // Extract per-feed status from report lines
+    const lines = validateOutput.split("\n");
+    for (const line of lines) {
+      // Match lines like: ❌ [FEED_UNREACHABLE] entries/fr/tout-petits.json → « Name » — message
+      // or: ⚠️ [FEED_STALE] entries/fr/tout-petits.json → « Name » — message
+      const match = line.match(/^[❌⚠️] \[([A-Z_]+)\] (entries\/[^/]+\/[^.]+\.json) → « ([^»]+) » — (.+)$/);
+      if (match) {
+        const [, rule, file, name, message] = match;
+        // Extract slug from file path: entries/fr/tout-petits.json -> slug from the entry
+        // We'll need to load entries to get slug, but for now let's use a simpler approach
+      }
+    }
+  } catch {
+    // Ignore cache generation errors
+  }
+
+  // Better approach: run validate with --json to get structured results
+  const { stdout: jsonOutput } = spawnSync(
+    "pnpm",
+    ["exec", "tsx", "scripts/validate.ts", "--rss", "--all", "--json"],
+    { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }
+  );
+
+  if (jsonOutput) {
+    try {
+      // JSON is in stdout after all warning messages, followed by a summary line
+      // Find the last complete JSON object (from first { to matching })
+      const lines = jsonOutput.split("\n");
+      let braceCount = 0;
+      let jsonStart = -1;
+      let jsonEnd = -1;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        for (let j = 0; j < line.length; j++) {
+          if (line[j] === "{") {
+            if (braceCount === 0) jsonStart = i;
+            braceCount++;
+          } else if (line[j] === "}") {
+            braceCount--;
+            if (braceCount === 0 && jsonStart !== -1) {
+              jsonEnd = i;
+            }
+          }
+        }
+      }
+
+      if (jsonStart !== -1 && jsonEnd !== -1) {
+        const jsonLines = lines.slice(jsonStart, jsonEnd + 1);
+        const jsonStr = jsonLines.join("\n");
+        const data = JSON.parse(jsonStr);
+        const results = data.results || [];
+        for (const result of results) {
+          const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
+          feedHealthCache[result.slug] = {
+            status,
+            lastChecked: new Date().toISOString(),
+            error: status !== "ok" ? `Status: ${result.status}` : undefined,
+          };
+        }
+      }
+    } catch {
+      // Ignore parse errors
+    }
+  }
+
+  // Write cache file
+  try {
+    fs.mkdirSync(path.dirname(CACHE_FILE), { recursive: true });
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(feedHealthCache, null, 2));
+    console.log(`💾 Cache santé des flux écrit → ${path.relative(ROOT, CACHE_FILE)}`);
+  } catch (err) {
+    console.warn(`⚠️  Impossible d'écrire le cache : ${err}`);
+  }
 
   const token = process.env.GITHUB_TOKEN;
   if (!token || !process.env.GITHUB_REPOSITORY) {

@@ -32,7 +32,10 @@ const cleanPath = path.replace(/\/+$/, "") || "/";
 const navItems = [
   { prefix: "/", label: "Catalogue", href: pageUrl("/") },
   { prefix: "/editeurs", label: "Éditeurs", href: pageUrl("/editeurs/") },
+  { prefix: "/search", label: "Recherche", href: pageUrl("/search/") },
+  { prefix: "/health", label: "Santé flux", href: pageUrl("/health/") },
   { prefix: "/favoris", label: "Favoris", href: pageUrl("/favoris/") },
+  { prefix: "/developers", label: "API", href: pageUrl("/developers/") },
   { prefix: "/contribuer", label: "Contribuer", href: pageUrl("/contribuer/") },
 ];
 const updated = formatDateLong(manifest.updatedAt);
