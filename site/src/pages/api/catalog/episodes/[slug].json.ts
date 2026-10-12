@@ -10,7 +10,7 @@ export async function GET({ params }: APIContext) {
         error: "Episodes not yet indexed",
         message: "Run 'pnpm build:episodes' to generate episode data",
       }),
-      { status: 503, headers: apiHeaders() }
+      { status: 503, headers: apiHeaders() },
     );
   }
 

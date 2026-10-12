@@ -135,7 +135,9 @@ async function main(): Promise<void> {
     for (const line of lines) {
       // Match lines like: ❌ [FEED_UNREACHABLE] entries/fr/tout-petits.json → « Name » — message
       // or: ⚠️ [FEED_STALE] entries/fr/tout-petits.json → « Name » — message
-      const match = line.match(/^[❌⚠️] \[([A-Z_]+)\] (entries\/[^/]+\/[^.]+\.json) → « ([^»]+) » — (.+)$/);
+      const match = line.match(
+        /^[❌⚠️] \[([A-Z_]+)\] (entries\/[^/]+\/[^.]+\.json) → « ([^»]+) » — (.+)$/,
+      );
       if (match) {
         const [, rule, file, name, message] = match;
         // Extract slug from file path: entries/fr/tout-petits.json -> slug from the entry
@@ -150,7 +152,7 @@ async function main(): Promise<void> {
   const { stdout: jsonOutput } = spawnSync(
     "pnpm",
     ["exec", "tsx", "scripts/validate.ts", "--rss", "--all", "--json"],
-    { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }
+    { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] },
   );
 
   if (jsonOutput) {
@@ -183,7 +185,8 @@ async function main(): Promise<void> {
         const data = JSON.parse(jsonStr);
         const results = data.results || [];
         for (const result of results) {
-          const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
+          const status =
+            result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
           feedHealthCache[result.slug] = {
             status,
             lastChecked: new Date().toISOString(),

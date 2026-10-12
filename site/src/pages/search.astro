@@ -1,27 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const description = "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
+const description =
+  "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
 ---
 
-<BaseLayout
-  title="Recherche dans les épisodes"
-  description={description}
-  path="/search/"
-  lang="fr"
->
+<BaseLayout title="Recherche dans les épisodes" description={description} path="/search/" lang="fr">
   <section class="search-page" aria-labelledby="search-title">
     <header class="search-page__header">
       <h1 id="search-title">Rechercher dans les épisodes</h1>
       <p class="search-page__intro">
-        Tapez un mot-clé (ex. <kbd>dinosaures</kbd>, <kbd>histoire du soir</kbd>, <kbd>espace</kbd>…) —
-        la recherche porte sur les titres et descriptions de <strong id="search-stats-total">…</strong> épisodes.
+        Tapez un mot-clé (ex. <kbd>dinosaures</kbd>, <kbd>histoire du soir</kbd>, <kbd>espace</kbd>
+        …) — la recherche porte sur les titres et descriptions de{" "}
+        <strong id="search-stats-total">…</strong> épisodes.
       </p>
     </header>
 
     <form class="search-page__form" role="search" aria-label="Recherche d'épisodes">
       <div class="search-page__input-wrapper">
-        <label for="search-query" class="sr-only">Rechercher un épisode</label>
+        <label for="search-query" class="sr-only">
+          Rechercher un épisode
+        </label>
         <input
           id="search-query"
           type="search"
@@ -31,27 +30,36 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
           aria-describedby="search-hint"
           autofocus
         />
-        <kbd class="search-page__shortcut" aria-hidden="true">/</kbd>
+        <kbd class="search-page__shortcut" aria-hidden="true">
+          /
+        </kbd>
       </div>
       <p class="search-page__hint" id="search-hint">
-        Raccourci : touche <kbd>/</kbd> pour focus · <kbd>Échap</kbd> pour effacer · Résultats mis à jour en temps réel
+        Raccourci : touche <kbd>/</kbd> pour focus · <kbd>Échap</kbd> pour effacer · Résultats mis à
+        jour en temps réel
       </p>
     </form>
 
     <div class="search-page__filters" role="group" aria-label="Filtres">
-      <label for="search-filter-language" class="sr-only">Langue</label>
+      <label for="search-filter-language" class="sr-only">
+        Langue
+      </label>
       <select id="search-filter-language" aria-label="Filtrer par langue">
         <option value="">Toutes les langues</option>
         <option value="fr">Français</option>
         <option value="en">English</option>
       </select>
 
-      <label for="search-filter-category" class="sr-only">Catégorie</label>
+      <label for="search-filter-category" class="sr-only">
+        Catégorie
+      </label>
       <select id="search-filter-category" aria-label="Filtrer par catégorie">
         <option value="">Toutes les catégories</option>
       </select>
 
-      <label for="search-filter-age" class="sr-only">Tranche d'âge</label>
+      <label for="search-filter-age" class="sr-only">
+        Tranche d'âge
+      </label>
       <select id="search-filter-age" aria-label="Filtrer par tranche d'âge">
         <option value="">Tous les âges</option>
         <option value="tout-petits">Tout-petits (2–5 ans)</option>
@@ -65,7 +73,13 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       </button>
     </div>
 
-    <div id="search-results" class="search-page__results" role="status" aria-live="polite" aria-busy="false">
+    <div
+      id="search-results"
+      class="search-page__results"
+      role="status"
+      aria-live="polite"
+      aria-busy="false"
+    >
       <p class="search-page__empty" hidden>
         Aucun épisode ne correspond à votre recherche.
       </p>
@@ -88,11 +102,24 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
           <time class="search-result__date" datetime=""></time>
           <span class="search-result__duration" aria-label="Durée"></span>
           <div class="search-result__actions">
-            <button type="button" class="btn btn--primary btn--sm" data-play aria-label="Écouter cet épisode">
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"></path></svg>
+            <button
+              type="button"
+              class="btn btn--primary btn--sm"
+              data-play
+              aria-label="Écouter cet épisode"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
+              </svg>
               Écouter
             </button>
-            <a class="btn btn--ghost btn--sm" href="" target="_blank" rel="noopener noreferrer" data-podcast-link>
+            <a
+              class="btn btn--ghost btn--sm"
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              data-podcast-link
+            >
               Voir le podcast
             </a>
           </div>
@@ -125,7 +152,9 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       border-radius: var(--radius);
       background: var(--color-surface);
       color: var(--color-text);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
     }
     .search-page__input-wrapper input:focus {
       outline: none;
@@ -183,7 +212,9 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
       padding: var(--space-4);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
     }
     .search-result:hover {
       border-color: var(--color-primary);
@@ -323,7 +354,11 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     function highlight(text: string, query: string): string {
       if (!query.trim()) return escapeHtml(text);
       const escaped = escapeHtml(text);
-      const terms = query.trim().toLowerCase().split(/\s+/).filter(t => t.length >= 2);
+      const terms = query
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((t) => t.length >= 2);
       let result = escaped;
       for (const term of terms) {
         const regex = new RegExp(`(${escapeRegExp(term)})`, "gi");
@@ -357,7 +392,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       const labels: Record<string, string> = {
         "tout-petits": "2–5 ans",
         "maternelle-cp": "5–7 ans",
-        "primaire": "7–10 ans",
+        primaire: "7–10 ans",
         "college-plus": "11+ ans",
       };
       return labels[groupId] ?? groupId;
@@ -382,7 +417,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       try {
         const response = await fetch(INDEX_URL);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json() as SearchIndexFile;
+        const data = (await response.json()) as SearchIndexFile;
         searchIndex = data.episodes;
         isIndexLoaded = true;
         statsTotal.textContent = `${data.count.toLocaleString("fr-FR")}`;
@@ -398,7 +433,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     }
 
     function buildCategoryFilter(): void {
-      const categories = new Set(searchIndex.map(e => e.category));
+      const categories = new Set(searchIndex.map((e) => e.category));
       const currentValue = categoryFilter.value;
       categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
       for (const cat of [...categories].sort()) {
@@ -425,16 +460,16 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       let results = searchIndex;
 
       if (query) {
-        const terms = query.split(/\s+/).filter(t => t.length >= 2);
-        results = results.filter(ep => {
+        const terms = query.split(/\s+/).filter((t) => t.length >= 2);
+        results = results.filter((ep) => {
           const searchText = `${ep.title} ${ep.description} ${ep.podcastName}`.toLowerCase();
-          return terms.every(term => searchText.includes(term));
+          return terms.every((term) => searchText.includes(term));
         });
       }
 
-      if (lang) results = results.filter(ep => ep.language === lang);
-      if (cat) results = results.filter(ep => ep.category === cat);
-      if (age) results = results.filter(ep => ep.groupId === age);
+      if (lang) results = results.filter((ep) => ep.language === lang);
+      if (cat) results = results.filter((ep) => ep.category === cat);
+      if (age) results = results.filter((ep) => ep.groupId === age);
 
       renderResults(results, query);
     };
@@ -478,7 +513,8 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
 
         const durEl = clone.querySelector(".search-result__duration") as HTMLElement;
         durEl.textContent = formatDuration(ep.durationSec);
-        if (ep.durationSec) durEl.setAttribute("aria-label", `Durée : ${formatDuration(ep.durationSec)}`);
+        if (ep.durationSec)
+          durEl.setAttribute("aria-label", `Durée : ${formatDuration(ep.durationSec)}`);
 
         // Actions
         const playBtn = clone.querySelector("[data-play]") as HTMLButtonElement;
@@ -503,8 +539,8 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       debounceTimer = setTimeout(performSearch, DEBOUNCE_MS);
     });
 
-    [languageFilter, categoryFilter, ageFilter].forEach(el =>
-      el.addEventListener("change", performSearch)
+    [languageFilter, categoryFilter, ageFilter].forEach((el) =>
+      el.addEventListener("change", performSearch),
     );
 
     resetButton.addEventListener("click", () => {
@@ -520,7 +556,10 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     document.addEventListener("keydown", (e) => {
       if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
         const target = e.target as HTMLElement;
-        if (!["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) && !target.isContentEditable) {
+        if (
+          !["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) &&
+          !target.isContentEditable
+        ) {
           e.preventDefault();
           queryInput.focus();
           queryInput.select();
@@ -537,10 +576,14 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     function syncUrl(): void {
       const params = new URLSearchParams(window.location.search);
       const q = queryInput.value.trim();
-      if (q) params.set("q", q); else params.delete("q");
-      if (languageFilter.value) params.set("lang", languageFilter.value); else params.delete("lang");
-      if (categoryFilter.value) params.set("cat", categoryFilter.value); else params.delete("cat");
-      if (ageFilter.value) params.set("age", ageFilter.value); else params.delete("age");
+      if (q) params.set("q", q);
+      else params.delete("q");
+      if (languageFilter.value) params.set("lang", languageFilter.value);
+      else params.delete("lang");
+      if (categoryFilter.value) params.set("cat", categoryFilter.value);
+      else params.delete("cat");
+      if (ageFilter.value) params.set("age", ageFilter.value);
+      else params.delete("age");
       const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
       history.replaceState(null, "", newUrl);
     }

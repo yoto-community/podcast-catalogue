@@ -38,7 +38,13 @@ interface ReleaseOptions {
 function parseArgs(argv: string[]): ReleaseOptions {
   return {
     dryRun: argv.includes("--dry-run"),
-    versionBump: argv.includes("--major") ? "major" : argv.includes("--minor") ? "minor" : argv.includes("--patch") ? "patch" : undefined,
+    versionBump: argv.includes("--major")
+      ? "major"
+      : argv.includes("--minor")
+        ? "minor"
+        : argv.includes("--patch")
+          ? "patch"
+          : undefined,
     explicitVersion: argv.includes("--version") ? argv[argv.indexOf("--version") + 1] : undefined,
     skipBuild: argv.includes("--skip-build"),
     skipEpisodes: argv.includes("--skip-episodes"),
@@ -52,7 +58,10 @@ function parseArgs(argv: string[]): ReleaseOptions {
   };
 }
 
-function run(cmd: string, opts: { cwd?: string; dryRun?: boolean; silent?: boolean } = {}): { stdout: string; stderr: string; status: number } {
+function run(
+  cmd: string,
+  opts: { cwd?: string; dryRun?: boolean; silent?: boolean } = {},
+): { stdout: string; stderr: string; status: number } {
   const { cwd = ROOT, dryRun = false, silent = false } = opts;
   if (dryRun) {
     console.log(`  $ ${cmd}`);
@@ -89,7 +98,14 @@ function generateChangelog(previousTag: string, newTag: string, dryRun: boolean)
   if (!stdout) return `## ${newTag}\n\nNo changes since ${previousTag}.\n`;
 
   const lines = stdout.split("\n");
-  const sections: Record<string, string[]> = { feat: [], fix: [], chore: [], docs: [], refactor: [], other: [] };
+  const sections: Record<string, string[]> = {
+    feat: [],
+    fix: [],
+    chore: [],
+    docs: [],
+    refactor: [],
+    other: [],
+  };
 
   for (const line of lines) {
     const match = line.match(/^- (feat|fix|chore|docs|refactor)(?:\(.+\))?: (.+)$/);
@@ -104,14 +120,28 @@ function generateChangelog(previousTag: string, newTag: string, dryRun: boolean)
   let changelog = `## ${newTag}\n\n`;
   for (const [type, entries] of Object.entries(sections)) {
     if (entries.length === 0) continue;
-    const label = type === "feat" ? "✨ Features" : type === "fix" ? "🐛 Fixes" : type === "chore" ? "🔧 Chores" : type === "docs" ? "📚 Docs" : type === "refactor" ? "♻️ Refactors" : "📦 Other";
+    const label =
+      type === "feat"
+        ? "✨ Features"
+        : type === "fix"
+          ? "🐛 Fixes"
+          : type === "chore"
+            ? "🔧 Chores"
+            : type === "docs"
+              ? "📚 Docs"
+              : type === "refactor"
+                ? "♻️ Refactors"
+                : "📦 Other";
     changelog += `### ${label}\n${entries.join("\n")}\n\n`;
   }
   return changelog;
 }
 
 function getPreviousTag(): string {
-  const { stdout } = run("git describe --tags --abbrev=0 HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD", { silent: true });
+  const { stdout } = run(
+    "git describe --tags --abbrev=0 HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD",
+    { silent: true },
+  );
   return stdout.trim() || "HEAD";
 }
 
@@ -172,7 +202,9 @@ async function main(): Promise<void> {
     releaseVersion = opts.explicitVersion;
   } else if (opts.versionBump) {
     // For catalog version format YYYY.MM.DD-N, we don't semver bump — just use current
-    console.warn(`⚠️  Catalog version is date-based (${currentVersion}); --patch/--minor/--major ignored. Use --version for explicit.`);
+    console.warn(
+      `⚠️  Catalog version is date-based (${currentVersion}); --patch/--minor/--major ignored. Use --version for explicit.`,
+    );
     releaseVersion = currentVersion;
   } else {
     releaseVersion = currentVersion;
@@ -203,7 +235,10 @@ async function main(): Promise<void> {
   if (!opts.skipEpisodes) {
     const ok = step("Build episodes (pnpm build:episodes)", () => {
       const { status } = run("pnpm build:episodes", { dryRun: opts.dryRun });
-      return { success: status === 0, message: status === 0 ? "Episodes built" : "Episodes build failed" };
+      return {
+        success: status === 0,
+        message: status === 0 ? "Episodes built" : "Episodes build failed",
+      };
     });
     if (!ok && !opts.dryRun) process.exit(1);
   }
@@ -212,7 +247,10 @@ async function main(): Promise<void> {
   if (!opts.skipEpisodes && !opts.skipSite && !opts.skipSearchIndex) {
     const ok = step("Build search index (pnpm build:search-index)", () => {
       const { status } = run("pnpm build:search-index", { dryRun: opts.dryRun });
-      return { success: status === 0, message: status === 0 ? "Search index built" : "Search index build failed" };
+      return {
+        success: status === 0,
+        message: status === 0 ? "Search index built" : "Search index build failed",
+      };
     });
     if (!ok && !opts.dryRun) process.exit(1);
   }
@@ -229,7 +267,10 @@ async function main(): Promise<void> {
   // Step 4: Validate dist
   const okValidate = step("Validate dist (pnpm validate:dist)", () => {
     const { status } = run("pnpm validate:dist", { dryRun: opts.dryRun });
-    return { success: status === 0, message: status === 0 ? "Dist valid" : "Dist validation failed" };
+    return {
+      success: status === 0,
+      message: status === 0 ? "Dist valid" : "Dist validation failed",
+    };
   });
   if (!okValidate && !opts.dryRun) process.exit(1);
 
@@ -253,15 +294,23 @@ async function main(): Promise<void> {
 
   // Step 7: Git commit (changelog + any changes)
   if (!opts.dryRun && !opts.skipTag) {
-    const { status } = run("git diff --quiet || git add -A && git commit -m \"chore: release " + tagName + "\"", { dryRun: false });
+    const { status } = run(
+      'git diff --quiet || git add -A && git commit -m "chore: release ' + tagName + '"',
+      { dryRun: false },
+    );
     if (status !== 0) console.warn("  ⚠️  No changes to commit or commit failed");
   }
 
   // Step 8: Create git tag
   if (!opts.skipTag) {
     const ok = step(`Create git tag ${tagName}`, () => {
-      const { status } = run(`git tag -a ${tagName} -m "Release ${tagName}"`, { dryRun: opts.dryRun });
-      return { success: status === 0, message: status === 0 ? "Tag created" : "Tag creation failed" };
+      const { status } = run(`git tag -a ${tagName} -m "Release ${tagName}"`, {
+        dryRun: opts.dryRun,
+      });
+      return {
+        success: status === 0,
+        message: status === 0 ? "Tag created" : "Tag creation failed",
+      };
     });
     if (!ok && !opts.dryRun) process.exit(1);
   }
@@ -290,7 +339,10 @@ async function main(): Promise<void> {
     step("Publish to npm", () => {
       const distDir = path.join(ROOT, "dist");
       const { status } = run("npm publish --access public", { cwd: distDir, dryRun: false });
-      return { success: status === 0, message: status === 0 ? "Published to npm" : "npm publish failed" };
+      return {
+        success: status === 0,
+        message: status === 0 ? "Published to npm" : "npm publish failed",
+      };
     });
   }
 

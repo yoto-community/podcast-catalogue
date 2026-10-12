@@ -67,11 +67,63 @@ function normalizeForSearch(text: string): string {
 /** Extrait les mots-clés significatifs (longueur ≥ 3, pas stop-words fr/en basiques). */
 function extractKeywords(text: string): string[] {
   const stopWords = new Set([
-    "et", "ou", "de", "la", "le", "les", "un", "une", "des", "du", "au", "aux",
-    "pour", "sur", "dans", "avec", "sans", "par", "est", "sont", "cette", "ce",
-    "the", "and", "or", "of", "a", "an", "in", "on", "for", "to", "with", "by",
-    "from", "as", "is", "are", "this", "that", "it", "be", "have", "has", "had",
-    "but", "not", "you", "your", "we", "our", "they", "their,", "he", "she", "his", "her",
+    "et",
+    "ou",
+    "de",
+    "la",
+    "le",
+    "les",
+    "un",
+    "une",
+    "des",
+    "du",
+    "au",
+    "aux",
+    "pour",
+    "sur",
+    "dans",
+    "avec",
+    "sans",
+    "par",
+    "est",
+    "sont",
+    "cette",
+    "ce",
+    "the",
+    "and",
+    "or",
+    "of",
+    "a",
+    "an",
+    "in",
+    "on",
+    "for",
+    "to",
+    "with",
+    "by",
+    "from",
+    "as",
+    "is",
+    "are",
+    "this",
+    "that",
+    "it",
+    "be",
+    "have",
+    "has",
+    "had",
+    "but",
+    "not",
+    "you",
+    "your",
+    "we",
+    "our",
+    "they",
+    "their,",
+    "he",
+    "she",
+    "his",
+    "her",
   ]);
   return normalizeForSearch(text)
     .split(/\s+/)
@@ -152,7 +204,9 @@ async function main(): Promise<void> {
 
   const sizeKb = (fs.statSync(outFile).size / 1024).toFixed(1);
   console.log(`\n✅ Index créé : ${outFile}`);
-  console.log(`   · ${allEpisodes.length} épisodes indexés (${processed} podcasts, ${skipped} ignorés)`);
+  console.log(
+    `   · ${allEpisodes.length} épisodes indexés (${processed} podcasts, ${skipped} ignorés)`,
+  );
   console.log(`   · ${sizeKb} Ko (${(fs.statSync(outFile).size / 1024 / 1024).toFixed(2)} Mo)`);
 }
 

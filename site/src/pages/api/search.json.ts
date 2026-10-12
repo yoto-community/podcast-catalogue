@@ -10,10 +10,13 @@ export async function GET({ url, request }: APIContext) {
   const includeEpisodes = url.searchParams.get("episodes") === "true";
 
   if (!q && !lang && !cat && !age) {
-    return new Response(JSON.stringify({ error: "At least one query parameter required (q, lang, cat, age)" }), {
-      status: 400,
-      headers: apiHeaders(),
-    });
+    return new Response(
+      JSON.stringify({ error: "At least one query parameter required (q, lang, cat, age)" }),
+      {
+        status: 400,
+        headers: apiHeaders(),
+      },
+    );
   }
 
   let entries = getEntries();
@@ -25,7 +28,8 @@ export async function GET({ url, request }: APIContext) {
   if (q) {
     const terms = q.split(/\s+/).filter((t) => t.length >= 2);
     entries = entries.filter((e) => {
-      const haystack = `${e.name} ${e.publisher} ${e.description ?? ""} ${e.category}`.toLowerCase();
+      const haystack =
+        `${e.name} ${e.publisher} ${e.description ?? ""} ${e.category}`.toLowerCase();
       return terms.every((term) => haystack.includes(term));
     });
   }
@@ -51,17 +55,18 @@ export async function GET({ url, request }: APIContext) {
     const eps = getEpisodes(entry.slug);
     return {
       ...base,
-      latestEpisodes: eps?.episodes.slice(0, 5).map((ep) => ({
-        id: ep.id,
-        title: ep.title,
-        pubDate: ep.pubDate,
-        durationSec: ep.durationSec,
-        audioUrl: ep.audioUrl,
-        audioType: ep.audioType,
-        imageUrl: ep.imageUrl,
-        episodeNumber: ep.episodeNumber,
-        seasonNumber: ep.seasonNumber,
-      })) ?? [],
+      latestEpisodes:
+        eps?.episodes.slice(0, 5).map((ep) => ({
+          id: ep.id,
+          title: ep.title,
+          pubDate: ep.pubDate,
+          durationSec: ep.durationSec,
+          audioUrl: ep.audioUrl,
+          audioType: ep.audioType,
+          imageUrl: ep.imageUrl,
+          episodeNumber: ep.episodeNumber,
+          seasonNumber: ep.seasonNumber,
+        })) ?? [],
     };
   });
 

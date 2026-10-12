@@ -9,7 +9,8 @@ export async function GET() {
     let episodeCount = episodes?.count ?? episodes?.episodes.length ?? 0;
 
     if (episodes?.fetchedAt) {
-      const hoursSinceFetch = (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
+      const hoursSinceFetch =
+        (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
       if (hoursSinceFetch < 24) status = "healthy";
       else if (hoursSinceFetch < 72) status = "stale";
       else status = "unhealthy";
