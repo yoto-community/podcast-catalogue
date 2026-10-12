@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getManifest, getEpisodes, getEntries } from "../lib/catalog";
+import { getEpisodes, getEntries } from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
 import { pageUrl } from "../lib/url";
 import type { DistEntry, DistEpisodesFile } from "../lib/types";
 
 // Build-time data fetching - no runtime dependencies
-const manifest = getManifest();
 const entries = getEntries();
 
 // Read feed-health issue data from checked-in cache (updated by feed-health.yml workflow)
@@ -43,7 +42,7 @@ function getHealth(entry: DistEntry): PodcastHealth {
     if (feedHealth.status === "ok") feedStatus = "healthy";
     else if (feedHealth.status === "stale") feedStatus = "stale";
     else if (feedHealth.status === "error") feedStatus = "unhealthy";
-  } else if (episodes) {
+  } else if (episodes?.fetchedAt) {
     const hoursSinceFetch = (Date.now() - new Date(episodes.fetchedAt).getTime()) / (1000 * 60 * 60);
     if (hoursSinceFetch < 24) feedStatus = "healthy";
     else if (hoursSinceFetch < 72) feedStatus = "stale";
@@ -360,13 +359,13 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
     }
   </style>
 
-  <script is:inline>
+  <script>
     const table = document.querySelector('[data-health-table]');
-    const rows = table?.querySelectorAll('tbody tr');
-    const statusFilter = document.getElementById('health-filter-status');
-    const languageFilter = document.getElementById('health-filter-language');
-    const groupFilter = document.getElementById('health-filter-group');
-    const searchInput = document.getElementById('health-search');
+    const rows = table?.querySelectorAll<HTMLTableRowElement>('tbody tr');
+    const statusFilter = document.getElementById('health-filter-status') as HTMLSelectElement;
+    const languageFilter = document.getElementById('health-filter-language') as HTMLSelectElement;
+    const groupFilter = document.getElementById('health-filter-group') as HTMLSelectElement;
+    const searchInput = document.getElementById('health-search') as HTMLInputElement;
 
     function applyFilters() {
       if (!rows) return;
@@ -379,16 +378,17 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
         const matchesStatus = !status || row.dataset.status === status;
         const matchesLanguage = !language || row.dataset.language === language;
         const matchesGroup = !group || row.dataset.group === group;
-        const matchesSearch = !search || row.dataset.search.includes(search);
+        const matchesSearch = !search || row.dataset.search?.includes(search);
 
         row.hidden = !(matchesStatus && matchesLanguage && matchesGroup && matchesSearch);
       });
     }
 
+    let searchDebounceTimer: ReturnType<typeof setTimeout>;
     [statusFilter, languageFilter, groupFilter].forEach((el) => el?.addEventListener('change', applyFilters));
     searchInput?.addEventListener('input', () => {
-      clearTimeout((searchInput as any)._timer);
-      (searchInput as any)._timer = setTimeout(applyFilters, 150);
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(applyFilters, 150);
     });
   </script>
 </BaseLayout>

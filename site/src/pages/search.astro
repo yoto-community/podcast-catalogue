@@ -1,7 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { pageUrl } from "../lib/url";
-import { formatDate, formatDuration } from "../lib/format";
 
 const description = "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
 ---
@@ -268,7 +266,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     }
   </style>
 
-  <script is:inline>
+  <script>
     // Configuration
     const INDEX_URL = "/search-index.json";
     const DEBOUNCE_MS = 80;
@@ -276,7 +274,6 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     // État
     let searchIndex: SearchIndexEntry[] = [];
     let isIndexLoaded = false;
-    let currentAbortController: AbortController | null = null;
 
     // Éléments DOM
     const queryInput = document.getElementById("search-query") as HTMLInputElement;
@@ -414,7 +411,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
     }
 
     // Recherche
-    function performSearch(): void {
+    let performSearch = () => {
       if (!isIndexLoaded) return;
 
       const query = queryInput.value.trim().toLowerCase();
@@ -440,7 +437,7 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       if (age) results = results.filter(ep => ep.groupId === age);
 
       renderResults(results, query);
-    }
+    };
 
     function renderResults(results: SearchIndexEntry[], query: string): void {
       resultsContainer.innerHTML = "";
@@ -454,7 +451,6 @@ const description = "Recherche full-text dans tous les épisodes du catalogue �
       const fragment = document.createDocumentFragment();
       for (const ep of results) {
         const clone = template.content.cloneNode(true) as DocumentFragment;
-        const article = clone.querySelector(".search-result") as HTMLElement;
 
         // Titre
         const titleEl = clone.querySelector(".search-result__title") as HTMLElement;

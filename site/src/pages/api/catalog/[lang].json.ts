@@ -1,7 +1,7 @@
 import { getManifest, getEntries, getLanguages } from "../../../lib/catalog";
-import type { APIContext, StaticPath } from "astro";
+import type { APIContext } from "astro";
 
-export async function GET({ params, request }: APIContext) {
+export async function GET({ params }: APIContext) {
   const lang = params.lang as string;
   const manifest = getManifest();
   const entries = getEntries().filter((e) => e.language === lang);
@@ -42,7 +42,7 @@ export async function OPTIONS() {
   return new Response(null, { headers: corsHeaders() });
 }
 
-export function getStaticPaths(): StaticPath[] {
+export function getStaticPaths(): Array<{ params: Record<string, string> }> {
   return getLanguages().map((language) => ({
     params: { lang: language.code },
   }));

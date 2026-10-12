@@ -1,7 +1,6 @@
 import { getManifest, getEpisodes, episodesAvailable } from "../../../../lib/catalog";
-import type { APIContext } from "astro";
 
-export async function GET({ request }: APIContext) {
+export async function GET() {
   if (!episodesAvailable()) {
     return new Response(
       JSON.stringify({
@@ -18,7 +17,7 @@ export async function GET({ request }: APIContext) {
   for (const entry of manifest.shards) {
     const eps = getEpisodes(entry.path.replace(/\.json$/, "").split("/").pop()!);
     if (eps) {
-      items.push({ slug: eps.slug, count: eps.count, fetchedAt: eps.fetchedAt });
+      items.push({ slug: eps.slug, count: eps.count, fetchedAt: eps.fetchedAt ?? "" });
     }
   }
 
