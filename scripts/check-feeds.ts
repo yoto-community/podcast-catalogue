@@ -20,6 +20,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { ROOT, REPOSITORY } from "./lib/config.ts";
+import { loadEntries } from "./lib/catalog.ts";
 
 const CACHE_FILE = path.join(ROOT, ".cache", "feed-health.json");
 
@@ -173,77 +174,77 @@ async function main(): Promise<void> {
     if (data) {
       const { findings, results } = data;
 
+      // Charger les entrées pour mapper nom -> slug (robuste, évite la correspondance floue)
+      const { entries } = loadEntries();
+      const nameToSlug = new Map<string, string>();
+      for (const entry of entries) {
+        nameToSlug.set(entry.source.name, entry.slug);
+      }
+
       // Grouper les findings par slug
       const findingsBySlug = new Map<string, Array<{ rule: string; message: string }>>();
       for (const finding of findings) {
-        // Trouver le slug correspondant via le nom de l'entrée (entry)
-        // On doit mapper entry name -> slug via les résultats
         const entryName = finding.entry;
-        const result = results.find((r) => {
-          // Le résultat contient le slug, on a besoin de faire le lien via le nom
-          // Pour l'instant on stocke par entry name, on fera la correspondance côté site
-          return true;
-        });
-        // On va stocker les findings indexés par le nom d'entrée pour l'instant
-        // et faire la correspondance côté health.astro via getEntries()
-        const key = finding.file
-          ? finding.file.replace(/entries\/[^/]+\/(.+)\.json/, "$1")
-          : finding.entry;
-        // Mieux: utiliser le slug depuis results si possible
-        // Pour l'instant on stocke par entry name
-        if (!findingsBySlug.has(finding.entry)) {
-          findingsBySlug.set(finding.entry, []);
+        const slug = nameToSlug.get(entryName);
+        if (!slug) {
+          // Fallback: essayer via le fichier (entries/<lang>/<tranche>.json)
+          const fileSlug = finding.file
+            ? finding.file.replace(/entries\/[^/]+\/(.+)\.json/, "$1")
+            : null;
+          if (fileSlug && nameToSlug.has(fileSlug)) {
+            // Si le nom du fichier correspond à un slug connu
+            const match = nameToSlug.get(fileSlug);
+            if (match) {
+              findingsBySlug.set(match, findingsBySlug.get(match) ?? []);
+              findingsBySlug.get(match)!.push({ rule: finding.rule, message: finding.message });
+              continue;
+            }
+          }
+          // Dernier recours: stocker par nom d'entrée pour debug
+          console.warn(`⚠️  Finding sans slug mappable: "${entryName}" (rule: ${finding.rule})`);
+          continue;
         }
-        findingsBySlug.get(finding.entry)!.push({
+        if (!findingsBySlug.has(slug)) {
+          findingsBySlug.set(slug, []);
+        }
+        findingsBySlug.get(slug)!.push({
           rule: finding.rule,
           message: finding.message,
         });
       }
 
       // Construire le cache final avec slug comme clé
-      for (const result of results) {
-        const slug = result.slug;
-        const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
-
-        // Chercher les warnings pour ce slug via le nom d'entrée
-        // On a besoin de mapper slug -> entry name
-        // Pour l'instant on fait simple : on cherche dans findingsBySlug par entry name
-        // Mais on n'a pas le entry name dans results... Il faut le récupérer autrement.
-      }
-
-      // Approche plus simple: on fait un map entry name -> slug depuis les entries
-      // Mais on n'a pas les entries ici... On va faire la correspondance côté site
-      // en chargeant les entries et en matchant par nom.
-
-      // Pour l'instant, on stocke les findings bruts indexés par entry name
-      // et on fait le mapping côté client
-      const rawFindingsByEntryName = new Map<string, Array<{ rule: string; message: string }>>();
-      for (const finding of findings) {
-        if (!rawFindingsByEntryName.has(finding.entry)) {
-          rawFindingsByEntryName.set(finding.entry, []);
-        }
-        rawFindingsByEntryName.get(finding.entry)!.push({
-          rule: finding.rule,
-          message: finding.message,
-        });
-      }
-
-      // Stocker les findings bruts dans le cache pour usage côté site
       const cacheData = {
         timestamp: new Date().toISOString(),
         bySlug: {} as Record<string, FeedHealthEntry>,
-        byEntryName: Object.fromEntries(rawFindingsByEntryName),
+        byEntryName: {} as Record<string, Array<{ rule: string; message: string }>>,
         summary: { errors, warnings, total: results.length },
       };
 
-      // Ajouter le status de base par slug
+      // Ajouter le status de base par slug + warnings
       for (const result of results) {
+        const slug = result.slug;
         const status = result.status === "ok" ? "ok" : result.status === "warn" ? "stale" : "error";
-        cacheData.bySlug[result.slug] = {
+        const warnings = findingsBySlug.get(slug) ?? [];
+
+        cacheData.bySlug[slug] = {
           status,
           lastChecked: new Date().toISOString(),
           error: status !== "ok" ? `Status: ${result.status}` : undefined,
+          warnings: warnings.length > 0 ? warnings : undefined,
         };
+      }
+
+      // Conserver aussi les findings par nom d'entrée pour debug côté site
+      for (const finding of findings) {
+        const entryName = finding.entry;
+        if (!cacheData.byEntryName[entryName]) {
+          cacheData.byEntryName[entryName] = [];
+        }
+        cacheData.byEntryName[entryName].push({
+          rule: finding.rule,
+          message: finding.message,
+        });
       }
 
       try {

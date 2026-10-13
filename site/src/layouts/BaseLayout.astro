@@ -197,6 +197,23 @@ const hreflangLinks = getHreflangLinks();
       </div>
     </footer>
 
+    <!-- PWA Update Toast -->
+    <div class="pwa-toast" id="pwa-toast" hidden role="status" aria-live="polite" aria-atomic="true">
+      <div class="pwa-toast__inner">
+        <p class="pwa-toast__message">
+          Une nouvelle version de l'application est disponible.
+        </p>
+        <div class="pwa-toast__actions">
+          <button type="button" class="btn btn--primary pwa-toast__refresh" data-pwa-refresh>
+            Rafraîchir maintenant
+          </button>
+          <button type="button" class="btn btn--ghost pwa-toast__dismiss" data-pwa-dismiss aria-label="Ignorer">
+            Plus tard
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="player" id="lecteur" data-player hidden>
       <div class="player__inner">
         <div class="player__text">
@@ -305,6 +322,45 @@ const hreflangLinks = getHreflangLinks();
 
     <script>
       import "../scripts/site.ts";
+      // PWA Update toast handling
+      if ("serviceWorker" in navigator) {
+        import("virtual:pwa-register").then(({ registerSW }) => {
+          registerSW({
+            onNeedRefresh() {
+              const toast = document.getElementById("pwa-toast");
+              if (toast) {
+                toast.hidden = false;
+                document.body.classList.add("pwa-toast-visible");
+              }
+            },
+            onOfflineReady() {
+              console.log("App ready to work offline");
+            },
+          });
+        });
+      }
+      // Toast button handlers
+      document.addEventListener("click", (e: MouseEvent) => {
+        const refreshBtn = e.target instanceof Element ? e.target.closest("[data-pwa-refresh]") : null;
+        const dismissBtn = e.target instanceof Element ? e.target.closest("[data-pwa-dismiss]") : null;
+        if (refreshBtn) {
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (const reg of registrations) {
+              if (reg.waiting) {
+                reg.waiting.postMessage({ type: "SKIP_WAITING" });
+              }
+            }
+          });
+          window.location.reload();
+        }
+        if (dismissBtn) {
+          const toast = document.getElementById("pwa-toast");
+          if (toast) {
+            toast.hidden = true;
+            document.body.classList.remove("pwa-toast-visible");
+          }
+        }
+      });
     </script>
     <FavoritesInit />
   </body>

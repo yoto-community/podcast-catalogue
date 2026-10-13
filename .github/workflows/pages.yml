@@ -56,6 +56,14 @@ jobs:
       - name: Installer les dépendances
         run: pnpm install --frozen-lockfile
 
+      - name: Télécharger le cache santé des flux
+        if: github.event_name != 'workflow_call'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: feed-health-cache
+          path: .cache
+
       - name: Cache des flux (24 h)
         uses: actions/cache@v4
         with:

@@ -8,10 +8,127 @@
  *  2. une **micro-routerisation** interne (fetch + remplacement de `<main>`) pour que
  *     la navigation n'interrompe pas la lecture ; sans JS, la navigation est classique ;
  *  3. les **filtres / recherche / tri** du catalogue (état `?q=` et `?ages=` dans l'URL).
+ *  4. **Sync multi-onglets** via BroadcastChannel (play/pause/position/episode).
  */
 import { matchesAnyAge, parseAges, serializeAges } from "../lib/ages";
 import { normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
+
+/* ------------------------------------------------------------------ BroadcastChannel: sync multi-onglets */
+
+const BC_CHANNEL = "yoto-player-sync";
+let bc: BroadcastChannel | null = null;
+let bcIgnore = false; // évite les boucles de rétroaction
+
+function initBroadcastChannel(): void {
+  if (typeof BroadcastChannel === "undefined") return;
+  bc = new BroadcastChannel(BC_CHANNEL);
+  bc.addEventListener("message", (event: MessageEvent) => {
+    if (bcIgnore) return;
+    const msg = event.data as PlayerSyncMessage;
+    if (!msg || msg.type !== "sync") return;
+    applyRemoteSync(msg);
+  });
+}
+
+interface PlayerSyncMessage {
+  type: "sync";
+  action: "play" | "pause" | "seek" | "episode" | "stop";
+  audioUrl?: string;
+  title?: string;
+  artist?: string;
+  album?: string;
+  externalUrl?: string;
+  image?: string;
+  episodeId?: string;
+  currentTime?: number;
+  wasPlaying?: boolean;
+}
+
+function broadcastSync(action: PlayerSyncMessage["action"], extra: Partial<PlayerSyncMessage> = {}): void {
+  if (!bc) return;
+  const dom = getPlayerDom();
+  const audio = dom?.audio;
+  const state = playerState;
+  bc.postMessage({
+    type: "sync",
+    action,
+    audioUrl: state?.audioUrl,
+    title: state?.title,
+    artist: state?.artist,
+    album: state?.album,
+    externalUrl: state?.externalUrl,
+    image: state?.image,
+    episodeId: state?.episodeId,
+    currentTime: audio?.currentTime,
+    wasPlaying: audio ? !audio.paused && !audio.ended : false,
+    ...extra,
+  });
+}
+
+function applyRemoteSync(msg: PlayerSyncMessage): void {
+  const dom = getPlayerDom();
+  if (!dom) return;
+  const audio = dom.audio;
+
+  switch (msg.action) {
+    case "play":
+      if (!playerState || playerState.audioUrl !== msg.audioUrl) {
+        // Nouvel épisode depuis un autre onglet
+        if (msg.audioUrl) {
+          bcIgnore = true;
+          playEpisode({
+            audioUrl: msg.audioUrl!,
+            title: msg.title ?? "Épisode",
+            artist: msg.artist ?? "Podcast",
+            album: msg.album ?? "",
+            externalUrl: msg.externalUrl ?? msg.audioUrl!,
+            image: msg.image,
+            episodeId: msg.episodeId,
+          });
+          if (typeof msg.currentTime === "number" && msg.currentTime > 0) {
+            audio.addEventListener("loadedmetadata", () => {
+              try {
+                audio.currentTime = msg.currentTime!;
+              } catch { }
+            }, { once: true });
+          }
+          if (!msg.wasPlaying) audio.pause();
+        }
+      } else if (audio.paused) {
+        // Même épisode, demander la lecture
+        bcIgnore = true;
+        void audio.play().catch(() => showError());
+      }
+      break;
+
+    case "pause":
+      if (playerState && playerState.audioUrl === msg.audioUrl && !audio.paused) {
+        bcIgnore = true;
+        audio.pause();
+      }
+      break;
+
+    case "seek":
+      if (playerState && playerState.audioUrl === msg.audioUrl && typeof msg.currentTime === "number") {
+        bcIgnore = true;
+        audio.currentTime = msg.currentTime;
+      }
+      break;
+
+    case "stop":
+      if (playerState) {
+        bcIgnore = true;
+        audio.pause();
+        audio.removeAttribute("src");
+        audio.load();
+        playerState = null;
+        hidePlayer();
+        refreshPressedStates();
+      }
+      break;
+  }
+}
 
 /* ------------------------------------------------------------------ utilitaires */
 
@@ -281,6 +398,8 @@ function playEpisode(data: PlayerState): void {
   updateMediaSession(data);
   const attempt = ensureAudio();
   if (attempt) void attempt.play().catch(() => showError());
+  // Broadcast à tous les onglets : nouvel épisode
+  broadcastSync("episode", { audioUrl: data.audioUrl, title: data.title, artist: data.artist, album: data.album, externalUrl: data.externalUrl, image: data.image, episodeId: data.episodeId });
 }
 
 function playNextEpisode(): void {
@@ -353,6 +472,7 @@ function bindPlayer(): void {
     clearError();
     hidePlayer();
     refreshPressedStates();
+    broadcastSync("stop");
     if ("mediaSession" in navigator) {
       navigator.mediaSession.playbackState = "none";
       navigator.mediaSession.metadata = null;
@@ -378,15 +498,21 @@ function bindPlayer(): void {
     dom.current.textContent = formatClock(audio.currentTime);
     if (userSeeking || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
     dom.seek.value = String((audio.currentTime / audio.duration) * 100);
+    // Broadcast seek position (throttled)
+    if (Date.now() % 2000 < 100) { // approx every 2 seconds
+      broadcastSync("seek", { currentTime: audio.currentTime });
+    }
   });
   audio.addEventListener("play", () => {
     updateToggleState();
     refreshPressedStates();
     clearError();
+    broadcastSync("play");
   });
   audio.addEventListener("pause", () => {
     updateToggleState();
     refreshPressedStates();
+    broadcastSync("pause");
   });
   audio.addEventListener("ended", () => {
     updateToggleState();
@@ -961,6 +1087,7 @@ function bindGlobalListeners(): void {
 }
 
 function start(): void {
+  initBroadcastChannel();
   bindPlayer();
   bindGlobalListeners();
   bindNavDropdown();

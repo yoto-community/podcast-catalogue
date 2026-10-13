@@ -2,10 +2,11 @@ node_modules/
 dist/
 site/dist/
 site/public/search-index.json
-# .cache/ reste ignoré (flux récupérés), sauf le résumé de santé que la page
-# /health/ doit lire au build : feed-health.yml le commite chaque semaine.
-.cache/*
-!.cache/feed-health.json
+# .cache/ reste ignoré (flux récupérés + cache santé des flux).
+# Le fichier feed-health.json est généré localement par `pnpm check-feeds`
+# et lu par le site au build. En CI, le workflow feed-health.yml l'upload en artifact
+# au lieu de le commiter (évite de polluer l'historique main).
+.cache/
 .astro/
 _site/
 *.log
