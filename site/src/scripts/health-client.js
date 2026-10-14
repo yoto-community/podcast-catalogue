@@ -71,14 +71,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const warnings = health?.warnings ?? [];
 
       // Trouver le résultat de l'API par slug ou par nom
-      const apiEntry = podcastsCache?.find(
-        (p) => p.slug === slug || p.name === entry.name
-      );
+      const apiEntry = podcastsCache?.find((p) => p.slug === slug || p.name === entry.name);
 
       const lastFetch = apiEntry?.lastFetch ?? lastChecked;
       const lastEpisodeDate = apiEntry?.episodes?.[0]?.pubDate ?? null;
-      const episodeCount =
-        apiEntry?.episodeCount ?? (apiEntry?.episodes?.length ?? 0);
+      const episodeCount = apiEntry?.episodeCount ?? apiEntry?.episodes?.length ?? 0;
 
       rows.push({
         entry,
@@ -141,9 +138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? "Sain"
           : feedStatus === "stale"
             ? "Obsolète"
-              : feedStatus === "unhealthy"
-                ? "Défaillant"
-                : "Inconnu";
+            : feedStatus === "unhealthy"
+              ? "Défaillant"
+              : "Inconnu";
 
       // Formatages
       const fetchDate = lastFetch ? formatRelative(lastFetch) : "—";
@@ -152,8 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const lastEpRelative = lastEpisodeDate ? formatRelative(lastEpisodeDate) : "—";
 
       // Compteur visible
-      if (feedStatus !== "unknown" || entry.name.toLowerCase().includes(" ") || true)
-        visibleCount++;
+      if (feedStatus !== "unknown") visibleCount++;
 
       // HTML de la ligne
       const statusBadgeClass = `health__status-badge health__status-badge--${feedStatus}`;
@@ -179,41 +175,48 @@ document.addEventListener("DOMContentLoaded", async () => {
           </span>
         </td>
         <td data-label="Dernière récupération" data-sort-value="${lastFetch ?? ""}">
-          ${fetchDate && (
-            <span>
-              <time datetime="${fetchDay ?? lastFetch}">${fetchDate}</time>
-              <span class="health__relative">(formatRelative(lastFetch))</span>
-            </span>
-          )}
+          ${
+            fetchDate && (
+              <span>
+                <time datetime="${fetchDay ?? lastFetch}">${fetchDate}</time>
+                <span class="health__relative">(formatRelative(lastFetch))</span>
+              </span>
+            )
+          }
           {!lastFetch && <span class="health__never">Jamais</span>}
         </td>
         <td data-label="Dernier épisode" data-sort-value="${lastEpisodeDate ?? ""}">
-          ${lastEpDate && (
-            <span>
-              <time datetime="${lastEpDate ? isoDay(lastEpDate) : lastEpisodeDate}">${lastEpDate}</time>
-              <span class="health__relative">(formatRelative(lastEpisodeDate))</span>
-            </span>
-          )}
+          ${
+            lastEpDate && (
+              <span>
+                <time datetime="${lastEpDate ? isoDay(lastEpDate) : lastEpisodeDate}">
+                  ${lastEpDate}
+                </time>
+                <span class="health__relative">(formatRelative(lastEpisodeDate))</span>
+              </span>
+            )
+          }
           {!lastEpDate && <span class="health__never">—</span>}
         </td>
         <td data-label="Épisodes" data-sort-value="${episodeCount}">
           <span class="health__episode-count">${episodeCount} épisode${episodeCount > 1 ? "s" : ""}</span>
         </td>
         <td class="health__actions" data-label="Actions">
-          ${warnings && warnings.length > 0 ? (
-            `<button type="button" class="btn btn--ghost btn--sm health__warnings-toggle" aria-expanded="false" aria-controls="warnings-${entry.slug}" data-target="warnings-${entry.slug}">
+          ${
+            warnings && warnings.length > 0
+              ? `<button type="button" class="btn btn--ghost btn--sm health__warnings-toggle" aria-expanded="false" aria-controls="warnings-${entry.slug}" data-target="warnings-${entry.slug}">
               ${warnings.length} avertissement${warnings.length > 1 ? "s" : ""}
             </button>`
-          ) : ""}
-          ${error && (
+              : ""
+          }
+          ${
+            error &&
             `<details class="health__error">
               <summary>Erreur</summary>
               <pre>${error}</pre>
             </details>`
-          )}
-          ${episodes && (
-            `<a href="#" class="btn btn--ghost btn--sm">Voir épisodes</a>`
-          )}
+          }
+          ${episodes && `<a href="#" class="btn btn--ghost btn--sm">Voir épisodes</a>`}
           <a
             href="${entry.rssUrl}"
             target="_blank"
@@ -253,15 +256,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Mise à jour du compteur et de l'état "aucun résultat"
     if (noResultsEl) {
-      const visibleRows = Array.from(tableBody.querySelectorAll("tr:not(.health__warnings-row)")).filter(
-        (row) => !row.hidden
-      ).length;
+      const visibleRows = Array.from(
+        tableBody.querySelectorAll("tr:not(.health__warnings-row)"),
+      ).filter((row) => !row.hidden).length;
       noResultsEl.hidden = visibleRows > 0;
     }
     if (visibleCountEl) {
-      const visibleRows = Array.from(tableBody.querySelectorAll("tr:not(.health__warnings-row)")).filter(
-        (row) => !row.hidden
-      ).length;
+      const visibleRows = Array.from(
+        tableBody.querySelectorAll("tr:not(.health__warnings-row)"),
+      ).filter((row) => !row.hidden).length;
       visibleCountEl.textContent = String(visibleRows);
     }
   }
@@ -302,7 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (targetId) {
         const parentRow = warningsRow.previousElementSibling;
         if (parentRow) {
-          warningsRow.hidden = !rows.some((r) => r === parentRow && !row.hidden);
+          warningsRow.hidden = parentRow.hidden;
         }
       }
     });
@@ -359,7 +362,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <span class="health__filter-chip" data-filter-id="${chip.id}" data-filter-value="${chip.value}">
           ${chip.label}: ${chip.value}
           <button type="button" aria-label="Retirer le filtre ${chip.label}">×</button>
-        </span>`
+        </span>`,
         )
         .join("");
     } else {
@@ -370,9 +373,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateResultCount() {
     if (!tableBody.children.length) return;
-    const visibleCount = Array.from(tableBody.querySelectorAll("tr:not(.health__warnings-row)")).filter(
-      (row) => !row.hidden
-    ).length;
+    const visibleCount = Array.from(
+      tableBody.querySelectorAll("tr:not(.health__warnings-row)"),
+    ).filter((row) => !row.hidden).length;
     if (visibleCountEl) visibleCountEl.textContent = String(visibleCount);
 
     const noResultsEl = document.querySelector("[data-health-no-results]");
@@ -387,17 +390,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const languageFilter = document.querySelector('select[aria-label="Filtrer par langue"]');
     const groupFilter = document.querySelector('select[aria-label="Filtrer par tranche d\'âge"]');
     const searchInput = document.querySelector('input[placeholder="Rechercher un podcast…"]');
-    const clearButton = document.querySelector('#health-filter-clear');
+    const clearButton = document.querySelector("#health-filter-clear");
     const activeFiltersContainer = document.querySelector(".health__active-filters");
     const filterChipsContainer = document.querySelector(".health__filter-chips");
-    const clearAllButton = document.querySelector('.health__clear-all');
+    const clearAllButton = document.querySelector(".health__clear-all");
 
     if (statusFilter) statusFilter.addEventListener("change", applyFilters);
     if (languageFilter) languageFilter.addEventListener("change", applyFilters);
     if (groupFilter) groupFilter.addEventListener("change", applyFilters);
     if (searchInput) {
       searchInput.addEventListener("input", () => {
-        clearTimeout((searchInput).__debounceTimer);
+        clearTimeout(searchInput.__debounceTimer);
         searchInput.__debounceTimer = setTimeout(applyFilters, 150);
       });
     }

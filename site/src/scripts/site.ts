@@ -45,7 +45,10 @@ interface PlayerSyncMessage {
   wasPlaying?: boolean;
 }
 
-function broadcastSync(action: PlayerSyncMessage["action"], extra: Partial<PlayerSyncMessage> = {}): void {
+function broadcastSync(
+  action: PlayerSyncMessage["action"],
+  extra: Partial<PlayerSyncMessage> = {},
+): void {
   if (!bc) return;
   const dom = getPlayerDom();
   const audio = dom?.audio;
@@ -87,11 +90,15 @@ function applyRemoteSync(msg: PlayerSyncMessage): void {
             episodeId: msg.episodeId,
           });
           if (typeof msg.currentTime === "number" && msg.currentTime > 0) {
-            audio.addEventListener("loadedmetadata", () => {
-              try {
-                audio.currentTime = msg.currentTime!;
-              } catch { }
-            }, { once: true });
+            audio.addEventListener(
+              "loadedmetadata",
+              () => {
+                try {
+                  audio.currentTime = msg.currentTime!;
+                } catch {}
+              },
+              { once: true },
+            );
           }
           if (!msg.wasPlaying) audio.pause();
         }
@@ -110,7 +117,11 @@ function applyRemoteSync(msg: PlayerSyncMessage): void {
       break;
 
     case "seek":
-      if (playerState && playerState.audioUrl === msg.audioUrl && typeof msg.currentTime === "number") {
+      if (
+        playerState &&
+        playerState.audioUrl === msg.audioUrl &&
+        typeof msg.currentTime === "number"
+      ) {
         bcIgnore = true;
         audio.currentTime = msg.currentTime;
       }
@@ -399,7 +410,15 @@ function playEpisode(data: PlayerState): void {
   const attempt = ensureAudio();
   if (attempt) void attempt.play().catch(() => showError());
   // Broadcast à tous les onglets : nouvel épisode
-  broadcastSync("episode", { audioUrl: data.audioUrl, title: data.title, artist: data.artist, album: data.album, externalUrl: data.externalUrl, image: data.image, episodeId: data.episodeId });
+  broadcastSync("episode", {
+    audioUrl: data.audioUrl,
+    title: data.title,
+    artist: data.artist,
+    album: data.album,
+    externalUrl: data.externalUrl,
+    image: data.image,
+    episodeId: data.episodeId,
+  });
 }
 
 function playNextEpisode(): void {
@@ -499,7 +518,8 @@ function bindPlayer(): void {
     if (userSeeking || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
     dom.seek.value = String((audio.currentTime / audio.duration) * 100);
     // Broadcast seek position (throttled)
-    if (Date.now() % 2000 < 100) { // approx every 2 seconds
+    if (Date.now() % 2000 < 100) {
+      // approx every 2 seconds
       broadcastSync("seek", { currentTime: audio.currentTime });
     }
   });
