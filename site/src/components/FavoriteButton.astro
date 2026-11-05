@@ -1,12 +1,15 @@
 ---
+import { t, type Locale } from "../lib/i18n";
+
 interface Props {
   slug: string;
+  locale: Locale;
   /** Taille du bouton (défaut: normal) */
   size?: "sm" | "normal";
   /** Variante visuelle */
   variant?: "icon" | "icon-text";
 }
-const { slug, size = "normal", variant = "icon" } = Astro.props;
+const { slug, locale, size = "normal", variant = "icon" } = Astro.props;
 ---
 
 <button
@@ -15,7 +18,7 @@ const { slug, size = "normal", variant = "icon" } = Astro.props;
   data-favorite
   data-slug={slug}
   aria-pressed={false}
-  aria-label="Ajouter aux favoris"
+  aria-label={t(locale, "favoriteAddAria")}
 >
   <svg
     class="favorite-icon"
@@ -49,7 +52,7 @@ const { slug, size = "normal", variant = "icon" } = Astro.props;
       stroke-width="2"
     ></path>
   </svg>
-  {variant === "icon-text" && <span class="favorite-text">Favori</span>}
+  {variant === "icon-text" && <span class="favorite-text">{t(locale, "favorite")}</span>}
 </button>
 
 <style>

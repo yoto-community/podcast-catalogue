@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../CatalogBrowser.astro";
+import {
+  authorOptions,
+  categoryOptions,
+  entriesOfAuthor,
+  getAuthors,
+  groupOptions,
+  languageOptions,
+} from "../../lib/catalog";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, authorPath, authorsPath, entryPath } from "../../lib/routes";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
+
+interface Props {
+  locale: Locale;
+  author: { name: string; slug: string; count: number };
+}
+
+const { locale, author } = Astro.props;
+const entries = entriesOfAuthor(author.slug);
+const path = authorPath(locale, author.slug);
+
+const jsonLd = itemListJsonLd(
+  t(locale, "authorJsonLdName", { name: author.name }),
+  entries.map((entry) => ({
+    name: entry.name,
+    path: entryPath(entry, locale),
+  })),
+  Astro.site,
+);
+
+const title = `${author.name} — ${t(locale, "siteName")}`;
+const description = t(locale, "authorDescription", {
+  count: entries.length,
+  name: author.name,
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates((code) => authorPath(code, author.slug))}
+>
+  <nav class="breadcrumb" aria-label={t(locale, "breadcrumb")}>
+    <ol>
+      <li>
+        <a href={pageUrl(`/${locale}/`)}>{t(locale, "navCatalogue")}</a>
+      </li>
+      <li>
+        <a href={pageUrl(authorsPath(locale))}>{t(locale, "navAuthors")}</a>
+      </li>
+      <li>
+        <span aria-current="page">{author.name}</span>
+      </li>
+    </ol>
+  </nav>
+  <CatalogBrowser
+    title={author.name}
+    intro={t(locale, "authorIntro", { count: entries.length, name: author.name })}
+    entries={entries}
+    locale={locale}
+    languages={languageOptions(entries, locale)}
+    groups={groupOptions(entries, locale)}
+    categories={categoryOptions(entries, locale)}
+    authors={authorOptions(entries, locale)}
+    preset={{}}
+    nav={{
+      label: t(locale, "authorsAll"),
+      items: [
+        {
+          href: pageUrl(authorsPath(locale)),
+          label: t(locale, "authorsAll"),
+          count: getAuthors().length,
+          active: false,
+        },
+      ],
+    }}
+  />
+</BaseLayout>

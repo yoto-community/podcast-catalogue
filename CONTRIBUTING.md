@@ -88,6 +88,19 @@ git commit -m "feat: …"
 
 `pnpm validate` est rapide (< 5 s, aucun réseau) : il n'y a aucune excuse pour le sauter.
 
+### Internationalisation du site (FR/EN)
+
+- Toute chaîne affichée par le site va dans `site/src/lib/i18n.ts`, en **français et en
+  anglais** — jamais en dur dans une page ou un composant.
+- Toute page cœur existe dans les deux interfaces sous `site/src/pages/[lang]/` et passe
+  `locale` + `alternates` à `BaseLayout` (pour `hreflang` et le sélecteur de langue).
+- Les segments d'URL localisés (`recherche`/`search`, `auteurs`/`authors`,
+  `editeurs`/`publishers`, `nouveautes`/`new-releases`, `favoris`/`favorites`) sont
+  définis une seule fois dans `routeSegments` (`i18n.ts`).
+- Les pages **Contribuer**, **API** et **Santé des flux** restent en français et ne sont
+  pas préfixées : elles sont hors du périmètre bilingue.
+- Vérifier les deux interfaces : `pnpm site:build`, puis inspecter `/fr/...` et `/en/...`.
+
 ### Ce que la CI refuse
 
 - champ inconnu, champ dérivé (`language`, `groupId`, `ageRange`) dans `entries/` ;

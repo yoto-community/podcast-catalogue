@@ -1,0 +1,9 @@
+---
+import AuthorsIndexPage from "../../../components/pages/AuthorsIndexPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "fr" } }];
+}
+---
+
+<AuthorsIndexPage locale="fr" />

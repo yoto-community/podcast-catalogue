@@ -23,6 +23,7 @@ import { normalizeText } from "./text";
 import { ageChoices, coversAge } from "./ages";
 import type { AgeChoice } from "./ages";
 import { slugifyAuthor, slugifyPublisher } from "./url";
+import { t, type Locale } from "./i18n";
 
 const MISSING_DIST_MESSAGE = [
   "Données du catalogue introuvable : aucun `dist/index.json` valide.",
@@ -248,14 +249,19 @@ export function groupSlugOfId(id: string, language?: string): string {
   return group ? groupSlug(group, language) : id;
 }
 
-/** `/fr/age-2-5/` — tranche d'une entrée, dans la langue de l'entrée. */
-export function entryGroupPath(entry: DistEntry): string {
-  return `/${entry.language}/${groupSlugOfId(entry.groupId, entry.language)}/`;
+/**
+ * Tranche d'âge affichée pour une entrée, dans la langue de l'interface.
+ * Ne jamais utiliser `entry.ageRange` directement : le champ de `dist/` est figé
+ * en français.
+ */
+export function entryAgeRange(entry: DistEntry, locale: Locale = "fr"): string {
+  const group = groupOfId(entry.groupId);
+  return group ? groupAgeRange(group, locale) : entry.ageRange;
 }
 
-/** `/fr/age-2-5/animalite/` — chemin canonique d'une entrée. */
-export function entryPath(entry: DistEntry): string {
-  return `${entryGroupPath(entry)}${entry.slug}/`;
+/** Sentinelle de données `Inconnu` → libellé localisé à l'affichage uniquement. */
+export function displayAuthor(name: string, locale: Locale = "fr"): string {
+  return name === "Inconnu" ? t(locale, "unknownAuthor") : name;
 }
 
 export function categoryLabel(id: string, language?: string): string {
@@ -278,23 +284,43 @@ export function tagLabel(id: string, language?: string): string {
   return tag.label;
 }
 
+/** Description d'un thème dans la langue demandée (repli sur le français). */
+export function tagDescription(id: string, locale: Locale = "fr"): string | undefined {
+  const tag = readTags().find((candidate) => candidate.id === id);
+  if (!tag) return undefined;
+  if (locale !== "fr") {
+    const translation = tag.translations?.[locale];
+    if (translation?.description) return translation.description;
+  }
+  return tag.description;
+}
+
 export function languageLabel(code: string): string {
   return (
     getManifest().languages.find((language) => language.code === code)?.label ?? code.toUpperCase()
   );
 }
 
-/** « Français », « English »… selon la langue de la page. */
-export function languageLabelFor(code: string, pageLanguage?: string): string {
-  if (pageLanguage === "en") return code === "en" ? "English" : "Français";
+/** « Français », « Anglais » (interface FR) ou « French », « English » (interface EN). */
+export function languageLabelFor(code: string, locale: Locale = "fr"): string {
+  if (code === "fr") return locale === "en" ? "French" : "Français";
+  if (code === "en") return locale === "en" ? "English" : "Anglais";
   return languageLabel(code);
 }
 
-const FRENCH_LANGUAGE_NAMES: Record<string, string> = { fr: "français", en: "anglais" };
+const LANGUAGE_NAMES: Record<Locale, Record<string, string>> = {
+  fr: { fr: "français", en: "anglais" },
+  en: { fr: "French", en: "English" },
+};
 
-/** Nom de la langue en français (interface du site) : « podcasts en anglais ». */
+/** Nom de la langue en prose, dans la langue de l'interface. */
+export function languageName(code: string, locale: Locale = "fr"): string {
+  return LANGUAGE_NAMES[locale][code] ?? languageLabel(code);
+}
+
+/** Compatibilité : ancien nom français de la langue. */
 export function languageFrenchName(code: string): string {
-  return FRENCH_LANGUAGE_NAMES[code] ?? languageLabel(code).toLowerCase();
+  return languageName(code, "fr");
 }
 
 /* ----------------------------------------------------------------- sélections */
@@ -318,9 +344,9 @@ export function entriesOfTag(tagId: string): DistEntry[] {
 }
 
 /** Tri par nom localisé (ordre d'affichage par défaut). */
-export function sortByName(entries: DistEntry[]): DistEntry[] {
+export function sortByName(entries: DistEntry[], locale: Locale = "fr"): DistEntry[] {
   return [...entries].sort((a, b) =>
-    normalizeText(a.name).localeCompare(normalizeText(b.name), "fr", { sensitivity: "base" }),
+    normalizeText(a.name).localeCompare(normalizeText(b.name), locale, { sensitivity: "base" }),
   );
 }
 
@@ -328,21 +354,21 @@ function optionCount(entries: DistEntry[], test: (entry: DistEntry) => boolean):
   return entries.reduce((total, entry) => (test(entry) ? total + 1 : total), 0);
 }
 
-export function languageOptions(entries: DistEntry[]): FilterOption[] {
+export function languageOptions(entries: DistEntry[], locale: Locale = "fr"): FilterOption[] {
   return getLanguages()
     .map((language) => ({
       value: language.code,
-      label: languageLabel(language.code),
+      label: languageLabelFor(language.code, locale),
       count: optionCount(entries, (entry) => entry.language === language.code),
     }))
     .filter((option) => option.count > 0);
 }
 
-export function groupOptions(entries: DistEntry[], language?: string): FilterOption[] {
+export function groupOptions(entries: DistEntry[], locale: Locale = "fr"): FilterOption[] {
   return getGroups()
     .map((group) => ({
       value: group.id,
-      label: groupLabel(group, language),
+      label: groupLabel(group, locale),
       count: optionCount(entries, (entry) => entry.groupId === group.id),
     }))
     .filter((option) => option.count > 0);
@@ -356,10 +382,10 @@ export type AgeOption = AgeChoice & { count: number };
  * qui le couvrent (bornes inclusives → les âges de frontière comptent deux fois).
  * Les âges sans podcast dans la page sont masqués, comme pour les autres filtres.
  */
-export function ageOptions(entries: DistEntry[]): AgeOption[] {
+export function ageOptions(entries: DistEntry[], locale: Locale = "fr"): AgeOption[] {
   const groups = getGroups();
   const byId = new Map(groups.map((group) => [group.id, group]));
-  return ageChoices(groups)
+  return ageChoices(groups, locale)
     .map((choice) => ({
       ...choice,
       count: optionCount(entries, (entry) => {
@@ -370,18 +396,18 @@ export function ageOptions(entries: DistEntry[]): AgeOption[] {
     .filter((option) => option.count > 0);
 }
 
-export function categoryOptions(entries: DistEntry[], language?: string): FilterOption[] {
+export function categoryOptions(entries: DistEntry[], locale: Locale = "fr"): FilterOption[] {
   const options = getCategories().map((category) => ({
     value: category.id,
-    label: categoryLabel(category.id, language),
+    label: categoryLabel(category.id, locale),
     count: optionCount(entries, (entry) => entry.category === category.id),
   }));
   return options
     .filter((option) => option.count > 0)
-    .sort((a, b) => a.label.localeCompare(b.label, "fr", { sensitivity: "base" }));
+    .sort((a, b) => a.label.localeCompare(b.label, locale, { sensitivity: "base" }));
 }
 
-export function authorOptions(entries: DistEntry[]): FilterOption[] {
+export function authorOptions(entries: DistEntry[], locale: Locale = "fr"): FilterOption[] {
   const entriesWithAuthor = entries.filter((e) => e.author !== "Inconnu");
   const byAuthor = new Map<string, number>();
   for (const entry of entriesWithAuthor) {
@@ -393,7 +419,7 @@ export function authorOptions(entries: DistEntry[]): FilterOption[] {
       label: name,
       count,
     }))
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "fr"));
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, locale));
 }
 
 /* ------------------------------------------------------------------ épisodes */
@@ -433,7 +459,9 @@ export function externalUrl(entry: DistEntry): string {
 
 /* ------------------------------------------------------------------ éditeurs */
 
-export function getPublishers(): Array<{ name: string; slug: string; count: number }> {
+export function getPublishers(
+  locale: Locale = "fr",
+): Array<{ name: string; slug: string; count: number }> {
   const entries = getEntries();
   const byPublisher = new Map<string, number>();
   for (const entry of entries) {
@@ -441,7 +469,7 @@ export function getPublishers(): Array<{ name: string; slug: string; count: numb
   }
   return [...byPublisher.entries()]
     .map(([name, count]) => ({ name, slug: slugifyPublisher(name), count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"));
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, locale));
 }
 
 export function entriesOfPublisher(publisherSlug: string): DistEntry[] {
@@ -450,7 +478,9 @@ export function entriesOfPublisher(publisherSlug: string): DistEntry[] {
 
 /* ------------------------------------------------------------------ auteurs */
 
-export function getAuthors(): Array<{ name: string; slug: string; count: number }> {
+export function getAuthors(
+  locale: Locale = "fr",
+): Array<{ name: string; slug: string; count: number }> {
   const entries = getEntries();
   const byAuthor = new Map<string, number>();
   for (const entry of entries) {
@@ -460,7 +490,7 @@ export function getAuthors(): Array<{ name: string; slug: string; count: number 
   }
   return [...byAuthor.entries()]
     .map(([name, count]) => ({ name, slug: slugifyAuthor(name), count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"));
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, locale));
 }
 
 export function entriesOfAuthor(authorSlug: string): DistEntry[] {

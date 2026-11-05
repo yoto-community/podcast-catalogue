@@ -3,9 +3,20 @@ import "@fontsource-variable/nunito";
 import "../styles/global.css";
 import { getManifest } from "../lib/catalog";
 import { formatDateLong } from "../lib/format";
+import { t, type Locale } from "../lib/i18n";
+import {
+  authorsPath,
+  favoritesPath,
+  homePath,
+  publishersPath,
+  searchPath,
+  themesPath,
+  newReleasesPath,
+} from "../lib/routes";
 import { serializeJsonLd } from "../lib/seo";
 import { pageUrl } from "../lib/url";
 import FavoritesInit from "../components/FavoritesInit.astro";
+import LanguageSwitch from "../components/LanguageSwitch.astro";
 
 interface Props {
   title: string;
@@ -14,11 +25,13 @@ interface Props {
   path: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
   image?: string;
-  /** Langue de la page pour `html lang` et hreflang (ex. "fr", "en"). */
-  lang?: string;
+  /** Langue de l'interface de la page. */
+  locale: Locale;
+  /** Chemins équivalents FR/EN, pour hreflang et le sélecteur de langue. */
+  alternates?: Partial<Record<Locale, string>>;
 }
 
-const { title, description, path, jsonLd, image, lang = "fr" } = Astro.props;
+const { title, description, path, jsonLd, image, locale, alternates } = Astro.props;
 const manifest = getManifest();
 const site = Astro.site;
 const canonical = site ? new URL(pageUrl(path), site).href : undefined;
@@ -31,58 +44,97 @@ const ogImage = image
   : pageUrl("/placeholder.svg");
 const cleanPath = path.replace(/\/+$/, "") || "/";
 
-/** `aria-current="page"` si `prefix` correspond à la page affichée. */
-function isCurrent(prefix: string): "page" | undefined {
-  if (prefix === "/") {
-    return cleanPath === "/" || cleanPath === "/index" ? "page" : undefined;
-  }
-  return cleanPath === prefix || cleanPath.startsWith(`${prefix}/`) ? "page" : undefined;
+/** `aria-current="page"` si le chemin correspond à la section. */
+function isCurrent(prefix: string, exact = false): "page" | undefined {
+  const clean = prefix.replace(/\/+$/, "") || "/";
+  if (exact) return cleanPath === clean ? "page" : undefined;
+  return cleanPath === clean || cleanPath.startsWith(`${clean}/`) ? "page" : undefined;
 }
 
 const navItems = [
-  { prefix: "/", label: "Catalogue", href: pageUrl("/") },
-  { prefix: "/editeurs", label: "Éditeurs", href: pageUrl("/editeurs/") },
-  { prefix: "/auteurs", label: "Auteurs", href: pageUrl("/auteurs/") },
-  { prefix: "/favoris", label: "Favoris", href: pageUrl("/favoris/") },
+  {
+    prefix: homePath(locale),
+    label: t(locale, "navCatalogue"),
+    href: pageUrl(homePath(locale)),
+    exact: true,
+  },
+  {
+    prefix: publishersPath(locale),
+    label: t(locale, "navPublishers"),
+    href: pageUrl(publishersPath(locale)),
+    exact: false,
+  },
+  {
+    prefix: authorsPath(locale),
+    label: t(locale, "navAuthors"),
+    href: pageUrl(authorsPath(locale)),
+    exact: false,
+  },
+  {
+    prefix: favoritesPath(locale),
+    label: t(locale, "navFavorites"),
+    href: pageUrl(favoritesPath(locale)),
+    exact: false,
+  },
 ];
 
-/** Liens propres au catalogue de podcasts. */
-const communityItems = [
-  { prefix: "/developers", label: "API", href: pageUrl("/developers/") },
-  { prefix: "/health", label: "Santé flux", href: pageUrl("/health/") },
-];
+/** Pages hors périmètre, en français uniquement : visibles seulement dans la nav FR. */
+const communityItems =
+  locale === "fr"
+    ? [
+        { prefix: "/developers", label: t(locale, "navApi"), href: pageUrl("/developers/") },
+        { prefix: "/health", label: t(locale, "navHealth"), href: pageUrl("/health/") },
+        { prefix: "/contribuer", label: t(locale, "navContribute"), href: pageUrl("/contribuer/") },
+      ]
+    : [];
 
 /** Liens vers les autres sites de la communauté Yoto. */
 const ecosystemItems = [
-  { label: "Awesome Yoto", href: "https://yoto-community.github.io/" },
-  { label: "Catalogue d’icônes", href: "https://yoto-community.github.io/icons-catalogue/" },
+  { label: t(locale, "navAwesomeYoto"), href: "https://yoto-community.github.io/" },
+  {
+    label: t(locale, "navIconsCatalogue"),
+    href: "https://yoto-community.github.io/icons-catalogue/",
+  },
 ];
 
-/** Contribution et code source, communs à tous les sites. */
-const contributeItem = { prefix: "/contribuer", label: "Contribuer", href: pageUrl("/contribuer/") };
-const communityCurrent = [...communityItems, contributeItem].some(
-  (item) => isCurrent(item.prefix) === "page",
-);
+const communityCurrent = communityItems.some((item) => isCurrent(item.prefix) === "page");
 const repoUrl = "https://github.com/yoto-community/podcast-catalogue";
-const updated = formatDateLong(manifest.updatedAt);
+const updated = formatDateLong(manifest.updatedAt, locale);
 
-/** Génère les liens `hreflang` pour les langues disponibles. */
-function getHreflangLinks(): Array<{ hreflang: string; href: string }> {
-  if (!site) return [];
-  const links = [{ hreflang: "x-default", href: new URL(pageUrl("/"), site).href }];
-  const manifest = getManifest();
-  for (const language of manifest.languages) {
-    const langPath = pageUrl(`/${language.code}/`);
-    links.push({ hreflang: language.code, href: new URL(langPath, site).href });
-  }
-  return links;
-}
+/** Liens `hreflang` : uniquement quand la page existe dans les deux interfaces. */
+const hreflangLinks =
+  site && alternates
+    ? [
+        {
+          hreflang: "x-default",
+          href: new URL(pageUrl(alternates.fr ?? alternates.en ?? homePath("fr")), site).href,
+        },
+        ...(["fr", "en"] as const)
+          .filter((code) => alternates[code])
+          .map((code) => ({
+            hreflang: code,
+            href: new URL(pageUrl(alternates[code]!), site).href,
+          })),
+      ]
+    : [];
 
-const hreflangLinks = getHreflangLinks();
+// Les pages hors périmètre (Contribuer, API, Santé) restent en français.
+const sectionPrefixes = [
+  searchPath(locale),
+  themesPath(locale),
+  authorsPath(locale),
+  publishersPath(locale),
+  newReleasesPath(locale),
+  favoritesPath(locale),
+].map((value) => value.replace(/\/+$/, ""));
+const catalogueActive =
+  cleanPath === homePath(locale).replace(/\/+$/, "") ||
+  (cleanPath.startsWith(`${homePath(locale).replace(/\/+$/, "")}/`) &&
+    !sectionPrefixes.some((prefix) => cleanPath.startsWith(prefix)));
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={locale} data-locale={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -95,13 +147,13 @@ const hreflangLinks = getHreflangLinks();
     <meta name="theme-color" content="#101512" media="(prefers-color-scheme: dark)" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Podcasts Enfants" />
+    <meta name="apple-mobile-web-app-title" content={t(locale, "metaSiteName")} />
     {canonical && <link rel="canonical" href={canonical} />}
     {hreflangLinks.map((link) => (
       <link rel="alternate" hreflang={link.hreflang} href={link.href} />
     ))}
-    <meta property="og:site_name" content="Annuaire de podcasts pour enfants" />
-    <meta property="og:locale" content={lang === "en" ? "en_US" : "fr_FR"} />
+    <meta property="og:site_name" content={t(locale, "metaSiteName")} />
+    <meta property="og:locale" content={locale === "en" ? "en_US" : "fr_FR"} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -115,12 +167,12 @@ const hreflangLinks = getHreflangLinks();
   </head>
   <body>
     <a class="skip-link" href="#contenu">
-      Aller au contenu principal
+      {t(locale, "skipToContent")}
     </a>
 
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-logo" href={pageUrl("/")}>
+        <a class="site-logo" href={pageUrl(homePath(locale))}>
           <span class="site-logo__mark" aria-hidden="true">
             <svg width="34" height="34" viewBox="0 0 34 34">
               <rect x="2" y="2" width="30" height="30" rx="10" fill="var(--accent)"></rect>
@@ -132,13 +184,19 @@ const hreflangLinks = getHreflangLinks();
               ></path>
             </svg>
           </span>
-          <span>Annuaire de podcasts</span>
+          <span>{t(locale, "siteName")}</span>
         </a>
-        <nav class="site-nav" aria-label="Navigation principale">
+        <nav class="site-nav" aria-label={t(locale, "navMain")}>
           <ul>
             {navItems.map((item) => (
               <li>
-                <a href={item.href} aria-current={isCurrent(item.prefix)}>
+                <a
+                  href={item.href}
+                  aria-current={
+                    item.exact ? (catalogueActive ? "page" : undefined) : isCurrent(item.prefix)
+                  }
+                  data-nav-exact={item.exact ? "" : undefined}
+                >
                   {item.label}
                 </a>
               </li>
@@ -149,7 +207,7 @@ const hreflangLinks = getHreflangLinks();
                 data-nav-group
               >
                 <summary class="site-nav__summary">
-                  Communauté
+                  {t(locale, "navCommunity")}
                   <svg
                     class="site-nav__caret"
                     viewBox="0 0 24 24"
@@ -184,26 +242,18 @@ const hreflangLinks = getHreflangLinks();
                         <span class="site-nav__external-mark" aria-hidden="true">
                           ↗
                         </span>
-                        <span class="sr-only">(nouvel onglet)</span>
+                        <span class="sr-only">{t(locale, "newTab")}</span>
                       </a>
                     </li>
                   ))}
-                  <li class="site-nav__panel-separator" aria-hidden="true"></li>
-                  <li>
-                    <a
-                      href={contributeItem.href}
-                      aria-current={isCurrent(contributeItem.prefix)}
-                    >
-                      {contributeItem.label}
-                    </a>
-                  </li>
                   <li>
                     <a href={repoUrl} target="_blank" rel="noopener noreferrer">
-                      GitHub
+                      {t(locale, "navGithub")}
                       <span class="site-nav__external-mark" aria-hidden="true">
-                        ↗
+                        {" "}
+                        ↗{" "}
                       </span>
-                      <span class="sr-only">(nouvel onglet)</span>
+                      <span class="sr-only">{t(locale, "newTab")}</span>
                     </a>
                   </li>
                 </ul>
@@ -211,6 +261,7 @@ const hreflangLinks = getHreflangLinks();
             </li>
           </ul>
         </nav>
+        <LanguageSwitch locale={locale} alternates={alternates} />
       </div>
     </header>
 
@@ -221,34 +272,25 @@ const hreflangLinks = getHreflangLinks();
     <footer class="site-footer">
       <div class="site-footer__inner">
         <p class="site-footer__community">
-          {lang === "en" ? (
-            <>
-              Part of the <a href="https://yoto-community.github.io/">Yoto Community</a>
-              {"— "}
-              <a href="https://yoto-community.github.io/myo/">build your first MYO card</a>.
-            </>
-          ) : (
-            <>
-              Fait partie de la <a href="https://yoto-community.github.io/">communauté Yoto</a>
-              {"— "}
-              <a href="https://yoto-community.github.io/myo/">créez votre première carte MYO</a>.
-            </>
-          )}
+          {t(locale, "footerCommunityBefore")}
+          <a href="https://yoto-community.github.io/">{t(locale, "footerCommunityLink")}</a>
+          {"— "}
+          <a href="https://yoto-community.github.io/myo/">{t(locale, "footerMyoLink")}</a>.
         </p>
         <p class="site-footer__freshness" data-catalog-freshness>
           {updated && (
             <>
-              Catalogue mis à jour le <time datetime={manifest.updatedAt}>{updated}</time>
+              {t(locale, "footerUpdatedBefore")}{" "}
+              <time datetime={manifest.updatedAt}>{updated}</time>
             </>
           )}
           {"— "}
           <span class="site-footer__version">
-            version <code title="catalogVersion">{manifest.catalogVersion}</code>
+            {t(locale, "footerVersion")}{" "}
+            <code title="catalogVersion">{manifest.catalogVersion}</code>
           </span>
         </p>
-        <p class="site-footer__meta">
-          {manifest.counts.total} podcasts · données publiques, libres de réutilisation.
-        </p>
+        <p class="site-footer__meta">{t(locale, "footerMeta", { count: manifest.counts.total })}</p>
       </div>
     </footer>
 
@@ -262,18 +304,18 @@ const hreflangLinks = getHreflangLinks();
       aria-atomic="true"
     >
       <div class="pwa-toast__inner">
-        <p class="pwa-toast__message">Une nouvelle version de l'application est disponible.</p>
+        <p class="pwa-toast__message">{t(locale, "pwaNewVersion")}</p>
         <div class="pwa-toast__actions">
           <button type="button" class="btn btn--primary pwa-toast__refresh" data-pwa-refresh>
-            Rafraîchir maintenant
+            {t(locale, "pwaRefresh")}
           </button>
           <button
             type="button"
             class="btn btn--ghost pwa-toast__dismiss"
             data-pwa-dismiss
-            aria-label="Ignorer"
+            aria-label={t(locale, "pwaDismiss")}
           >
-            Plus tard
+            {t(locale, "pwaLater")}
           </button>
         </div>
       </div>
@@ -291,7 +333,7 @@ const hreflangLinks = getHreflangLinks();
             type="button"
             class="player__toggle"
             data-player-toggle
-            aria-label="Lecture"
+            aria-label={t(locale, "playerPlay")}
             aria-pressed="false"
           >
             <svg
@@ -317,11 +359,11 @@ const hreflangLinks = getHreflangLinks();
             >
               <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"></path>
             </svg>
-            <span class="sr-only">Lecture ou pause</span>
+            <span class="sr-only">{t(locale, "playerToggleSr")}</span>
           </button>
 
           <label class="sr-only" for="player-seek">
-            Position dans l’épisode
+            {t(locale, "playerPosition")}
           </label>
           <input
             class="player__seek"
@@ -335,7 +377,7 @@ const hreflangLinks = getHreflangLinks();
           />
 
           <p class="player__time">
-            <span class="sr-only">Temps de lecture : </span>
+            <span class="sr-only">{t(locale, "playerTime")}</span>
             <span data-player-current>0:00</span>
             <span aria-hidden="true"> / </span>
             <span data-player-duration>0:00</span>
@@ -344,16 +386,16 @@ const hreflangLinks = getHreflangLinks();
 
         <div class="player__actions">
           <a class="player__link" data-player-external rel="noopener noreferrer">
-            Écouter sur le site de l’éditeur
+            {t(locale, "playerListenExternal")}
           </a>
           <a class="player__link" data-player-download download>
-            Télécharger
+            {t(locale, "playerDownload")}
           </a>
           <button
             type="button"
             class="player__close"
             data-player-close
-            aria-label="Fermer le lecteur"
+            aria-label={t(locale, "playerClose")}
           >
             <svg
               viewBox="0 0 24 24"
@@ -367,18 +409,18 @@ const hreflangLinks = getHreflangLinks();
             >
               <path d="M6 6l12 12M18 6L6 18"></path>
             </svg>
-            <span class="sr-only">Fermer le lecteur</span>
+            <span class="sr-only">{t(locale, "playerClose")}</span>
           </button>
         </div>
       </div>
 
       <div class="player__error" data-player-error hidden role="alert">
         <p>
-          <strong>Écoute indisponible ici.</strong>
-          Utilisez le lien vers le site de l’éditeur ou téléchargez l’épisode.
+          <strong>{t(locale, "playerErrorTitle")}</strong>
+          {t(locale, "playerErrorText")}
         </p>
         <button type="button" class="player__retry" data-player-retry>
-          Réessayer
+          {t(locale, "playerRetry")}
         </button>
       </div>
 

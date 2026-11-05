@@ -1,35 +1,44 @@
 ---
-import { categoryLabel, entryPath, getGroups, languageLabel } from "../lib/catalog";
-import { agesOfGroup, formatAges } from "../lib/ages";
+import {
+  categoryLabel,
+  entryAgeRange,
+  getGroups,
+  groupLabel,
+  languageLabelFor,
+} from "../lib/catalog";
+import { formatAges, agesOfGroup } from "../lib/ages";
+import { t, type Locale } from "../lib/i18n";
 import { searchIndex, normalizeText } from "../lib/text";
-import { pageUrl } from "../lib/url";
-import { slugifyAuthor, slugifyPublisher } from "../lib/url";
+import { entryPath, authorPath, publisherPath } from "../lib/routes";
+import { pageUrl, slugifyAuthor, slugifyPublisher } from "../lib/url";
 import FavoriteButton from "./FavoriteButton.astro";
 import type { DistEntry } from "../lib/types";
 
 interface Props {
   entry: DistEntry;
+  locale: Locale;
 }
 
-const { entry } = Astro.props;
+const { entry, locale } = Astro.props;
 
-const href = pageUrl(entryPath(entry));
+const href = pageUrl(entryPath(entry, locale));
 const image = entry.imageUrl || pageUrl("/placeholder.svg");
-const alt = entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : "";
+const alt = entry.imageUrl ? t(locale, "coverAlt", { name: entry.name }) : "";
 const groups = getGroups();
 const group = groups.find((candidate) => candidate.id === entry.groupId);
 /** Âges exacts couverts (bornes inclusives) — lus par le filtre « âge ». */
 const ages = group ? agesOfGroup(group, groups) : [];
-const agesText = formatAges(ages);
+const agesText = formatAges(ages, locale);
+const ageRange = entryAgeRange(entry, locale);
 const searchText = searchIndex(
   entry.name,
   entry.publisher,
   entry.author,
   entry.description,
-  categoryLabel(entry.category, entry.language),
+  categoryLabel(entry.category, locale),
 );
 const sortName = normalizeText(entry.name);
-const sortCategory = `${normalizeText(categoryLabel(entry.category, entry.language))} ${sortName}`;
+const sortCategory = `${normalizeText(categoryLabel(entry.category, locale))} ${sortName}`;
 const authorSlug = entry.author !== "Inconnu" ? slugifyAuthor(entry.author) : "";
 const publisherSlug = slugifyPublisher(entry.publisher);
 ---
@@ -60,22 +69,25 @@ const publisherSlug = slugifyPublisher(entry.publisher);
       <h2 class="card__title">{entry.name}</h2>
     </a>
     <p class="card__publisher">
-      <a href={pageUrl(`/editeurs/${publisherSlug}/`)}>{entry.publisher}</a>
+      <a href={pageUrl(publisherPath(locale, publisherSlug))}>{entry.publisher}</a>
     </p>
     {entry.author !== "Inconnu" && (
       <p class="card__author">
-        <a href={pageUrl(`/auteurs/${slugifyAuthor(entry.author)}/`)}>{entry.author}</a>
+        <a href={pageUrl(authorPath(locale, slugifyAuthor(entry.author)))}>{entry.author}</a>
       </p>
     )}
-    <ul class="badges" aria-label={`Caractéristiques de ${entry.name}`}>
-      <li class="badge">{languageLabel(entry.language)}</li>
-      {group && <li class="badge">{group.label}</li>}
-      <li class="badge" title={agesText ? `Âges couverts : ${agesText}` : undefined}>
-        {entry.ageRange}
-        {agesText && <span class="sr-only"> — âges {agesText}</span>}
+    <ul class="badges" aria-label={t(locale, "cardFeatures", { name: entry.name })}>
+      <li class="badge">{languageLabelFor(entry.language, locale)}</li>
+      {group && <li class="badge">{groupLabel(group, locale)}</li>}
+      <li
+        class="badge"
+        title={agesText ? t(locale, "cardAgesCovered", { ages: agesText }) : undefined}
+      >
+        {ageRange}
+        {agesText && <span class="sr-only"> {t(locale, "cardAgesSr", { ages: agesText })}</span>}
       </li>
-      <li class="badge badge--category">{categoryLabel(entry.category, entry.language)}</li>
+      <li class="badge badge--category">{categoryLabel(entry.category, locale)}</li>
     </ul>
-    <FavoriteButton slug={entry.slug} size="sm" />
+    <FavoriteButton slug={entry.slug} locale={locale} size="sm" />
   </article>
 </li>

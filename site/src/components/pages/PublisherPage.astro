@@ -1,63 +1,62 @@
 ---
-import BaseLayout from "../../../layouts/BaseLayout.astro";
-import CatalogBrowser from "../../../components/CatalogBrowser.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../CatalogBrowser.astro";
 import {
-  entriesOfPublisher,
-  entryPath,
-  getPublishers,
   authorOptions,
   categoryOptions,
+  entriesOfPublisher,
+  getPublishers,
   groupOptions,
   languageOptions,
-} from "../../../lib/catalog";
-import { plural } from "../../../lib/format";
-import { itemListJsonLd } from "../../../lib/seo";
-import { pageUrl } from "../../../lib/url";
-import type { StaticPath } from "../../../lib/types";
+} from "../../lib/catalog";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, authorPath, entryPath, publisherPath, publishersPath } from "../../lib/routes";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
 
-export function getStaticPaths(): Array<StaticPath<PublisherProps>> {
-  return getPublishers()
-    .filter((p) => entriesOfPublisher(p.slug).length > 0)
-    .map((publisher) => ({
-      params: { slug: publisher.slug },
-      props: { publisher },
-    }));
-}
-
-interface PublisherProps {
+interface Props {
+  locale: Locale;
   publisher: { name: string; slug: string; count: number };
 }
 
-interface Props extends PublisherProps {}
-
-const { publisher } = Astro.props;
+const { locale, publisher } = Astro.props;
 const entries = entriesOfPublisher(publisher.slug);
-const path = `/editeurs/${publisher.slug}/`;
+const path = publisherPath(locale, publisher.slug);
 
 const jsonLd = itemListJsonLd(
-  `Podcasts — ${publisher.name}`,
+  t(locale, "publisherJsonLdName", { name: publisher.name }),
   entries.map((entry) => ({
     name: entry.name,
-    path: entryPath(entry),
+    path: entryPath(entry, locale),
   })),
   Astro.site,
 );
 
-const title = `${publisher.name} — podcasts`;
-const description = `${plural(entries.length, "podcast")} de l'éditeur « ${publisher.name} » — écoute directe, description et lien vers le site de l'éditeur.`;
+const title = `${publisher.name} — ${t(locale, "siteName")}`;
+const description = t(locale, "publisherDescription", {
+  count: entries.length,
+  name: publisher.name,
+});
 
 // Auteurs liés à cet éditeur
-const authors = authorOptions(entries);
+const authors = authorOptions(entries, locale);
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
-  <nav class="breadcrumb" aria-label="Fil d'ariane">
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates((code) => publisherPath(code, publisher.slug))}
+>
+  <nav class="breadcrumb" aria-label={t(locale, "breadcrumb")}>
     <ol>
       <li>
-        <a href={pageUrl("/")}>Catalogue</a>
+        <a href={pageUrl(`/${locale}/`)}>{t(locale, "navCatalogue")}</a>
       </li>
       <li>
-        <a href={pageUrl("/editeurs/")}>Éditeurs</a>
+        <a href={pageUrl(publishersPath(locale))}>{t(locale, "navPublishers")}</a>
       </li>
       <li>
         <span aria-current="page">{publisher.name}</span>
@@ -67,11 +66,11 @@ const authors = authorOptions(entries);
 
   {authors.length > 0 && (
     <section class="publisher-authors" aria-labelledby="authors-heading">
-      <h2 id="authors-heading">Auteurs de cet éditeur</h2>
+      <h2 id="authors-heading">{t(locale, "publisherAuthorsHeading")}</h2>
       <ul class="publisher-authors__list">
         {authors.map((author) => (
           <li class="publisher-authors__item">
-            <a href={pageUrl(`/auteurs/${author.value}/`)}>
+            <a href={pageUrl(authorPath(locale, author.value))}>
               <span class="publisher-authors__name">{author.label}</span>
             </a>
           </li>
@@ -82,20 +81,21 @@ const authors = authorOptions(entries);
 
   <CatalogBrowser
     title={publisher.name}
-    intro={`${plural(entries.length, "podcast")} publiés par « ${publisher.name} ».`}
+    intro={t(locale, "publisherIntro", { count: entries.length, name: publisher.name })}
     entries={entries}
-    languages={languageOptions(entries)}
-    groups={groupOptions(entries)}
-    categories={categoryOptions(entries)}
+    locale={locale}
+    languages={languageOptions(entries, locale)}
+    groups={groupOptions(entries, locale)}
+    categories={categoryOptions(entries, locale)}
     authors={authors}
     preset={{}}
     showAuthorFilter={true}
     nav={{
-      label: "Tous les éditeurs",
+      label: t(locale, "publishersAll"),
       items: [
         {
-          href: pageUrl("/editeurs/"),
-          label: "Tous les éditeurs",
+          href: pageUrl(publishersPath(locale)),
+          label: t(locale, "publishersAll"),
           count: getPublishers().length,
           active: false,
         },

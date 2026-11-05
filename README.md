@@ -151,7 +151,7 @@ Un fichier vide n'existe pas.
 ```bash
 pnpm build            # dist/ : manifeste + éclats + bundle complet
 pnpm build:episodes   # dist/episodes/ : index.json + <slug>.json
-pnpm build:search-index  # site/public/search-index.json : index plein-texte de /search/
+pnpm build:search-index  # site/public/search-index.json : index plein-texte de /fr/recherche/ et /en/search/
 pnpm validate:dist    # contrôle S8 (artefacts conformes + sha256 du manifeste)
 ```
 
@@ -222,13 +222,25 @@ Détails, contrôles et conventions : **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ```bash
 pnpm site:dev      # hot-reload Astro
-pnpm site:build    # 142 pages pré-rendues → site/dist/
+pnpm site:build    # ~1 500 pages pré-rendues → site/dist/
 ```
 
-- **Parcours** : `/` (catalogue + recherche instantanée) → `/{langue}/` →
-  `/{langue}/{slug}/` (segment d'URL de la tranche, ex. `age-7-10`) →
-  `/{langue}/{slug}/{episode}/` (10 épisodes, JSON-LD). Les anciens segments
-  (`aliases`) redirigent vers la nouvelle adresse.
+- **Deux interfaces** : `/fr/` et `/en/`. Le préfixe désigne la **langue de
+  l'interface**, pas celle des podcasts : chaque interface liste tout le catalogue
+  (198 podcasts, français inclus) et le filtre langue permet de restreindre. Chaque
+  fiche podcast existe donc en `/fr/age-7-10/<slug>/` et `/en/age-7-10/<slug>/`
+  (`hreflang` croisé).
+- **Parcours** : `/` redirige vers `/fr/` (ou `/en/` si le choix a été mémorisé) →
+  `/{interface}/` → `/{interface}/age-7-10/` → `/{interface}/age-7-10/<slug>/`
+  (10 épisodes, JSON-LD). Les segments de section sont localisés
+  (`/fr/recherche/` ↔ `/en/search/`, `/fr/auteurs/` ↔ `/en/authors/`,
+  `/fr/editeurs/` ↔ `/en/publishers/`, `/fr/nouveautes/` ↔ `/en/new-releases/`,
+  `/fr/favoris/` ↔ `/en/favorites/`). Les anciennes URL non préfixées (`/search/`,
+  `/themes/…`) redirigent vers leur équivalent français ; les anciens segments de
+  tranche (`aliases`) redirigent aussi.
+- **Langue** : le sélecteur FR/EN de l'en-tête mémorise le choix
+  (`localStorage["yoto-locale"]`) ; toutes les chaînes UI vivent dans
+  `site/src/lib/i18n.ts`.
 - **Filtres** : recherche instantanée (`?q=`), langue, **un ou plusieurs âges exacts**
   (`?ages=`, union des tranches : cocher 5 ans remonte les podcasts _Tout-petits_ **et**
   _Maternelle / CP_) et catégorie.

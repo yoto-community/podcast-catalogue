@@ -1,41 +1,68 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getEntries, getPublishers } from "../../lib/catalog";
+import { plural, t, type Locale } from "../../lib/i18n";
+import { alternates, publisherPath, publishersPath } from "../../lib/routes";
 import { pageUrl } from "../../lib/url";
-import { plural } from "../../lib/format";
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const entries = getEntries();
-const publishers = getPublishers();
+const publishers = getPublishers(locale);
+const podcastCount = plural(
+  locale,
+  entries.length,
+  t(locale, "podcastSingular"),
+  t(locale, "podcastPlural"),
+);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Éditeurs",
-  description: "Tous les éditeurs du catalogue de podcasts pour enfants",
+  name: t(locale, "publishersJsonLdName"),
+  description: t(locale, "publishersJsonLdDescription"),
 };
 
-const title = "Éditeurs — Catalogue de podcasts";
-const description = `${publishers.length} éditeurs — ${plural(entries.length, "podcast")} classés par maison d'édition.`;
-const path = "/editeurs/";
+const title = `${t(locale, "publishersJsonLdName")} — ${t(locale, "siteName")}`;
+const description = t(locale, "publishersDescription", {
+  count: publishers.length,
+  podcasts: podcastCount,
+});
+const path = publishersPath(locale);
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates(publishersPath)}
+>
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
-      <h1 id="titre-page">Éditeurs</h1>
-      <p class="catalog__intro">Découvrez les podcasts par maison d'édition / producteur.</p>
+      <h1 id="titre-page">{t(locale, "publishersHeading")}</h1>
+      <p class="catalog__intro">{t(locale, "publishersIntro")}</p>
       <p class="catalog__count" role="status">
-        {publishers.length} éditeurs · {plural(entries.length, "podcast")}
+        {t(locale, "publishersCount", { count: publishers.length, podcasts: podcastCount })}
       </p>
     </header>
 
     <ul class="grid publishers-grid">
       {publishers.map((publisher) => (
         <li class="publisher-card">
-          <a class="publisher-card__link" href={pageUrl(`/editeurs/${publisher.slug}/`)}>
+          <a class="publisher-card__link" href={pageUrl(publisherPath(locale, publisher.slug))}>
             <span class="publisher-card__name">{publisher.name}</span>
             <span class="publisher-card__count">
-              {publisher.count} podcast{publisher.count > 1 ? "s" : ""}
+              {plural(
+                locale,
+                publisher.count,
+                t(locale, "podcastSingular"),
+                t(locale, "podcastPlural"),
+              )}
             </span>
           </a>
         </li>

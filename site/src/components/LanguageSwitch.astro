@@ -1,0 +1,62 @@
+---
+import { LOCALES, t, type Locale } from "../lib/i18n";
+import { pageUrl } from "../lib/url";
+
+interface Props {
+  locale: Locale;
+  /** Chemins équivalents dans les deux interfaces (absents sur les pages FR-only). */
+  alternates?: Partial<Record<Locale, string>>;
+}
+
+const { locale, alternates } = Astro.props;
+const available = LOCALES.filter((code) => alternates?.[code]);
+---
+
+{available.length > 1 && (
+  <nav class="language-switch" aria-label={t(locale, "languageSwitchLabel")}>
+    {available.map((code) => (
+      <a
+        href={pageUrl(alternates![code]!)}
+        hreflang={code}
+        lang={code}
+        title={t(locale, code === "fr" ? "localeNameFr" : "localeNameEn")}
+        aria-current={code === locale ? "page" : undefined}
+        data-no-router
+        data-locale-switch={code}
+      >
+        {code.toUpperCase()}
+      </a>
+    ))}
+  </nav>
+)}
+
+<style>
+  .language-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.15rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+
+  .language-switch a {
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+
+  .language-switch a:hover {
+    color: var(--accent);
+  }
+
+  .language-switch a[aria-current="page"] {
+    background: var(--accent);
+    color: var(--bg);
+  }
+</style>

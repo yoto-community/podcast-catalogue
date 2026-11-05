@@ -1,40 +1,51 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { entryPath, getEntries } from "../lib/catalog";
-import { pageUrl } from "../lib/url";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { categoryLabel, entryAgeRange, getEntries, languageLabelFor } from "../../lib/catalog";
+import { plural, t, type Locale } from "../../lib/i18n";
+import { alternates, entryPath, favoritesPath, homePath } from "../../lib/routes";
+import { pageUrl } from "../../lib/url";
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const entries = getEntries();
-const path = "/favoris/";
+const path = favoritesPath(locale);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Mes favoris",
-  description: "Vos podcasts favoris — sauvegardés localement dans votre navigateur",
+  name: t(locale, "favoritesJsonLdName"),
+  description: t(locale, "favoritesJsonLdDescription"),
 };
 
-const title = "Mes favoris";
-const description =
-  "Podcasts marqués comme favoris — stockés localement dans votre navigateur, synchronisés entre onglets.";
+const title = t(locale, "favoritesTitle");
+const description = t(locale, "favoritesDescription");
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates(favoritesPath)}
+>
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
-      <h1 id="titre-page">Mes favoris</h1>
-      <p class="catalog__intro">
-        Vos podcasts préférés, sauvegardés localement. Cliquez sur le cœur sur n'importe quelle
-        fiche pour ajouter/retirer.
-      </p>
+      <h1 id="titre-page">{t(locale, "favoritesHeading")}</h1>
+      <p class="catalog__intro">{t(locale, "favoritesIntro")}</p>
       <p class="catalog__count" role="status" data-fav-count>
-        0 podcasts
+        {plural(locale, 0, t(locale, "podcastSingular"), t(locale, "podcastPlural"))}
       </p>
     </header>
 
     <div class="favorites-empty" hidden>
-      <p class="empty-title">Aucun favori pour l'instant</p>
+      <p class="empty-title">{t(locale, "favoritesEmptyTitle")}</p>
       <p class="empty-text">
-        Parcourez le <a href={pageUrl("/")}>catalogue</a> et cliquez sur le cœur{" "}
+        {t(locale, "favoritesEmptyBefore")}{" "}
+        <a href={pageUrl(homePath(locale))}>{t(locale, "favoritesEmptyCatalogue")}</a>{" "}
         <svg class="inline-heart" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
           <path
             d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
@@ -43,7 +54,7 @@ const description =
             stroke-width="2"
           ></path>
         </svg>{" "}
-        sur une fiche pour l'ajouter ici.
+        {t(locale, "favoritesEmptyAfter")}
       </p>
     </div>
 
@@ -59,11 +70,11 @@ const description =
           hidden
         >
           <article class="card__body">
-            <a class="card__link" href={pageUrl(entryPath(entry))}>
+            <a class="card__link" href={pageUrl(entryPath(entry, locale))}>
               <img
                 class="card__image"
                 src={entry.imageUrl || pageUrl("/placeholder.svg")}
-                alt={entry.imageUrl ? `Pochette du podcast « ${entry.name} »` : ""}
+                alt={entry.imageUrl ? t(locale, "coverAlt", { name: entry.name }) : ""}
                 width="300"
                 height="300"
                 loading="lazy"
@@ -72,10 +83,10 @@ const description =
               <h2 class="card__title">{entry.name}</h2>
             </a>
             <p class="card__publisher">{entry.publisher}</p>
-            <ul class="badges" aria-label={`Caractéristiques de ${entry.name}`}>
-              <li class="badge">{entry.language === "fr" ? "Français" : "English"}</li>
-              {entry.groupId && <li class="badge">{entry.ageRange}</li>}
-              <li class="badge badge--category">{entry.category}</li>
+            <ul class="badges" aria-label={t(locale, "cardFeatures", { name: entry.name })}>
+              <li class="badge">{languageLabelFor(entry.language, locale)}</li>
+              <li class="badge">{entryAgeRange(entry, locale)}</li>
+              <li class="badge badge--category">{categoryLabel(entry.category, locale)}</li>
             </ul>
           </article>
         </li>
@@ -84,7 +95,11 @@ const description =
   </section>
 
   <script>
-    import { getFavorites, onFavoritesChange } from "../scripts/favorites.ts";
+    import { getFavorites, onFavoritesChange } from "../../scripts/favorites.ts";
+    import { isLocale, plural, t } from "../../lib/i18n";
+
+    const rawLocale = document.documentElement.dataset.locale;
+    const pageLocale = isLocale(rawLocale) ? rawLocale : "fr";
 
     function render(favs: string[]): void {
       // Les références sont relues à chaque rendu : après une navigation interne,
@@ -101,7 +116,14 @@ const description =
         item.hidden = !isFav;
         if (isFav) visible++;
       });
-      if (countEl) countEl.textContent = `${visible} podcast${visible > 1 ? "s" : ""}`;
+      if (countEl) {
+        countEl.textContent = plural(
+          pageLocale,
+          visible,
+          t(pageLocale, "podcastSingular"),
+          t(pageLocale, "podcastPlural"),
+        );
+      }
       if (emptyEl) emptyEl.hidden = visible > 0;
     }
 

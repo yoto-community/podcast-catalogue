@@ -6,6 +6,8 @@
  * Re-export de la logique depuis favorites.ts mais compatible navigateur.
  */
 
+import { isLocale, t } from "../lib/i18n";
+
 const FAV_KEY = "yoto-favorites";
 
 /** Récupère la liste des slugs favoris. */
@@ -76,10 +78,12 @@ export function onFavoritesChange(cb: (favs: string[]) => void): () => void {
 
 /** Met à jour l'attribut aria-pressed et l'icône d'un bouton favori. */
 export function updateFavoriteButton(btn: HTMLButtonElement, isFav: boolean): void {
+  const rawLocale = document.documentElement.dataset.locale;
+  const locale = isLocale(rawLocale) ? rawLocale : "fr";
   btn.setAttribute("aria-pressed", String(isFav));
-  btn.setAttribute("aria-label", isFav ? "Retirer des favoris" : "Ajouter aux favoris");
+  btn.setAttribute("aria-label", t(locale, isFav ? "favoriteRemoveAria" : "favoriteAddAria"));
   const label = btn.querySelector(".favorite-text");
-  if (label) label.textContent = isFav ? "Retirer" : "Favori";
+  if (label) label.textContent = t(locale, isFav ? "unfavorite" : "favorite");
 }
 
 /** Synchronise l'état (favori ou non) de tous les boutons présents dans le DOM. */

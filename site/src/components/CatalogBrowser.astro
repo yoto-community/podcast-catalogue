@@ -1,6 +1,6 @@
 ---
 import PodcastCard from "./PodcastCard.astro";
-import { plural } from "../lib/format";
+import { plural, t, type Locale } from "../lib/i18n";
 import { sortByName, ageOptions } from "../lib/catalog";
 import type { DistEntry, FilterOption, NavItem } from "../lib/types";
 
@@ -13,6 +13,7 @@ interface Props {
   groups: FilterOption[];
   categories: FilterOption[];
   authors: FilterOption[];
+  locale: Locale;
   /** Filtres déjà imposés par la page (masqués dans l'interface). */
   preset?: { language?: string; group?: string };
   /** Afficher le filtre auteur en permanence (hors section pliable). */
@@ -28,16 +29,19 @@ const {
   groups,
   categories,
   authors,
+  locale,
   preset,
   showAuthorFilter,
   nav,
 } = Astro.props;
-const sorted = sortByName(entries);
+const sorted = sortByName(entries, locale);
 const showLanguages = !preset?.language && languages.length > 1;
-const ages = ageOptions(entries);
+const ages = ageOptions(entries, locale);
 const showAges = !preset?.group && groups.length > 1 && ages.length > 1;
 const showCategories = categories.length > 1;
 const showAuthors = authors.length > 1;
+const podcastCount = (count: number) =>
+  plural(locale, count, t(locale, "podcastSingular"), t(locale, "podcastPlural"));
 ---
 
 <section class="catalog" data-catalog aria-labelledby="titre-page">
@@ -45,7 +49,7 @@ const showAuthors = authors.length > 1;
     <h1 id="titre-page">{title}</h1>
     {intro && <p class="catalog__intro">{intro}</p>}
     <p class="catalog__count" data-count role="status" aria-live="polite" aria-atomic="true">
-      {plural(entries.length, "podcast")}
+      {podcastCount(entries.length)}
     </p>
   </header>
 
@@ -92,9 +96,9 @@ const showAuthors = authors.length > 1;
             stroke-linejoin="round"
           ></path>
         </svg>
-        Filtres
+        {t(locale, "catalogFilters")}
         <span class="filters__toggle-count" data-toggle-count>
-          {plural(entries.length, "podcast")}
+          {podcastCount(entries.length)}
         </span>
       </span>
     </button>
@@ -102,31 +106,33 @@ const showAuthors = authors.length > 1;
     <div class="filters__content" id="filters-content" hidden>
       <div class="filters__row">
         <div class="field field--search">
-          <label for="recherche">Rechercher un podcast</label>
+          <label for="recherche">{t(locale, "catalogSearchLabel")}</label>
           <div class="field__control">
             <input
               id="recherche"
               type="search"
               name="q"
               data-search
-              placeholder="Nom, éditeur, description, catégorie…"
+              placeholder={t(locale, "catalogSearchPlaceholder")}
               autocomplete="search"
               aria-describedby="recherche-aide"
             />
             <kbd class="field__shortcut" aria-hidden="true">
-              /
+              {" "}
+              /{" "}
             </kbd>
           </div>
           <p class="field__help" id="recherche-aide">
-            Raccourci : touche <kbd>/</kbd> pour placer le curseur ici.
+            {t(locale, "catalogSearchHelpBefore")} <kbd>/</kbd>
+            {t(locale, "catalogSearchHelpAfter")}
           </p>
         </div>
 
         {showAuthorFilter && showAuthors && (
           <div class="field field--author-visible">
-            <label for="filtre-auteur-visible">Auteur / animateur</label>
+            <label for="filtre-auteur-visible">{t(locale, "catalogAuthor")}</label>
             <select id="filtre-auteur-visible" data-filter="author">
-              <option value="">Tous les auteurs</option>
+              <option value="">{t(locale, "catalogAllAuthors")}</option>
               {authors.map((option) => (
                 <option value={option.value}>
                   {option.label} ({option.count})
@@ -138,9 +144,9 @@ const showAuthors = authors.length > 1;
 
         {showLanguages && (
           <div class="field">
-            <label for="filtre-langue">Langue</label>
+            <label for="filtre-langue">{t(locale, "catalogLanguage")}</label>
             <select id="filtre-langue" data-filter="language">
-              <option value="">Toutes les langues</option>
+              <option value="">{t(locale, "catalogAllLanguages")}</option>
               {languages.map((option) => (
                 <option value={option.value}>
                   {option.label} ({option.count})
@@ -152,7 +158,7 @@ const showAuthors = authors.length > 1;
 
         {showAges && (
           <fieldset class="field field--ages">
-            <legend>Âge de l'enfant</legend>
+            <legend>{t(locale, "catalogAge")}</legend>
             <div class="ages">
               {ages.map((option) => (
                 <label class="age-chip">
@@ -162,7 +168,10 @@ const showAuthors = authors.length > 1;
                     name="ages"
                     value={option.age}
                     data-age={option.age}
-                    aria-label={`${option.longLabel} — ${plural(option.count, "podcast")}`}
+                    aria-label={t(locale, "catalogAgeAria", {
+                      longLabel: option.longLabel,
+                      count: podcastCount(option.count),
+                    })}
                     aria-describedby="filtre-age-aide"
                   />
                   <span class="age-chip__face">
@@ -175,17 +184,16 @@ const showAuthors = authors.length > 1;
               ))}
             </div>
             <p class="field__help" id="filtre-age-aide">
-              Un ou plusieurs âges : la liste affiche les podcasts adaptés à au moins l'un d'eux.
-              Les âges de frontière (5 et 7 ans) relèvent de deux tranches.
+              {t(locale, "catalogAgeHelp")}
             </p>
           </fieldset>
         )}
 
         {showCategories && (
           <div class="field">
-            <label for="filtre-categorie">Catégorie</label>
+            <label for="filtre-categorie">{t(locale, "catalogCategory")}</label>
             <select id="filtre-categorie" data-filter="category">
-              <option value="">Toutes les catégories</option>
+              <option value="">{t(locale, "catalogAllCategories")}</option>
               {categories.map((option) => (
                 <option value={option.value}>
                   {option.label} ({option.count})
@@ -197,9 +205,9 @@ const showAuthors = authors.length > 1;
 
         {!showAuthorFilter && showAuthors && (
           <div class="field">
-            <label for="filtre-auteur">Auteur / animateur</label>
+            <label for="filtre-auteur">{t(locale, "catalogAuthor")}</label>
             <select id="filtre-auteur" data-filter="author">
-              <option value="">Tous les auteurs</option>
+              <option value="">{t(locale, "catalogAllAuthors")}</option>
               {authors.map((option) => (
                 <option value={option.value}>
                   {option.label} ({option.count})
@@ -213,19 +221,19 @@ const showAuthors = authors.length > 1;
       <div class="filters__row filters__row--footer">
         <div class="field field--sort">
           <span class="field__label" id="tri-label">
-            Trier par
+            {t(locale, "catalogSort")}
           </span>
           <div class="sort" role="group" aria-labelledby="tri-label">
             <button type="button" class="sort__button" data-sort="name" aria-pressed="true">
-              Nom
+              {t(locale, "catalogSortName")}
             </button>
             <button type="button" class="sort__button" data-sort="category" aria-pressed="false">
-              Catégorie
+              {t(locale, "catalogSortCategory")}
             </button>
           </div>
         </div>
         <button type="button" class="filters__reset" data-reset>
-          Réinitialiser les filtres
+          {t(locale, "catalogReset")}
         </button>
       </div>
     </div>
@@ -241,12 +249,12 @@ const showAuthors = authors.length > 1;
   ></div>
 
   <p class="catalog__empty" data-empty hidden>
-    Aucun podcast ne correspond à ces filtres.
+    {t(locale, "catalogEmpty")}
   </p>
 
   <ul class="grid" id="catalog-list" data-list>
     {sorted.map((entry) => (
-      <PodcastCard entry={entry} />
+      <PodcastCard entry={entry} locale={locale} />
     ))}
   </ul>
 </section>

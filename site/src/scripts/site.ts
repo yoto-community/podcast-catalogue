@@ -11,6 +11,7 @@
  *  4. **Sync multi-onglets** via BroadcastChannel (play/pause/position/episode).
  */
 import { matchesAnyAge, parseAges, serializeAges } from "../lib/ages";
+import { isLocale, plural, t, type Locale } from "../lib/i18n";
 import { normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
 
@@ -82,8 +83,8 @@ function applyRemoteSync(msg: PlayerSyncMessage): void {
           bcIgnore = true;
           playEpisode({
             audioUrl: msg.audioUrl!,
-            title: msg.title ?? "Épisode",
-            artist: msg.artist ?? "Podcast",
+            title: msg.title ?? t(pageLocale(), "defaultEpisode"),
+            artist: msg.artist ?? t(pageLocale(), "defaultPodcast"),
             album: msg.album ?? "",
             externalUrl: msg.externalUrl ?? msg.audioUrl!,
             image: msg.image,
@@ -151,8 +152,14 @@ function qsa<T extends Element>(selector: string, root: ParentNode = document): 
   return Array.from(root.querySelectorAll<T>(selector));
 }
 
+function pageLocale(): Locale {
+  const raw = document.documentElement.dataset.locale;
+  return isLocale(raw) ? raw : "fr";
+}
+
 function pluralPodcasts(count: number): string {
-  return `${count} podcast${count > 1 ? "s" : ""}`;
+  const locale = pageLocale();
+  return plural(locale, count, t(locale, "podcastSingular"), t(locale, "podcastPlural"));
 }
 
 function formatClock(seconds: number): string {
@@ -301,7 +308,7 @@ function updateToggleState(): void {
   const dom = getPlayerDom();
   if (!dom) return;
   const playing = !dom.audio.paused && !dom.audio.ended;
-  dom.toggle.setAttribute("aria-label", playing ? "Pause" : "Lecture");
+  dom.toggle.setAttribute("aria-label", t(pageLocale(), playing ? "playerPause" : "playerPlay"));
   dom.toggle.setAttribute("aria-pressed", String(playing));
   setIconVisible(dom.iconPlay, !playing);
   setIconVisible(dom.iconPause, playing);
@@ -334,10 +341,13 @@ function renderPlayerText(): void {
   dom.artist.textContent = `${playerState.artist} · ${playerState.album}`;
   dom.external.href = playerState.externalUrl;
   dom.download.href = playerState.audioUrl;
-  dom.download.setAttribute("aria-label", `Télécharger « ${playerState.title} »`);
+  dom.download.setAttribute(
+    "aria-label",
+    t(pageLocale(), "playerDownloadAria", { title: playerState.title }),
+  );
   dom.external.setAttribute(
     "aria-label",
-    `Écouter « ${playerState.title} » sur le site de l’éditeur`,
+    t(pageLocale(), "playerExternalAria", { title: playerState.title }),
   );
 }
 
@@ -453,8 +463,8 @@ function playNextEpisode(): void {
   // Play the next episode
   playEpisode({
     audioUrl: nextAudioUrl,
-    title: nextButton.dataset.title ?? "Épisode",
-    artist: nextButton.dataset.artist ?? "Podcast",
+    title: nextButton.dataset.title ?? t(pageLocale(), "defaultEpisode"),
+    artist: nextButton.dataset.artist ?? t(pageLocale(), "defaultPodcast"),
     album: nextButton.dataset.album ?? "",
     externalUrl: nextButton.dataset.external ?? nextAudioUrl,
     image: nextButton.dataset.image || undefined,
@@ -649,8 +659,12 @@ function syncNavCurrent(): void {
     }
     const hrefPath = withoutBase(url.pathname);
     const target = hrefPath.replace(/\/+$/, "") || "/";
-    const active =
-      target === "/" ? clean === "/" : clean === target || clean.startsWith(`${target}/`);
+    const exact = link.hasAttribute("data-nav-exact");
+    const active = exact
+      ? clean === target
+      : target === "/"
+        ? clean === "/"
+        : clean === target || clean.startsWith(`${target}/`);
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   }
@@ -877,7 +891,7 @@ function bindFiltersToggle(root: HTMLElement): void {
   if (runtime) {
     const observer = new MutationObserver(() => {
       const visible = runtime.items.filter((item) => !item.hidden).length;
-      count.textContent = `${visible} podcast${visible > 1 ? "s" : ""}`;
+      count.textContent = pluralPodcasts(visible);
     });
     observer.observe(runtime.list, {
       attributes: true,
@@ -1042,7 +1056,7 @@ async function copyWithFeedback(button: HTMLElement, text: string): Promise<void
   originalLabels.set(button, original);
   button.dataset.copyPending = "1";
   const copied = await copyToClipboard(text);
-  button.innerHTML = `${copied ? CHECK_ICON : ERROR_ICON} ${copied ? "Copié !" : "Copie impossible"}`;
+  button.innerHTML = `${copied ? CHECK_ICON : ERROR_ICON} ${t(pageLocale(), copied ? "copied" : "copyFailed")}`;
   button.classList.toggle("copied", copied);
   window.setTimeout(() => {
     button.innerHTML = original;
@@ -1053,6 +1067,21 @@ async function copyWithFeedback(button: HTMLElement, text: string): Promise<void
 
 function bindGlobalListeners(): void {
   document.addEventListener("click", interceptClick);
+
+  // Le sélecteur de langue est marqué `data-no-router` : on mémorise le choix
+  // avant le chargement complet de la page équivalente.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const link = target.closest<HTMLElement>("[data-locale-switch]");
+    const value = link?.dataset.localeSwitch;
+    if (!value) return;
+    try {
+      localStorage.setItem("yoto-locale", value);
+    } catch {
+      /* stockage indisponible (navigation privée) : le choix n'est pas mémorisé */
+    }
+  });
 
   // Délégation au niveau du document : le micro-routeur remplace `<main>` à
   // chaque navigation, les `<script>` du DOM récupéré ne s'exécutent jamais,
@@ -1085,7 +1114,7 @@ function bindGlobalListeners(): void {
       search.select();
       return;
     }
-    window.location.href = `${pageUrl("/")}?focus=search`;
+    window.location.href = `${pageUrl(`/${pageLocale()}/`)}?focus=search`;
   });
 
   document.addEventListener("click", (event) => {
@@ -1098,8 +1127,8 @@ function bindGlobalListeners(): void {
     if (!audioUrl) return;
     playEpisode({
       audioUrl,
-      title: button.dataset.title ?? "Épisode",
-      artist: button.dataset.artist ?? "Podcast",
+      title: button.dataset.title ?? t(pageLocale(), "defaultEpisode"),
+      artist: button.dataset.artist ?? t(pageLocale(), "defaultPodcast"),
       album: button.dataset.album ?? "",
       externalUrl: button.dataset.external ?? audioUrl,
       image: button.dataset.image || undefined,

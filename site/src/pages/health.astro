@@ -1,14 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import {
-  entryPath,
-  getEntries,
-  getEpisodes,
-  getGroups,
-  groupAgeRange,
-  groupLabel,
-} from "../lib/catalog";
+import { getEntries, getEpisodes, getGroups, groupAgeRange, groupLabel } from "../lib/catalog";
 import { formatDate, isoDay } from "../lib/format";
+import { entryPath } from "../lib/routes";
 import { pageUrl } from "../lib/url";
 import type { DistEntry, DistEpisodesFile } from "../lib/types";
 
@@ -125,7 +119,7 @@ const description = `État de santé des ${stats.total} flux RSS du catalogue �
 const totalLabel = `${stats.total} podcast${stats.total > 1 ? "s" : ""} affiché${stats.total > 1 ? "s" : ""}`;
 ---
 
-<BaseLayout title="Santé des flux RSS" description={description} path="/health/" lang="fr">
+<BaseLayout title="Santé des flux RSS" description={description} path="/health/" locale="fr">
   <section class="health" aria-labelledby="health-title">
     <header class="health__header">
       <h1 id="health-title">Santé des flux RSS</h1>
@@ -317,7 +311,7 @@ const totalLabel = `${stats.total} podcast${stats.total > 1 ? "s" : ""} affiché
                   class={hasWarnings ? "health__row--has-warnings" : ""}
                 >
                   <td class="health__podcast-cell">
-                    <a href={pageUrl(entryPath(entry))} class="health__podcast-link">
+                    <a href={pageUrl(entryPath(entry, "fr"))} class="health__podcast-link">
                       <img
                         src={entry.imageUrl || pageUrl("/placeholder.svg")}
                         alt=""
@@ -388,7 +382,7 @@ const totalLabel = `${stats.total} podcast${stats.total > 1 ? "s" : ""} affiché
                       </details>
                     )}
                     {episodes && (
-                      <a href={pageUrl(entryPath(entry))} class="btn btn--ghost btn--sm">
+                      <a href={pageUrl(entryPath(entry, "fr"))} class="btn btn--ghost btn--sm">
                         Voir épisodes
                       </a>
                     )}

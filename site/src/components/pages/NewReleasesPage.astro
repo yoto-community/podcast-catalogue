@@ -1,21 +1,27 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { entryPath, getEntries, getEpisodes } from "../lib/catalog";
-import { formatDate, isoDay } from "../lib/format";
-import { itemListJsonLd } from "../lib/seo";
-import { pageUrl } from "../lib/url";
-import { plural } from "../lib/format";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getEntries, getEpisodes } from "../../lib/catalog";
+import { formatDate, isoDay } from "../../lib/format";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, entryPath, newReleasesPath } from "../../lib/routes";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const entries = getEntries();
 
 // Récupérer tous les épisodes avec leur date de publication
 const episodesWithMeta = entries.flatMap((entry) => {
   const episodes = getEpisodes(entry.slug);
   if (!episodes || episodes.episodes.length === 0) return [];
-  return episodes.episodes.map((ep) => ({
-    ...ep,
+  return episodes.episodes.map((episode) => ({
+    ...episode,
     podcast: entry,
-    podcastUrl: entryPath(entry),
+    podcastUrl: entryPath(entry, locale),
   }));
 });
 
@@ -30,61 +36,70 @@ episodesWithMeta.sort((a, b) => {
 const recentEpisodes = episodesWithMeta.slice(0, 50);
 
 const jsonLd = itemListJsonLd(
-  "Nouveaux épisodes — Catalogue de podcasts",
-  recentEpisodes.map((ep) => ({
-    name: `${ep.podcast.name} — ${ep.title}`,
-    path: ep.podcastUrl,
+  t(locale, "newReleasesJsonLdName"),
+  recentEpisodes.map((episode) => ({
+    name: `${episode.podcast.name} — ${episode.title}`,
+    path: episode.podcastUrl,
   })),
   Astro.site,
 );
 
-const title = "Nouveautés — Catalogue de podcasts";
-const description = `Les ${recentEpisodes.length} épisodes les plus récents du catalogue — toutes langues et tranches confondues.`;
-const path = "/nouveautes/";
+const title = `${t(locale, "newReleasesTitle")} — ${t(locale, "siteName")}`;
+const description = t(locale, "newReleasesDescription", { count: recentEpisodes.length });
+const path = newReleasesPath(locale);
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates(newReleasesPath)}
+>
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
-      <h1 id="titre-page">Nouveautés</h1>
-      <p class="catalog__intro">
-        Les épisodes les plus récemment publiés, toutes langues et tranches d'âge confondues.
-      </p>
+      <h1 id="titre-page">{t(locale, "newReleasesHeading")}</h1>
+      <p class="catalog__intro">{t(locale, "newReleasesIntro")}</p>
       <p class="catalog__count" role="status">
-        {plural(recentEpisodes.length, "épisode")} récents
+        {t(locale, "newReleasesCount", { count: recentEpisodes.length })}
       </p>
     </header>
 
     <ul class="grid episodes-grid">
-      {recentEpisodes.map((ep) => {
-        const date = formatDate(ep.pubDate);
-        const day = isoDay(ep.pubDate);
-        const duration = ep.durationSec ? `${Math.floor(ep.durationSec / 60)} min` : "";
+      {recentEpisodes.map((episode) => {
+        const date = formatDate(episode.pubDate, locale);
+        const day = isoDay(episode.pubDate);
+        const duration = episode.durationSec ? `${Math.floor(episode.durationSec / 60)} min` : "";
         return (
           <li class="episode-card">
             <article class="episode-card__body">
-              <a class="episode-card__link" href={ep.podcastUrl}>
+              <a class="episode-card__link" href={pageUrl(episode.podcastUrl)}>
                 <img
                   class="episode-card__image"
-                  src={ep.podcast.imageUrl || pageUrl("/placeholder.svg")}
-                  alt={ep.podcast.imageUrl ? `Pochette de ${ep.podcast.name}` : ""}
+                  src={episode.podcast.imageUrl || pageUrl("/placeholder.svg")}
+                  alt={
+                    episode.podcast.imageUrl
+                      ? t(locale, "newReleasesCoverAlt", { name: episode.podcast.name })
+                      : ""
+                  }
                   width="300"
                   height="300"
                   loading="lazy"
                   decoding="async"
                 />
-                <h2 class="episode-card__title">{ep.title}</h2>
+                <h2 class="episode-card__title">{episode.title}</h2>
               </a>
               <p class="episode-card__podcast">
-                <a href={ep.podcastUrl}>{ep.podcast.name}</a>
+                <a href={pageUrl(episode.podcastUrl)}>{episode.podcast.name}</a>
               </p>
               <p class="episode-card__meta">
-                {date && <time datetime={day ?? ep.pubDate}>{date}</time>}
+                {date && <time datetime={day ?? episode.pubDate}>{date}</time>}
                 {duration && <span>{duration}</span>}
               </p>
               <p class="episode-card__actions">
-                <a class="btn btn--ghost" href={ep.podcastUrl}>
-                  Voir le podcast
+                <a class="btn btn--ghost" href={pageUrl(episode.podcastUrl)}>
+                  {t(locale, "newReleasesViewPodcast")}
                 </a>
               </p>
             </article>
@@ -93,9 +108,7 @@ const path = "/nouveautes/";
       })}
     </ul>
 
-    {recentEpisodes.length === 0 && (
-      <p class="catalog__empty">Aucun épisode indexé pour le moment.</p>
-    )}
+    {recentEpisodes.length === 0 && <p class="catalog__empty">{t(locale, "newReleasesEmpty")}</p>}
   </section>
 
   <style>

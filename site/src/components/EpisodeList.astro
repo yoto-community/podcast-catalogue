@@ -1,14 +1,16 @@
 ---
 import { externalUrl } from "../lib/catalog";
+import { plural, t, type Locale } from "../lib/i18n";
 import { formatDate, formatDuration, isoDay, truncate } from "../lib/format";
 import type { DistEntry, DistEpisode, DistEpisodesFile } from "../lib/types";
 
 interface Props {
   entry: DistEntry;
   episodes: DistEpisodesFile | null;
+  locale: Locale;
 }
 
-const { entry, episodes } = Astro.props;
+const { entry, episodes, locale } = Astro.props;
 const external = externalUrl(entry);
 
 function isPlayable(episode: DistEpisode): boolean {
@@ -19,8 +21,10 @@ function isPlayable(episode: DistEpisode): boolean {
 
 const list = episodes?.episodes ?? [];
 const fetchedAt = episodes?.fetchedAt;
-const fetchedLabel = formatDate(fetchedAt);
+const fetchedLabel = formatDate(fetchedAt, locale);
 const fetchedDay = isoDay(fetchedAt);
+const episodeCount = (count: number) =>
+  plural(locale, count, t(locale, "episodeSingular"), t(locale, "episodePlural"));
 ---
 
 {list.length > 0 ? (
@@ -28,20 +32,21 @@ const fetchedDay = isoDay(fetchedAt);
     <p class="episodes__freshness">
       {fetchedLabel && (
         <>
-          Épisodes mis à jour le <time datetime={fetchedDay ?? fetchedAt}>{fetchedLabel}</time>
+          {t(locale, "episodesUpdated")}{" "}
+          <time datetime={fetchedDay ?? fetchedAt}>{fetchedLabel}</time>
           {" · "}
         </>
       )}
-      {list.length} épisode{list.length > 1 ? "s" : ""} indexé{list.length > 1 ? "s" : ""} (
-      {episodes?.count ?? list.length} au total dans le flux)
+      {episodeCount(list.length)}{" "}
+      {t(locale, "episodesIndexedSuffix", { total: episodes?.count ?? list.length })}
     </p>
 
     <ol class="episodes__list">
       {list.map((episode) => {
         const playable = isPlayable(episode);
-        const date = formatDate(episode.pubDate);
+        const date = formatDate(episode.pubDate, locale);
         const day = isoDay(episode.pubDate);
-        const duration = formatDuration(episode.durationSec);
+        const duration = formatDuration(episode.durationSec, locale);
         const description = truncate(episode.description, 300);
 
         return (
@@ -52,13 +57,11 @@ const fetchedDay = isoDay(fetchedAt);
                 {date && <time datetime={day ?? episode.pubDate}>{date}</time>}
                 {duration && <span>{duration}</span>}
                 {episode.episodeNumber !== undefined && (
-                  <span>Épisode n° {episode.episodeNumber}</span>
+                  <span>{t(locale, "episodeNumber", { number: episode.episodeNumber })}</span>
                 )}
               </p>
               {description && <p class="episode__description">{description}</p>}
-              {!playable && (
-                <p class="episode__notice">Écoute indisponible ici — utilisez le lien externe.</p>
-              )}
+              {!playable && <p class="episode__notice">{t(locale, "episodeUnavailable")}</p>}
             </div>
 
             <div class="episode__actions">
@@ -74,7 +77,7 @@ const fetchedDay = isoDay(fetchedAt);
                   data-album={entry.name}
                   data-external={external}
                   data-image={entry.imageUrl}
-                  aria-label={`Écouter « ${episode.title} »`}
+                  aria-label={t(locale, "episodeListenAria", { title: episode.title })}
                   aria-pressed="false"
                 >
                   <svg
@@ -86,8 +89,8 @@ const fetchedDay = isoDay(fetchedAt);
                   >
                     <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
                   </svg>
-                  Écouter
-                  <span class="sr-only">l’épisode</span>
+                  {t(locale, "episodeListen")}
+                  <span class="sr-only"> {t(locale, "episodeListenSr")}</span>
                 </button>
               ) : (
                 <a
@@ -96,8 +99,8 @@ const fetchedDay = isoDay(fetchedAt);
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Écouter sur le site de l’éditeur
-                  <span class="sr-only"> (nouvel onglet)</span>
+                  {t(locale, "episodesListenExternal")}
+                  <span class="sr-only"> {t(locale, "newTab")}</span>
                 </a>
               )}
 
@@ -106,9 +109,9 @@ const fetchedDay = isoDay(fetchedAt);
                   class="btn btn--ghost"
                   href={episode.audioUrl}
                   download
-                  aria-label={`Télécharger « ${episode.title} »`}
+                  aria-label={t(locale, "episodeDownloadAria", { title: episode.title })}
                 >
-                  Télécharger
+                  {t(locale, "episodeDownload")}
                 </a>
               )}
             </div>
@@ -119,19 +122,16 @@ const fetchedDay = isoDay(fetchedAt);
   </div>
 ) : (
   <div class="state" data-episodes-empty>
-    <p class="state__title">Épisodes en cours d’indexation…</p>
-    <p class="state__text">
-      La liste des épisodes de ce podcast n’est pas encore publiée dans le catalogue. Elle
-      apparaîtra automatiquement au prochain indexage des flux.
-    </p>
+    <p class="state__title">{t(locale, "episodesEmptyTitle")}</p>
+    <p class="state__text">{t(locale, "episodesEmptyText")}</p>
     <p class="state__actions">
       <a class="btn btn--primary" href={external} target="_blank" rel="noopener noreferrer">
-        Écouter sur le site de l’éditeur
-        <span class="sr-only"> (nouvel onglet)</span>
+        {t(locale, "episodesListenExternal")}
+        <span class="sr-only"> {t(locale, "newTab")}</span>
       </a>
       <a class="btn btn--ghost" href={entry.rssUrl} target="_blank" rel="noopener noreferrer">
-        Voir le flux RSS
-        <span class="sr-only"> (nouvel onglet)</span>
+        {t(locale, "episodesViewRss")}
+        <span class="sr-only"> {t(locale, "newTab")}</span>
       </a>
     </p>
   </div>

@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EpisodeList from "../EpisodeList.astro";
+import FavoriteButton from "../FavoriteButton.astro";
+import {
+  categoryLabel,
+  entryAgeRange,
+  externalUrl,
+  getEpisodes,
+  getGroups,
+  groupLabel,
+  languageLabelFor,
+  languageName,
+} from "../../lib/catalog";
+import { plural, t, type Locale } from "../../lib/i18n";
+import { truncate } from "../../lib/format";
+import { alternates, authorPath, entryPath, groupPath, homePath } from "../../lib/routes";
+import { podcastSeriesJsonLd } from "../../lib/seo";
+import { pageUrl, slugifyAuthor } from "../../lib/url";
+import type { DistEntry } from "../../lib/types";
+
+interface Props {
+  locale: Locale;
+  entry: DistEntry;
+}
+
+const { locale, entry } = Astro.props;
+const episodes = getEpisodes(entry.slug);
+const group = getGroups().find((candidate) => candidate.id === entry.groupId);
+const external = externalUrl(entry);
+const image = entry.imageUrl;
+const path = entryPath(entry, locale);
+const description =
+  truncate(entry.description, 160) ??
+  t(locale, "detailDescriptionFallback", {
+    name: entry.name,
+    language: languageName(entry.language, locale),
+    publisher: entry.publisher,
+  });
+const ageRange = entryAgeRange(entry, locale);
+const episodeCount = (count: number) =>
+  plural(locale, count, t(locale, "episodeSingular"), t(locale, "episodePlural"));
+
+const jsonLd = podcastSeriesJsonLd(entry, {
+  path,
+  episodeCount: episodes?.count,
+  site: Astro.site,
+});
+---
+
+<BaseLayout
+  title={`${entry.name} — ${entry.publisher}`}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  image={image}
+  locale={locale}
+  alternates={alternates((code) => entryPath(entry, code))}
+>
+  <article class="detail">
+    <nav class="breadcrumb" aria-label={t(locale, "breadcrumb")}>
+      <ol>
+        <li>
+          <a href={pageUrl(homePath(locale))}>{t(locale, "navCatalogue")}</a>
+        </li>
+        {group && (
+          <li>
+            <a href={pageUrl(groupPath(locale, group))}>{groupLabel(group, locale)}</a>
+          </li>
+        )}
+        <li>
+          <span aria-current="page">{entry.name}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <header class="detail__header">
+      <img
+        class="detail__image"
+        src={image || pageUrl("/placeholder.svg")}
+        alt={image ? t(locale, "coverAlt", { name: entry.name }) : ""}
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="detail__headline">
+        <h1>{entry.name}</h1>
+        <p class="detail__publisher">{entry.publisher}</p>
+        {entry.author !== "Inconnu" && (
+          <p class="detail__author">
+            <a href={pageUrl(authorPath(locale, slugifyAuthor(entry.author)))}>{entry.author}</a>
+          </p>
+        )}
+        <ul class="badges" aria-label={t(locale, "detailFeatures")}>
+          <li class="badge">{languageLabelFor(entry.language, locale)}</li>
+          {group && <li class="badge">{groupLabel(group, locale)}</li>}
+          <li class="badge">{ageRange}</li>
+          <li class="badge badge--category">{categoryLabel(entry.category, locale)}</li>
+          {episodes && (
+            <li class="badge badge--episodes" aria-label={episodeCount(episodes.count)}>
+              {episodeCount(episodes.count)}
+            </li>
+          )}
+        </ul>
+        <p class="detail__links">
+          <a class="btn btn--primary" href={external} target="_blank" rel="noopener noreferrer">
+            {t(locale, "detailListenExternal")}
+            <span class="sr-only"> {t(locale, "newTab")}</span>
+          </a>
+          <a class="btn btn--ghost" href={entry.rssUrl} target="_blank" rel="noopener noreferrer">
+            {t(locale, "detailRss")}
+            <span class="sr-only"> {t(locale, "newTab")}</span>
+          </a>
+          <button
+            type="button"
+            class="btn btn--ghost"
+            data-copy-rss
+            data-rss-url={entry.rssUrl}
+            aria-label={t(locale, "detailCopyRssAria")}
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+              <path
+                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            {t(locale, "detailCopyRss")}
+          </button>
+          <FavoriteButton slug={entry.slug} locale={locale} variant="icon-text" />
+        </p>
+      </div>
+    </header>
+
+    <section class="detail__section" aria-labelledby="description">
+      <h2 id="description">{t(locale, "detailDescription")}</h2>
+      <p class="detail__description">{entry.description}</p>
+    </section>
+
+    <section class="detail__section" aria-labelledby="episodes">
+      <h2 id="episodes">
+        {t(locale, "detailEpisodes")}
+        {episodes && episodes.episodes.length > 0 && (
+          <span class="detail__count">({episodes.episodes.length})</span>
+        )}
+      </h2>
+      <EpisodeList entry={entry} episodes={episodes} locale={locale} />
+    </section>
+  </article>
+</BaseLayout>

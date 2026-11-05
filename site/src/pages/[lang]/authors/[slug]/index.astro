@@ -1,0 +1,21 @@
+---
+import AuthorPage from "../../../../components/pages/AuthorPage.astro";
+import { entriesOfAuthor, getAuthors } from "../../../../lib/catalog";
+
+export function getStaticPaths() {
+  return getAuthors()
+    .filter((author) => entriesOfAuthor(author.slug).length > 0)
+    .map((author) => ({
+      params: { lang: "en", slug: author.slug },
+      props: { author },
+    }));
+}
+
+interface Props {
+  author: { name: string; slug: string; count: number };
+}
+
+const { author } = Astro.props;
+---
+
+<AuthorPage locale="en" author={author} />

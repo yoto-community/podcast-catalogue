@@ -1,81 +1,115 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { getGroups, groupAgeRange, groupLabel } from "../lib/catalog";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  categoryLabel,
+  getCategories,
+  getGroups,
+  getLanguages,
+  groupAgeRange,
+  groupLabel,
+  groupSlug,
+  languageLabelFor,
+} from "../../lib/catalog";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, searchPath } from "../../lib/routes";
 
-const description =
-  "Recherche full-text dans tous les épisodes du catalogue — résultats instantanés, lecture directe.";
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const path = searchPath(locale);
+const description = t(locale, "searchDescription");
 
 /**
  * Tranches du catalogue : valeurs (`id`), segment d'URL (`slug`), anciens ids
- * (`aliases`) et libellés lus dans `dist/index.json`. Rien n'est écrit en dur —
- * ajouter une tranche ou une langue ne demande aucune modification ici.
+ * (`aliases`) et libellés localisés. Rien n'est écrit en dur — ajouter une
+ * tranche ou une langue ne demande aucune modification ici.
  */
 const groups = getGroups().map((group) => ({
   id: group.id,
-  slug: group.slug,
+  slug: groupSlug(group, locale),
   aliases: group.aliases,
-  label: groupLabel(group, "fr"),
-  ageRange: groupAgeRange(group, "fr"),
+  label: groupLabel(group, locale),
+  ageRange: groupAgeRange(group, locale),
+}));
+const categories = getCategories().map((category) => ({
+  id: category.id,
+  label: categoryLabel(category.id, locale),
+}));
+const languages = getLanguages().map((language) => ({
+  id: language.code,
+  label: languageLabelFor(language.code, locale),
 }));
 ---
 
-<BaseLayout title="Recherche dans les épisodes" description={description} path="/search/" lang="fr">
+<BaseLayout
+  title={t(locale, "searchTitle")}
+  description={description}
+  path={path}
+  locale={locale}
+  alternates={alternates(searchPath)}
+>
   <section class="search-page" aria-labelledby="search-title">
     <header class="search-page__header">
-      <h1 id="search-title">Rechercher dans les épisodes</h1>
+      <h1 id="search-title">{t(locale, "searchHeading")}</h1>
       <p class="search-page__intro">
-        Tapez un mot-clé (ex. <kbd>dinosaures</kbd>, <kbd>histoire du soir</kbd>, <kbd>espace</kbd>
-        …) — la recherche porte sur les titres et descriptions de{" "}
-        <strong id="search-stats-total">…</strong> épisodes.
+        {t(locale, "searchIntroBefore")} <kbd>{t(locale, "searchExample1")}</kbd>,{" "}
+        <kbd>{t(locale, "searchExample2")}</kbd>, <kbd>{t(locale, "searchExample3")}</kbd>{" "}
+        {t(locale, "searchIntroMiddle")} <strong id="search-stats-total">…</strong>{" "}
+        {t(locale, "searchIntroAfter")}
       </p>
     </header>
 
-    <form class="search-page__form" role="search" aria-label="Recherche d'épisodes">
+    <form class="search-page__form" role="search" aria-label={t(locale, "searchFormLabel")}>
       <div class="search-page__input-wrapper">
         <label for="search-query" class="sr-only">
-          Rechercher un épisode
+          {t(locale, "searchQueryLabel")}
         </label>
         <input
           id="search-query"
           type="search"
           name="q"
-          placeholder="Titre, description, podcast… (ex. « dinosaures »)"
+          placeholder={t(locale, "searchPlaceholder")}
           autocomplete="off"
           aria-describedby="search-hint"
           autofocus
         />
         <kbd class="search-page__shortcut" aria-hidden="true">
-          /
+          {" "}
+          /{" "}
         </kbd>
       </div>
       <p class="search-page__hint" id="search-hint">
-        Raccourci : touche <kbd>/</kbd> pour focus · <kbd>Échap</kbd> pour effacer · Résultats mis à
-        jour en temps réel
+        {t(locale, "searchHintBefore")} <kbd>/</kbd>
+        {t(locale, "searchHintMiddle")} <kbd>{t(locale, "searchHintEscape")}</kbd>
+        {t(locale, "searchHintAfter")}
       </p>
     </form>
 
-    <div class="search-page__filters" role="group" aria-label="Filtres">
+    <div class="search-page__filters" role="group" aria-label={t(locale, "searchFilters")}>
       <label for="search-filter-language" class="sr-only">
-        Langue
+        {t(locale, "catalogLanguage")}
       </label>
-      <select id="search-filter-language" aria-label="Filtrer par langue">
-        <option value="">Toutes les langues</option>
-        <option value="fr">Français</option>
-        <option value="en">English</option>
+      <select id="search-filter-language" aria-label={t(locale, "searchFilterLanguage")}>
+        <option value="">{t(locale, "catalogAllLanguages")}</option>
+        {languages.map((language) => (
+          <option value={language.id}>{language.label}</option>
+        ))}
       </select>
 
       <label for="search-filter-category" class="sr-only">
-        Catégorie
+        {t(locale, "catalogCategory")}
       </label>
-      <select id="search-filter-category" aria-label="Filtrer par catégorie">
-        <option value="">Toutes les catégories</option>
+      <select id="search-filter-category" aria-label={t(locale, "searchFilterCategory")}>
+        <option value="">{t(locale, "catalogAllCategories")}</option>
       </select>
 
       <label for="search-filter-age" class="sr-only">
-        Tranche d'âge
+        {t(locale, "searchAge")}
       </label>
-      <select id="search-filter-age" aria-label="Filtrer par tranche d'âge">
-        <option value="">Tous les âges</option>
+      <select id="search-filter-age" aria-label={t(locale, "searchFilterAge")}>
+        <option value="">{t(locale, "searchAllAges")}</option>
         {groups.map((group) => (
           <option value={group.id}>
             {group.label} ({group.ageRange})
@@ -84,7 +118,7 @@ const groups = getGroups().map((group) => ({
       </select>
 
       <button type="button" id="search-filter-reset" class="btn btn--ghost btn--sm" hidden>
-        Réinitialiser les filtres
+        {t(locale, "catalogReset")}
       </button>
     </div>
 
@@ -96,51 +130,53 @@ const groups = getGroups().map((group) => ({
       aria-busy="false"
     >
       <p class="search-page__empty" hidden>
-        Aucun épisode ne correspond à votre recherche.
+        {t(locale, "searchEmpty")}
       </p>
       <p class="search-page__loading" hidden>
-        Chargement de l'index…
+        {t(locale, "searchLoading")}
       </p>
     </div>
 
-    <template id="search-result-template">
+    <!--
+      Modèle de résultat en `div hidden` plutôt qu'en `<template>` : le parseur
+      HTML d'Astro duplique le lien `data-podcast-link` hors du `<template>` dans
+      cette structure, ce qui laisse des `<a>` vides autour de la section.
+    -->
+    <div id="search-result-template" hidden>
       <article class="search-result">
         <header class="search-result__header">
           <h2 class="search-result__title"></h2>
           <div class="search-result__meta">
             <span class="search-result__podcast"></span>
-            <span class="search-result__badges" aria-label="Caractéristiques"></span>
+            <span class="search-result__badges" aria-label={t(locale, "searchFeatures")}></span>
           </div>
         </header>
         <p class="search-result__description"></p>
         <footer class="search-result__footer">
           <time class="search-result__date" datetime=""></time>
-          <span class="search-result__duration" aria-label="Durée"></span>
+          <span
+            class="search-result__duration"
+            aria-label={t(locale, "durationAria", { duration: "" })}
+          ></span>
           <div class="search-result__actions">
             <button
               type="button"
               class="btn btn--primary btn--sm"
               data-play
-              aria-label="Écouter cet épisode"
+              aria-label={t(locale, "searchListenAria")}
             >
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
               </svg>
-              Écouter
+              {t(locale, "episodeListen")}
             </button>
-            <a
-              class="btn btn--ghost btn--sm"
-              href=""
-              target="_blank"
-              rel="noopener noreferrer"
-              data-podcast-link
-            >
-              Voir le podcast
+            <a class="btn btn--ghost btn--sm" href="" data-podcast-link>
+              {t(locale, "searchViewPodcast")}
             </a>
           </div>
         </footer>
       </article>
-    </template>
+    </div>
   </section>
 
   <style is:global>
@@ -314,14 +350,21 @@ const groups = getGroups().map((group) => ({
 
   <!-- Tranches du catalogue (id, slug d'URL, anciens ids, libellés) : source unique côté client -->
   <script type="application/json" id="search-groups" set:html={JSON.stringify(groups)} />
+  <script type="application/json" id="search-categories" set:html={JSON.stringify(categories)} />
+  <script type="application/json" id="search-languages" set:html={JSON.stringify(languages)} />
   <!-- Script traité par Astro (TS compilé) — un `is:inline` laisserait tel quel le TypeScript, invalide en JS -->
   <script>
-    import { pageUrl } from "../lib/url";
+    import { isLocale, t } from "../../lib/i18n";
+    import { pageUrl } from "../../lib/url";
+
+    const rawLocale = document.documentElement.dataset.locale;
+    const pageLocale = isLocale(rawLocale) ? rawLocale : "fr";
 
     // Configuration
     // `pageUrl` préfixe le `base` Astro : GitHub Pages publie sous `/nom-du-dépôt/`.
     const INDEX_URL = pageUrl("/search-index.json");
     const DEBOUNCE_MS = 80;
+    const LOCALE_TAG = pageLocale === "fr" ? "fr-FR" : "en-GB";
 
     // État
     let searchIndex: SearchIndexEntry[] = [];
@@ -337,11 +380,17 @@ const groups = getGroups().map((group) => ({
     const categoryFilter = document.getElementById("search-filter-category") as HTMLSelectElement;
     const ageFilter = document.getElementById("search-filter-age") as HTMLSelectElement;
     const resetButton = document.getElementById("search-filter-reset") as HTMLButtonElement;
-    const template = document.getElementById("search-result-template") as HTMLTemplateElement;
+    const template = document.getElementById("search-result-template") as HTMLElement;
     /** Tranches du catalogue, injectées au build depuis `dist/index.json`. */
     const groupsData = JSON.parse(
       document.getElementById("search-groups")?.textContent ?? "[]",
     ) as SearchGroup[];
+    const categoriesData = JSON.parse(
+      document.getElementById("search-categories")?.textContent ?? "[]",
+    ) as SearchLabel[];
+    const languagesData = JSON.parse(
+      document.getElementById("search-languages")?.textContent ?? "[]",
+    ) as SearchLabel[];
 
     /** Une tranche par son id, son slug d'URL ou un ancien id (`?age=` partagé). */
     function findGroup(value: string): SearchGroup | undefined {
@@ -351,6 +400,10 @@ const groups = getGroups().map((group) => ({
       );
     }
 
+    function labelOf(list: SearchLabel[], id: string): string {
+      return list.find((item) => item.id === id)?.label ?? id;
+    }
+
     // Types
     interface SearchGroup {
       id: string;
@@ -358,6 +411,11 @@ const groups = getGroups().map((group) => ({
       aliases: string[];
       label: string;
       ageRange: string;
+    }
+
+    interface SearchLabel {
+      id: string;
+      label: string;
     }
 
     interface SearchIndexEntry {
@@ -400,7 +458,7 @@ const groups = getGroups().map((group) => ({
         .trim()
         .toLowerCase()
         .split(/\s+/)
-        .filter((t) => t.length >= 2);
+        .filter((term) => term.length >= 2);
       let result = escaped;
       for (const term of terms) {
         const regex = new RegExp(`(${escapeRegExp(term)})`, "gi");
@@ -413,37 +471,36 @@ const groups = getGroups().map((group) => ({
       return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     }
 
-    function formatDateFr(dateStr: string): string {
-      if (!dateStr) return "";
+    function formatDate(value: string): string {
+      if (!value) return "";
       try {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+        return new Date(value).toLocaleDateString(LOCALE_TAG, {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
       } catch {
-        return dateStr.slice(0, 10);
+        return value.slice(0, 10);
       }
     }
 
     function formatDuration(seconds?: number): string {
       if (!seconds || !Number.isFinite(seconds)) return "";
-      const m = Math.floor(seconds / 60);
-      const s = seconds % 60;
-      return `${m}:${String(s).padStart(2, "0")}`;
+      const minutes = Math.floor(seconds / 60);
+      const rest = seconds % 60;
+      return `${minutes}:${String(rest).padStart(2, "0")}`;
     }
 
     function getAgeLabel(groupId: string): string {
       return findGroup(groupId)?.ageRange ?? groupId;
     }
 
-    function getCategoryLabel(category: string, language: string): string {
-      const labels: Record<string, Record<string, string>> = {
-        histoire: { fr: "Histoire", en: "History" },
-        education: { fr: "Éducation", en: "Education" },
-        fiction: { fr: "Fiction", en: "Fiction" },
-        documentaire: { fr: "Documentaire", en: "Documentary" },
-        musique: { fr: "Musique", en: "Music" },
-        science: { fr: "Science", en: "Science" },
-      };
-      return labels[category]?.[language] ?? category;
+    function getCategoryLabel(category: string): string {
+      return labelOf(categoriesData, category);
+    }
+
+    function getLanguageLabel(language: string): string {
+      return labelOf(languagesData, language);
     }
 
     // Chargement de l'index
@@ -456,12 +513,15 @@ const groups = getGroups().map((group) => ({
         const data = (await response.json()) as SearchIndexFile;
         searchIndex = data.episodes;
         isIndexLoaded = true;
-        statsTotal.textContent = `${data.count.toLocaleString("fr-FR")}`;
+        statsTotal.textContent = data.count.toLocaleString(LOCALE_TAG);
         buildCategoryFilter();
-        console.log(`🔍 Index de recherche chargé : ${data.count} épisodes`);
-      } catch (err) {
-        console.error("Erreur chargement index :", err);
-        resultsContainer.innerHTML = `<p class="search-page__empty">Impossible de charger l'index de recherche.</p>`;
+        console.log(t(pageLocale, "searchIndexLoaded", { count: data.count }));
+      } catch (error) {
+        console.error(t(pageLocale, "searchIndexError"), error);
+        resultsContainer.innerHTML = `<p class="search-page__empty">${t(
+          pageLocale,
+          "searchError",
+        )}</p>`;
       } finally {
         loadingMessage.hidden = true;
         resultsContainer.setAttribute("aria-busy", "false");
@@ -469,14 +529,14 @@ const groups = getGroups().map((group) => ({
     }
 
     function buildCategoryFilter(): void {
-      const categories = new Set(searchIndex.map((e) => e.category));
+      const categories = new Set(searchIndex.map((entry) => entry.category));
       const currentValue = categoryFilter.value;
-      categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
-      for (const cat of [...categories].sort()) {
-        const opt = document.createElement("option");
-        opt.value = cat;
-        opt.textContent = getCategoryLabel(cat, "fr"); // UI en français
-        categoryFilter.appendChild(opt);
+      categoryFilter.innerHTML = `<option value="">${t(pageLocale, "catalogAllCategories")}</option>`;
+      for (const category of [...categories].sort()) {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = getCategoryLabel(category);
+        categoryFilter.appendChild(option);
       }
       categoryFilter.value = currentValue;
     }
@@ -486,26 +546,27 @@ const groups = getGroups().map((group) => ({
       if (!isIndexLoaded) return;
 
       const query = queryInput.value.trim().toLowerCase();
-      const lang = languageFilter.value;
-      const cat = categoryFilter.value;
+      const language = languageFilter.value;
+      const category = categoryFilter.value;
       const age = ageFilter.value;
 
-      const hasFilters = query || lang || cat || age;
+      const hasFilters = query || language || category || age;
       resetButton.hidden = !hasFilters;
 
       let results = searchIndex;
 
       if (query) {
-        const terms = query.split(/\s+/).filter((t) => t.length >= 2);
-        results = results.filter((ep) => {
-          const searchText = `${ep.title} ${ep.description} ${ep.podcastName}`.toLowerCase();
+        const terms = query.split(/\s+/).filter((term) => term.length >= 2);
+        results = results.filter((episode) => {
+          const searchText =
+            `${episode.title} ${episode.description} ${episode.podcastName}`.toLowerCase();
           return terms.every((term) => searchText.includes(term));
         });
       }
 
-      if (lang) results = results.filter((ep) => ep.language === lang);
-      if (cat) results = results.filter((ep) => ep.category === cat);
-      if (age) results = results.filter((ep) => ep.groupId === age);
+      if (language) results = results.filter((episode) => episode.language === language);
+      if (category) results = results.filter((episode) => episode.category === category);
+      if (age) results = results.filter((episode) => episode.groupId === age);
 
       renderResults(results, query);
     };
@@ -520,50 +581,51 @@ const groups = getGroups().map((group) => ({
       }
 
       const fragment = document.createDocumentFragment();
-      for (const ep of results) {
-        const clone = template.content.cloneNode(true) as DocumentFragment;
+      for (const episode of results) {
+        const clone = template.firstElementChild?.cloneNode(true) as HTMLElement | null;
+        if (!clone) continue;
 
-        // Titre
-        const titleEl = clone.querySelector(".search-result__title") as HTMLElement;
-        titleEl.innerHTML = highlight(ep.title, query);
+        const titleElement = clone.querySelector(".search-result__title") as HTMLElement;
+        titleElement.innerHTML = highlight(episode.title, query);
 
-        // Podcast + badges
-        const podcastEl = clone.querySelector(".search-result__podcast") as HTMLElement;
-        podcastEl.textContent = ep.podcastName;
+        const podcastElement = clone.querySelector(".search-result__podcast") as HTMLElement;
+        podcastElement.textContent = episode.podcastName;
 
-        const badgesEl = clone.querySelector(".search-result__badges") as HTMLElement;
-        badgesEl.innerHTML = `
-          <span class="badge">${ep.language === "fr" ? "Français" : "English"}</span>
-          <span class="badge">${getAgeLabel(ep.groupId)}</span>
-          <span class="badge badge--category">${getCategoryLabel(ep.category, ep.language)}</span>
+        const badgesElement = clone.querySelector(".search-result__badges") as HTMLElement;
+        badgesElement.innerHTML = `
+          <span class="badge">${getLanguageLabel(episode.language)}</span>
+          <span class="badge">${getAgeLabel(episode.groupId)}</span>
+          <span class="badge badge--category">${getCategoryLabel(episode.category)}</span>
         `;
 
-        // Description
-        const descEl = clone.querySelector(".search-result__description") as HTMLElement;
-        descEl.innerHTML = highlight(ep.description, query);
+        const descriptionElement = clone.querySelector(
+          ".search-result__description",
+        ) as HTMLElement;
+        descriptionElement.innerHTML = highlight(episode.description, query);
 
-        // Date + durée
-        const dateEl = clone.querySelector(".search-result__date") as HTMLTimeElement;
-        dateEl.textContent = formatDateFr(ep.pubDate);
-        dateEl.dateTime = ep.pubDate;
+        const dateElement = clone.querySelector(".search-result__date") as HTMLTimeElement;
+        dateElement.textContent = formatDate(episode.pubDate);
+        dateElement.dateTime = episode.pubDate;
 
-        const durEl = clone.querySelector(".search-result__duration") as HTMLElement;
-        durEl.textContent = formatDuration(ep.durationSec);
-        if (ep.durationSec)
-          durEl.setAttribute("aria-label", `Durée : ${formatDuration(ep.durationSec)}`);
+        const durationElement = clone.querySelector(".search-result__duration") as HTMLElement;
+        durationElement.textContent = formatDuration(episode.durationSec);
+        if (episode.durationSec) {
+          durationElement.setAttribute(
+            "aria-label",
+            t(pageLocale, "durationAria", { duration: formatDuration(episode.durationSec) }),
+          );
+        }
 
-        // Actions
-        const playBtn = clone.querySelector("[data-play]") as HTMLButtonElement;
-        playBtn.dataset.audio = ep.audioUrl ?? "";
-        playBtn.dataset.title = ep.title;
-        playBtn.dataset.artist = ep.podcastName;
-        playBtn.dataset.album = ep.podcastName;
-        playBtn.dataset.episode = ep.id;
+        const playButton = clone.querySelector("[data-play]") as HTMLButtonElement;
+        playButton.dataset.audio = episode.audioUrl ?? "";
+        playButton.dataset.title = episode.title;
+        playButton.dataset.artist = episode.podcastName;
+        playButton.dataset.album = episode.podcastName;
+        playButton.dataset.episode = episode.id;
 
         const podcastLink = clone.querySelector("[data-podcast-link]") as HTMLAnchorElement;
-        // Segment d'URL de la tranche : slug localisé de l'index, sinon celui du catalogue.
-        const segment = ep.groupSlug || findGroup(ep.groupId)?.slug || ep.groupId;
-        podcastLink.href = `/${ep.language}/${segment}/${ep.podcastSlug}/`;
+        const segment = findGroup(episode.groupId)?.slug ?? episode.groupSlug ?? episode.groupId;
+        podcastLink.href = pageUrl(`/${pageLocale}/${segment}/${episode.podcastSlug}/`);
 
         fragment.appendChild(clone);
       }
@@ -577,8 +639,8 @@ const groups = getGroups().map((group) => ({
       debounceTimer = setTimeout(performSearch, DEBOUNCE_MS);
     });
 
-    [languageFilter, categoryFilter, ageFilter].forEach((el) =>
-      el.addEventListener("change", performSearch),
+    [languageFilter, categoryFilter, ageFilter].forEach((element) =>
+      element.addEventListener("change", performSearch),
     );
 
     resetButton.addEventListener("click", () => {
@@ -591,19 +653,19 @@ const groups = getGroups().map((group) => ({
     });
 
     // Raccourcis clavier
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        const target = e.target as HTMLElement;
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        const target = event.target as HTMLElement;
         if (
           !["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) &&
           !target.isContentEditable
         ) {
-          e.preventDefault();
+          event.preventDefault();
           queryInput.focus();
           queryInput.select();
         }
       }
-      if (e.key === "Escape") {
+      if (event.key === "Escape") {
         queryInput.value = "";
         queryInput.blur();
         performSearch();
@@ -613,8 +675,8 @@ const groups = getGroups().map((group) => ({
     // Sync URL query param
     function syncUrl(): void {
       const params = new URLSearchParams(window.location.search);
-      const q = queryInput.value.trim();
-      if (q) params.set("q", q);
+      const query = queryInput.value.trim();
+      if (query) params.set("q", query);
       else params.delete("q");
       if (languageFilter.value) params.set("lang", languageFilter.value);
       else params.delete("lang");
@@ -622,8 +684,10 @@ const groups = getGroups().map((group) => ({
       else params.delete("cat");
       if (ageFilter.value) params.set("age", ageFilter.value);
       else params.delete("age");
-      const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
-      history.replaceState(null, "", newUrl);
+      const nextUrl = `${window.location.pathname}${
+        params.toString() ? "?" + params.toString() : ""
+      }`;
+      history.replaceState(null, "", nextUrl);
     }
 
     // Restore from URL on load

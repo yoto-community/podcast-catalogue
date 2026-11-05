@@ -1,0 +1,9 @@
+---
+import FavoritesPage from "../../components/pages/FavoritesPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "fr" } }];
+}
+---
+
+<FavoritesPage locale="fr" />

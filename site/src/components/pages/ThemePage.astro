@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../CatalogBrowser.astro";
+import {
+  authorOptions,
+  categoryOptions,
+  entriesOfTag,
+  getTags,
+  groupOptions,
+  languageOptions,
+  tagLabel,
+} from "../../lib/catalog";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, entryPath, themesPath, themePath } from "../../lib/routes";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
+import type { TagDef } from "../../lib/types";
+
+interface Props {
+  locale: Locale;
+  tag: TagDef;
+}
+
+const { locale, tag } = Astro.props;
+const entries = entriesOfTag(tag.id);
+const label = tagLabel(tag.id, locale);
+const path = themePath(locale, tag.id);
+
+const jsonLd = itemListJsonLd(
+  t(locale, "themeJsonLdName", { label }),
+  entries.map((entry) => ({
+    name: entry.name,
+    path: entryPath(entry, locale),
+  })),
+  Astro.site,
+);
+
+const title = `${label} — ${t(locale, "siteName")}`;
+const description = t(locale, "themeDescription", { count: entries.length, label });
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates((code) => themePath(code, tag.id))}
+>
+  <nav class="breadcrumb" aria-label={t(locale, "breadcrumb")}>
+    <ol>
+      <li>
+        <a href={pageUrl(`/${locale}/`)}>{t(locale, "navCatalogue")}</a>
+      </li>
+      <li>
+        <a href={pageUrl(themesPath(locale))}>{t(locale, "themesTitle")}</a>
+      </li>
+      <li>
+        <span aria-current="page">{label}</span>
+      </li>
+    </ol>
+  </nav>
+  <CatalogBrowser
+    title={label}
+    intro={t(locale, "themeTagged", { count: entries.length, label })}
+    entries={entries}
+    locale={locale}
+    languages={languageOptions(entries, locale)}
+    groups={groupOptions(entries, locale)}
+    categories={categoryOptions(entries, locale)}
+    authors={authorOptions(entries, locale)}
+    preset={{}}
+    nav={{
+      label: t(locale, "themeAllThemes"),
+      items: [
+        {
+          href: pageUrl(themesPath(locale)),
+          label: t(locale, "themeAllThemes"),
+          count: getTags().length,
+          active: false,
+        },
+      ],
+    }}
+  />
+</BaseLayout>

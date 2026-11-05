@@ -1,0 +1,9 @@
+---
+import SearchPage from "../../components/pages/SearchPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "fr" } }];
+}
+---
+
+<SearchPage locale="fr" />

@@ -1,43 +1,68 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getEntries, getAuthors } from "../../lib/catalog";
+import { getAuthors, getEntries } from "../../lib/catalog";
+import { plural, t, type Locale } from "../../lib/i18n";
+import { alternates, authorPath, authorsPath } from "../../lib/routes";
 import { pageUrl } from "../../lib/url";
-import { plural } from "../../lib/format";
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const entries = getEntries();
-const authors = getAuthors();
+const authors = getAuthors(locale);
+const podcastCount = plural(
+  locale,
+  entries.length,
+  t(locale, "podcastSingular"),
+  t(locale, "podcastPlural"),
+);
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Auteurs",
-  description: "Tous les auteurs / animateurs du catalogue de podcasts pour enfants",
+  name: t(locale, "authorsJsonLdName"),
+  description: t(locale, "authorsJsonLdDescription"),
 };
 
-const title = "Auteurs — Catalogue de podcasts";
-const description = `${authors.length} auteurs / animateurs — ${plural(entries.length, "podcast")} classés par créateur.`;
-const path = "/auteurs/";
+const title = `${t(locale, "authorsJsonLdName")} — ${t(locale, "siteName")}`;
+const description = t(locale, "authorsDescription", {
+  count: authors.length,
+  podcasts: podcastCount,
+});
+const path = authorsPath(locale);
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} lang="fr">
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates(authorsPath)}
+>
   <section class="catalog" data-catalog aria-labelledby="titre-page">
     <header class="catalog__header">
-      <h1 id="titre-page">Auteurs / animateurs</h1>
-      <p class="catalog__intro">
-        Découvrez les podcasts par auteur, animateur ou créateur principal.
-      </p>
+      <h1 id="titre-page">{t(locale, "authorsHeading")}</h1>
+      <p class="catalog__intro">{t(locale, "authorsIntro")}</p>
       <p class="catalog__count" role="status">
-        {authors.length} auteurs · {plural(entries.length, "podcast")}
+        {t(locale, "authorsCount", { count: authors.length, podcasts: podcastCount })}
       </p>
     </header>
 
     <ul class="grid authors-grid">
       {authors.map((author) => (
         <li class="author-card">
-          <a class="author-card__link" href={pageUrl(`/auteurs/${author.slug}/`)}>
+          <a class="author-card__link" href={pageUrl(authorPath(locale, author.slug))}>
             <span class="author-card__name">{author.name}</span>
             <span class="author-card__count">
-              {author.count} podcast{author.count > 1 ? "s" : ""}
+              {plural(
+                locale,
+                author.count,
+                t(locale, "podcastSingular"),
+                t(locale, "podcastPlural"),
+              )}
             </span>
           </a>
         </li>

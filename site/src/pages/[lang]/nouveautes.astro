@@ -1,0 +1,9 @@
+---
+import NewReleasesPage from "../../components/pages/NewReleasesPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "fr" } }];
+}
+---
+
+<NewReleasesPage locale="fr" />

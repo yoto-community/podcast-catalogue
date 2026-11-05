@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../CatalogBrowser.astro";
+import {
+  authorOptions,
+  categoryOptions,
+  getEntries,
+  getGroups,
+  groupAgeRange,
+  groupLabel,
+  groupOptions,
+  languageOptions,
+} from "../../lib/catalog";
+import { agesOfGroup, formatAges } from "../../lib/ages";
+import { t, type Locale } from "../../lib/i18n";
+import { alternates, entryPath, groupPath, homePath } from "../../lib/routes";
+import { itemListJsonLd } from "../../lib/seo";
+import { pageUrl } from "../../lib/url";
+import type { ManifestGroup } from "../../lib/types";
+
+interface Props {
+  locale: Locale;
+  group: ManifestGroup;
+}
+
+const { locale, group } = Astro.props;
+const entries = getEntries().filter((entry) => entry.groupId === group.id);
+const groups = getGroups();
+const label = groupLabel(group, locale);
+const ageRange = groupAgeRange(group, locale);
+const path = groupPath(locale, group);
+
+/** Âges exacts couverts par la tranche, pour dire clairement de qui il s'agit. */
+const ages = agesOfGroup(group, groups);
+const agesPart =
+  group.ageMax === null ? "" : t(locale, "groupAgesPart", { ages: formatAges(ages, locale) });
+
+/**
+ * Borne partagée avec une autre tranche (5 et 7 ans existent dans deux tranches) :
+ * on le dit explicitement plutôt que de laisser le parent deviner.
+ */
+const shared = groups.flatMap((other) => {
+  if (other.id === group.id) return [];
+  const found: Array<{ age: number; other: ManifestGroup }> = [];
+  if (group.ageMax !== null && group.ageMax === other.ageMin) {
+    found.push({ age: group.ageMax, other });
+  }
+  if (other.ageMax !== null && other.ageMax === group.ageMin) {
+    found.push({ age: group.ageMin, other });
+  }
+  return found;
+});
+const sharedSentence = shared
+  .map(({ age, other }) => t(locale, "groupShared", { age, other: groupLabel(other, locale) }))
+  .join("");
+
+const jsonLd = itemListJsonLd(
+  t(locale, "groupJsonLdName", { label }),
+  entries.map((entry) => ({ name: entry.name, path: entryPath(entry, locale) })),
+  Astro.site,
+);
+
+const title = t(locale, "groupTitle", { label, ageRange });
+const description = t(locale, "groupDescription", {
+  count: entries.length,
+  label,
+  ageRange,
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  jsonLd={jsonLd}
+  locale={locale}
+  alternates={alternates((code) => groupPath(code, group))}
+>
+  <CatalogBrowser
+    title={label}
+    intro={t(locale, "groupIntro", {
+      count: entries.length,
+      label,
+      ageRange,
+      agesPart,
+      shared: sharedSentence,
+    })}
+    entries={entries}
+    locale={locale}
+    languages={languageOptions(entries, locale)}
+    groups={[]}
+    categories={categoryOptions(entries, locale)}
+    authors={authorOptions(entries, locale)}
+    preset={{ group: group.id }}
+    nav={{
+      label: t(locale, "groupAllGroups"),
+      items: [
+        {
+          href: pageUrl(homePath(locale)),
+          label: t(locale, "groupAllGroups"),
+          count: getEntries().length,
+          active: false,
+        },
+        ...groupOptions(getEntries(), locale).map((option) => {
+          const candidate = groups.find((item) => item.id === option.value);
+          return {
+            href: pageUrl(candidate ? groupPath(locale, candidate) : homePath(locale)),
+            label: candidate
+              ? `${groupLabel(candidate, locale)} · ${groupAgeRange(candidate, locale)}`
+              : option.label,
+            count: option.count,
+            active: option.value === group.id,
+          };
+        }),
+      ],
+    }}
+  />
+</BaseLayout>

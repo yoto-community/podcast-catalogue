@@ -1,0 +1,9 @@
+---
+import PublishersIndexPage from "../../../components/pages/PublishersIndexPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "fr" } }];
+}
+---
+
+<PublishersIndexPage locale="fr" />

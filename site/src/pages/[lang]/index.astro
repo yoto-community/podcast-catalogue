@@ -1,81 +1,19 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import CatalogBrowser from "../../components/CatalogBrowser.astro";
-import {
-  authorOptions,
-  categoryOptions,
-  entriesOfLanguage,
-  entryPath,
-  getGroups,
-  getLanguages,
-  groupAgeRange,
-  groupLabel,
-  groupOptions,
-  groupPath,
-  languageFrenchName,
-  languageOptions,
-} from "../../lib/catalog";
-import { plural } from "../../lib/format";
-import { itemListJsonLd } from "../../lib/seo";
-import { pageUrl } from "../../lib/url";
-import type { ManifestLanguage, StaticPath } from "../../lib/types";
+import HomePage from "../../components/pages/HomePage.astro";
+import { LOCALES, type Locale } from "../../lib/i18n";
 
-export function getStaticPaths(): Array<StaticPath<LanguageProps>> {
-  return getLanguages().map((language) => ({
-    params: { lang: language.code },
-    props: { language },
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { lang: locale },
+    props: { locale },
   }));
 }
 
-interface LanguageProps {
-  language: ManifestLanguage;
+interface Props {
+  locale: Locale;
 }
 
-interface Props extends LanguageProps {}
-
-const { language } = Astro.props;
-const entries = entriesOfLanguage(language.code);
-const frenchName = languageFrenchName(language.code);
-
-const groupNav = getGroups()
-  .map((group) => ({
-    href: pageUrl(groupPath(language.code, group)),
-    label: `${groupLabel(group, language.code)} · ${groupAgeRange(group, language.code)}`,
-    count: entries.filter((entry) => entry.groupId === group.id).length,
-    active: false,
-  }))
-  .filter((item) => item.count > 0);
-
-const jsonLd = itemListJsonLd(
-  `Podcasts en ${frenchName}`,
-  entries.map((entry) => ({
-    name: entry.name,
-    path: entryPath(entry),
-  })),
-  Astro.site,
-);
-
-const title = `Podcasts en ${frenchName} — Annuaire de podcasts`;
-const description = `${plural(entries.length, "podcast")} en ${frenchName}, toutes tranches d'âge : écoute directe, description et lien vers le site de l'éditeur.`;
-const path = `/${language.code}/`;
+const { locale } = Astro.props;
 ---
 
-<BaseLayout
-  title={title}
-  description={description}
-  path={path}
-  jsonLd={jsonLd}
-  lang={language.code}
->
-  <CatalogBrowser
-    title={`Podcasts en ${frenchName}`}
-    intro={`Feuilleter tous les podcasts en ${frenchName}. Utilisez la recherche et les filtres pour affiner la liste.`}
-    entries={entries}
-    languages={languageOptions(entries)}
-    groups={groupOptions(entries, language.code)}
-    categories={categoryOptions(entries, language.code)}
-    authors={authorOptions(entries)}
-    preset={{ language: language.code }}
-    nav={{ label: "Tranches d'âge", items: groupNav }}
-  />
-</BaseLayout>
+<HomePage locale={locale} />

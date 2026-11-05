@@ -7,6 +7,7 @@
  * qui couvrent les âges cochés, jamais l'intersection. Aucun podcast de frontière
  * n'est ainsi caché à tort.
  */
+import { t, type Locale } from "./i18n";
 import type { ManifestGroup } from "./types";
 
 /** Case à cocher du filtre (sans compteur, qui dépend du contexte de la page). */
@@ -38,7 +39,7 @@ function openFrom(groups: ManifestGroup[]): number | undefined {
  * pas de pastilles au-delà. Un groupe sans borne haute est donc couvert par sa
  * seule pastille ouverte.
  */
-export function ageChoices(groups: ManifestGroup[]): AgeChoice[] {
+export function ageChoices(groups: ManifestGroup[], locale: Locale = "fr"): AgeChoice[] {
   const from = minAge(groups);
   const open = openFrom(groups);
   if (from === undefined) return [];
@@ -48,8 +49,8 @@ export function ageChoices(groups: ManifestGroup[]): AgeChoice[] {
     const isOpen = open !== undefined && age >= open;
     choices.push({
       age,
-      shortLabel: isOpen ? `${age}+` : String(age),
-      longLabel: isOpen ? `${age} ans et plus` : `${age} ans`,
+      shortLabel: isOpen ? t(locale, "ageShortOpen", { age }) : String(age),
+      longLabel: isOpen ? t(locale, "ageYearsPlus", { age }) : t(locale, "ageYears", { age }),
     });
   }
   return choices;
@@ -104,8 +105,8 @@ export function matchesAnyAge(dataAges: string | undefined, selected: Set<number
 }
 
 /** « 2, 3, 4 et 5 » — libellé lisible des âges couverts, pour les badges et aides. */
-export function formatAges(ages: number[]): string {
+export function formatAges(ages: number[], locale: Locale = "fr"): string {
   if (ages.length === 0) return "";
   if (ages.length === 1) return `${ages[0]}`;
-  return `${ages.slice(0, -1).join(", ")} et ${ages[ages.length - 1]}`;
+  return `${ages.slice(0, -1).join(", ")} ${t(locale, "listAnd")} ${ages[ages.length - 1]}`;
 }

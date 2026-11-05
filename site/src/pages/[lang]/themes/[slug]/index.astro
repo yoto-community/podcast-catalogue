@@ -1,0 +1,29 @@
+---
+import ThemePage from "../../../../components/pages/ThemePage.astro";
+import { entriesOfTag, getTags } from "../../../../lib/catalog";
+import { LOCALES, type Locale } from "../../../../lib/i18n";
+import type { TagDef } from "../../../../lib/types";
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const locale of LOCALES) {
+    for (const tag of getTags()) {
+      if (!entriesOfTag(tag.id).length) continue;
+      paths.push({
+        params: { lang: locale, slug: tag.id },
+        props: { locale, tag },
+      });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  locale: Locale;
+  tag: TagDef;
+}
+
+const { locale, tag } = Astro.props;
+---
+
+<ThemePage locale={locale} tag={tag} />

@@ -30,6 +30,11 @@ const canonical = Astro.site ? new URL(target, Astro.site).href : undefined;
     <meta name="robots" content="noindex" />
     {canonical && <link rel="canonical" href={canonical} />}
     <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <script is:inline define:vars={{ target }}>
+      // GitHub Pages n'a pas de 301 : on reporte aussi la query et l'ancre pour
+      // ne pas perdre un lien de recherche ou de catalogue partagé.
+      window.location.replace(target + window.location.search + window.location.hash);
+    </script>
   </head>
   <body>
     <p>

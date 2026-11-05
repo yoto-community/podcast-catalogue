@@ -1,0 +1,21 @@
+---
+import PublisherPage from "../../../../components/pages/PublisherPage.astro";
+import { entriesOfPublisher, getPublishers } from "../../../../lib/catalog";
+
+export function getStaticPaths() {
+  return getPublishers()
+    .filter((publisher) => entriesOfPublisher(publisher.slug).length > 0)
+    .map((publisher) => ({
+      params: { lang: "fr", slug: publisher.slug },
+      props: { publisher },
+    }));
+}
+
+interface Props {
+  publisher: { name: string; slug: string; count: number };
+}
+
+const { publisher } = Astro.props;
+---
+
+<PublisherPage locale="fr" publisher={publisher} />
