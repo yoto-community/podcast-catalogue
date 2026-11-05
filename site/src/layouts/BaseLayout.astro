@@ -1,4 +1,5 @@
 ---
+import "@fontsource-variable/nunito";
 import "../styles/global.css";
 import { getManifest } from "../lib/catalog";
 import { formatDateLong } from "../lib/format";
@@ -45,13 +46,23 @@ const navItems = [
   { prefix: "/favoris", label: "Favoris", href: pageUrl("/favoris/") },
 ];
 
-/** Liens regroupés dans le menu « Communauté ». */
+/** Liens propres au catalogue de podcasts. */
 const communityItems = [
   { prefix: "/developers", label: "API", href: pageUrl("/developers/") },
   { prefix: "/health", label: "Santé flux", href: pageUrl("/health/") },
-  { prefix: "/contribuer", label: "Contribuer", href: pageUrl("/contribuer/") },
 ];
-const communityCurrent = communityItems.some((item) => isCurrent(item.prefix) === "page");
+
+/** Liens vers les autres sites de la communauté Yoto. */
+const ecosystemItems = [
+  { label: "Awesome Yoto", href: "https://yoto-community.github.io/" },
+  { label: "Catalogue d’icônes", href: "https://yoto-community.github.io/icons-catalogue/" },
+];
+
+/** Contribution et code source, communs à tous les sites. */
+const contributeItem = { prefix: "/contribuer", label: "Contribuer", href: pageUrl("/contribuer/") };
+const communityCurrent = [...communityItems, contributeItem].some(
+  (item) => isCurrent(item.prefix) === "page",
+);
 const repoUrl = "https://github.com/yoto-community/podcast-catalogue";
 const updated = formatDateLong(manifest.updatedAt);
 
@@ -80,8 +91,8 @@ const hreflangLinks = getHreflangLinks();
     <link rel="icon" href={pageUrl("/favicon.svg")} type="image/svg+xml" />
     <link rel="manifest" href={pageUrl("/manifest.webmanifest")} />
     <link rel="apple-touch-icon" href={pageUrl("/icons/apple-icon-180.png")} sizes="180x180" />
-    <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#101012" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f3e9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101512" media="(prefers-color-scheme: dark)" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Podcasts Enfants" />
@@ -111,7 +122,15 @@ const hreflangLinks = getHreflangLinks();
       <div class="site-header__inner">
         <a class="site-logo" href={pageUrl("/")}>
           <span class="site-logo__mark" aria-hidden="true">
-            ◉
+            <svg width="34" height="34" viewBox="0 0 34 34">
+              <rect x="2" y="2" width="30" height="30" rx="10" fill="var(--accent)"></rect>
+              <path
+                d="M10 12v10M14 9v16M18 13v8M22 10v14M26 14v6"
+                stroke="var(--bg)"
+                stroke-width="2.2"
+                stroke-linecap="round"
+              ></path>
+            </svg>
           </span>
           <span>Annuaire de podcasts</span>
         </a>
@@ -157,7 +176,28 @@ const hreflangLinks = getHreflangLinks();
                       </a>
                     </li>
                   ))}
-                  <li class="site-nav__panel-external">
+                  <li class="site-nav__panel-separator" aria-hidden="true"></li>
+                  {ecosystemItems.map((item) => (
+                    <li>
+                      <a href={item.href} target="_blank" rel="noopener noreferrer">
+                        {item.label}
+                        <span class="site-nav__external-mark" aria-hidden="true">
+                          ↗
+                        </span>
+                        <span class="sr-only">(nouvel onglet)</span>
+                      </a>
+                    </li>
+                  ))}
+                  <li class="site-nav__panel-separator" aria-hidden="true"></li>
+                  <li>
+                    <a
+                      href={contributeItem.href}
+                      aria-current={isCurrent(contributeItem.prefix)}
+                    >
+                      {contributeItem.label}
+                    </a>
+                  </li>
+                  <li>
                     <a href={repoUrl} target="_blank" rel="noopener noreferrer">
                       GitHub
                       <span class="site-nav__external-mark" aria-hidden="true">
@@ -180,13 +220,28 @@ const hreflangLinks = getHreflangLinks();
 
     <footer class="site-footer">
       <div class="site-footer__inner">
+        <p class="site-footer__community">
+          {lang === "en" ? (
+            <>
+              Part of the <a href="https://yoto-community.github.io/">Yoto Community</a>
+              {"— "}
+              <a href="https://yoto-community.github.io/myo/">build your first MYO card</a>.
+            </>
+          ) : (
+            <>
+              Fait partie de la <a href="https://yoto-community.github.io/">communauté Yoto</a>
+              {"— "}
+              <a href="https://yoto-community.github.io/myo/">créez votre première carte MYO</a>.
+            </>
+          )}
+        </p>
         <p class="site-footer__freshness" data-catalog-freshness>
           {updated && (
             <>
               Catalogue mis à jour le <time datetime={manifest.updatedAt}>{updated}</time>
             </>
           )}
-          {" — "}
+          {"— "}
           <span class="site-footer__version">
             version <code title="catalogVersion">{manifest.catalogVersion}</code>
           </span>

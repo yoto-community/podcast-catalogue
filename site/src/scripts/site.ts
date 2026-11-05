@@ -641,7 +641,13 @@ function syncNavCurrent(): void {
   const clean = withoutBase(location.pathname).replace(/\/+$/, "") || "/";
   for (const link of qsa<HTMLAnchorElement>(".site-nav a")) {
     if (link.hasAttribute("data-search-link")) continue;
-    const hrefPath = withoutBase(new URL(link.href, location.origin).pathname);
+    // Les liens externes (portail Awesome Yoto, GitHub) ne sont jamais « courants ».
+    const url = new URL(link.href, location.origin);
+    if (url.origin !== location.origin) {
+      link.removeAttribute("aria-current");
+      continue;
+    }
+    const hrefPath = withoutBase(url.pathname);
     const target = hrefPath.replace(/\/+$/, "") || "/";
     const active =
       target === "/" ? clean === "/" : clean === target || clean.startsWith(`${target}/`);

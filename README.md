@@ -239,6 +239,32 @@ pnpm site:build    # 142 pages pré-rendues → site/dist/
 - **Variables** : `BASE_PATH` (préfixe des liens) et `SITE_URL` (URL canoniques) —
   déduites automatiquement dans `pages.yml`, surchargeables par variables de dépôt.
 
+### Personnalisation — design system
+
+La palette, la typographie (Nunito) et les rayons reprennent le design system de
+[yoto-community.github.io](https://yoto-community.github.io) (Awesome Yoto), pour que les
+sites de la communauté forment une seule famille. Les jetons vivent dans
+`site/src/styles/global.css` ; le thème sombre suit `prefers-color-scheme`.
+
+```css
+:root {
+  --bg: #f7f3e9; /* Fond crème */
+  --surface: #fffdf7; /* Cartes, panneaux */
+  --surface-2: #efe9da; /* Badges, champs, survols */
+  --text: #1f2a24; /* Texte principal */
+  --text-muted: #5a665f; /* Texte secondaire */
+  --border: #ded6c4; /* Bordures */
+  --accent: #006d41; /* Vert forêt (CTA, liens) */
+  --accent-strong: #00512f; /* Survol / liens */
+  --accent-soft: #e3f0e7; /* Fonds doux, états actifs */
+  --accent-2: #af294e; /* Framboise (favoris, focus) */
+  --radius: 20px; /* Cartes, panneaux */
+  --radius-sm: 12px; /* Champs, images */
+  --radius-full: 999px; /* Boutons et badges */
+  --font-sans: "Nunito Variable", ui-rounded, system-ui, sans-serif;
+}
+```
+
 ---
 
 ## Workflows

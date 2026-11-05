@@ -1,6 +1,7 @@
 node_modules/
 dist/
 site/dist/
+site/dev-dist/
 site/public/search-index.json
 # .cache/ reste ignoré (flux récupérés + cache santé des flux).
 # Le fichier feed-health.json est généré localement par `pnpm check-feeds`
