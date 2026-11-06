@@ -12,6 +12,7 @@
  */
 import { matchesAnyAge, parseAges, serializeAges } from "../lib/ages";
 import { isLocale, plural, t, type Locale } from "../lib/i18n";
+import { PREFS_KEY, readPrefs, resolveTheme, writePrefs } from "../lib/shared-storage";
 import { normalizeText } from "../lib/text";
 import { pageUrl } from "../lib/url";
 
@@ -1065,6 +1066,18 @@ async function copyWithFeedback(button: HTMLElement, text: string): Promise<void
   }, 2000);
 }
 
+function applyTheme(): void {
+  const preference = readPrefs().theme ?? "system";
+  const resolved = resolveTheme(
+    preference,
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
+  );
+  document.documentElement.dataset.theme = resolved;
+  for (const select of document.querySelectorAll<HTMLSelectElement>("[data-theme-switch]")) {
+    select.value = preference;
+  }
+}
+
 function bindGlobalListeners(): void {
   document.addEventListener("click", interceptClick);
 
@@ -1076,10 +1089,31 @@ function bindGlobalListeners(): void {
     const link = target.closest<HTMLElement>("[data-locale-switch]");
     const value = link?.dataset.localeSwitch;
     if (!value) return;
+    if (isLocale(value)) writePrefs({ locale: value });
     try {
       localStorage.setItem("yoto-locale", value);
     } catch {
       /* stockage indisponible (navigation privée) : le choix n'est pas mémorisé */
+    }
+  });
+
+  document.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement) || !target.matches("[data-theme-switch]")) return;
+    const value = target.value;
+    if (value !== "light" && value !== "dark" && value !== "system") return;
+    writePrefs({ theme: value });
+    applyTheme();
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (
+      event.key === PREFS_KEY ||
+      event.key === "yoto-icons-theme" ||
+      event.key === "yoto-locale" ||
+      event.key === "locale"
+    ) {
+      applyTheme();
     }
   });
 
@@ -1146,6 +1180,7 @@ function start(): void {
   bindPlayer();
   bindGlobalListeners();
   bindNavDropdown();
+  applyTheme();
   initPage(false);
 }
 

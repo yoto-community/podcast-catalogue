@@ -88,6 +88,6 @@ const publisherSlug = slugifyPublisher(entry.publisher);
       </li>
       <li class="badge badge--category">{categoryLabel(entry.category, locale)}</li>
     </ul>
-    <FavoriteButton slug={entry.slug} locale={locale} size="sm" />
+    <FavoriteButton slug={entry.slug} title={entry.name} locale={locale} size="sm" />
   </article>
 </li>

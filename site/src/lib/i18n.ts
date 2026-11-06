@@ -61,6 +61,10 @@ const fr = {
   languageSwitchLabel: "Langue",
   localeNameFr: "Français",
   localeNameEn: "English",
+  themeSwitchLabel: "Thème",
+  themeLight: "Clair",
+  themeDark: "Sombre",
+  themeSystem: "Système",
 
   footerCommunityBefore: "Fait partie de la",
   footerCommunityLink: "communauté Yoto",
@@ -328,6 +332,10 @@ const en: Record<MessageKey, string> = {
   languageSwitchLabel: "Language",
   localeNameFr: "Français",
   localeNameEn: "English",
+  themeSwitchLabel: "Theme",
+  themeLight: "Light",
+  themeDark: "Dark",
+  themeSystem: "System",
 
   footerCommunityBefore: "Part of the",
   footerCommunityLink: "Yoto Community",

@@ -1436,3 +1436,68 @@ main:focus {
     justify-content: center;
   }
 }
+
+/* Préférence partagée entre les sites (`yoto-community:prefs:v1`).
+   Ces blocs passent après les media queries pour qu'un choix explicite gagne
+   sur la préférence système. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101512;
+  --surface: #171d19;
+  --surface-2: #202721;
+  --text: #edefe9;
+  --text-muted: #a7b2aa;
+  --border: #313a33;
+  --accent: #5bc98f;
+  --accent-strong: #7adfa6;
+  --accent-soft: #1b3326;
+  --accent-2: #f08aa6;
+  --accent-2-soft: #3a1f28;
+  --warn: #e0b25c;
+  --warn-soft: #3a2f16;
+  --danger: #f19494;
+  --danger-soft: #3b2020;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 12px 32px rgb(0 0 0 / 45%);
+  --color-primary-focus: rgb(91 201 143 / 35%);
+  --color-primary-rgb: 91, 201, 143;
+  --color-primary-contrast: #101512;
+  --color-success: #5bc98f;
+  --color-success-contrast: #101512;
+  --color-warning: #e0b25c;
+  --color-warning-contrast: #101512;
+  --color-warning-rgb: 224, 178, 92;
+  --color-error-contrast: #101512;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f3e9;
+  --surface: #fffdf7;
+  --surface-2: #efe9da;
+  --text: #1f2a24;
+  --text-muted: #5a665f;
+  --border: #ded6c4;
+  --accent: #006d41;
+  --accent-strong: #00512f;
+  --accent-soft: #e3f0e7;
+  --accent-2: #af294e;
+  --accent-2-soft: #f6e3e9;
+  --warn: #7e5700;
+  --warn-soft: #f7edd3;
+  --danger: #a12626;
+  --danger-soft: #f7e3e3;
+  --shadow: 0 1px 2px rgb(31 42 36 / 6%), 0 12px 32px rgb(31 42 36 / 8%);
+  --color-primary-focus: rgb(0 109 65 / 25%);
+  --color-primary-rgb: 0, 109, 65;
+  --color-primary-contrast: var(--bg);
+  --color-success: #006d41;
+  --color-success-contrast: var(--bg);
+  --color-warning: #7e5700;
+  --color-warning-contrast: var(--bg);
+  --color-warning-rgb: 126, 87, 0;
+  --color-error-contrast: var(--bg);
+}
+
+:root[data-theme="dark"] .btn.copied {
+  color: var(--accent);
+}

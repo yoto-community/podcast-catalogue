@@ -23,7 +23,22 @@ const canonical = Astro.site ? new URL(fr, Astro.site).href : fr;
       (function () {
         var saved = null;
         try {
-          saved = localStorage.getItem("yoto-locale");
+          var raw = localStorage.getItem("yoto-community:prefs:v1");
+          if (raw) {
+            try {
+              var prefs = JSON.parse(raw);
+              if (
+                prefs &&
+                prefs.version === 1 &&
+                (prefs.locale === "fr" || prefs.locale === "en")
+              ) {
+                saved = prefs.locale;
+              }
+            } catch (error) {
+              /* préférences corrompues */
+            }
+          }
+          if (!saved) saved = localStorage.getItem("yoto-locale");
         } catch (error) {
           saved = null;
         }

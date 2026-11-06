@@ -1,0 +1,42 @@
+---
+import { t, type Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const label = t(locale, "themeSwitchLabel");
+---
+
+<label class="theme-switcher">
+  <span class="sr-only">{label}</span>
+  <select class="theme-select" data-theme-switch aria-label={label}>
+    <option value="light">{t(locale, "themeLight")}</option>
+    <option value="dark">{t(locale, "themeDark")}</option>
+    <option value="system">{t(locale, "themeSystem")}</option>
+  </select>
+</label>
+
+<style>
+  .theme-switcher {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .theme-select {
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.25rem 0.55rem;
+    cursor: pointer;
+  }
+
+  .theme-select:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>

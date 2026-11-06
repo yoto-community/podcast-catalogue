@@ -17,6 +17,7 @@ import { serializeJsonLd } from "../lib/seo";
 import { pageUrl } from "../lib/url";
 import FavoritesInit from "../components/FavoritesInit.astro";
 import LanguageSwitch from "../components/LanguageSwitch.astro";
+import ThemeSwitch from "../components/ThemeSwitch.astro";
 
 interface Props {
   title: string;
@@ -139,6 +140,36 @@ const catalogueActive =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <script is:inline>
+      (function () {
+        try {
+          var theme = null;
+          var raw = localStorage.getItem("yoto-community:prefs:v1");
+          if (raw) {
+            try {
+              var prefs = JSON.parse(raw);
+              if (
+                prefs &&
+                prefs.version === 1 &&
+                (prefs.theme === "light" || prefs.theme === "dark" || prefs.theme === "system")
+              ) {
+                theme = prefs.theme;
+              }
+            } catch (error) {
+              /* préférences corrompues */
+            }
+          }
+          if (!theme) theme = localStorage.getItem("yoto-icons-theme");
+          var dark =
+            theme === "dark" ||
+            ((!theme || theme === "system") &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.dataset.theme = dark ? "dark" : "light";
+        } catch (error) {
+          /* localStorage indisponible : le CSS système reste actif */
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <link rel="icon" href={pageUrl("/favicon.svg")} type="image/svg+xml" />
     <link rel="manifest" href={pageUrl("/manifest.webmanifest")} />
@@ -261,6 +292,7 @@ const catalogueActive =
             </li>
           </ul>
         </nav>
+        <ThemeSwitch locale={locale} />
         <LanguageSwitch locale={locale} alternates={alternates} />
       </div>
     </header>

@@ -127,7 +127,12 @@ const jsonLd = podcastSeriesJsonLd(entry, {
             </svg>
             {t(locale, "detailCopyRss")}
           </button>
-          <FavoriteButton slug={entry.slug} locale={locale} variant="icon-text" />
+          <FavoriteButton
+            slug={entry.slug}
+            title={entry.name}
+            locale={locale}
+            variant="icon-text"
+          />
         </p>
       </div>
     </header>

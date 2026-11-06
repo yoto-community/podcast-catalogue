@@ -3,13 +3,14 @@ import { t, type Locale } from "../lib/i18n";
 
 interface Props {
   slug: string;
+  title: string;
   locale: Locale;
   /** Taille du bouton (défaut: normal) */
   size?: "sm" | "normal";
   /** Variante visuelle */
   variant?: "icon" | "icon-text";
 }
-const { slug, locale, size = "normal", variant = "icon" } = Astro.props;
+const { slug, title, locale, size = "normal", variant = "icon" } = Astro.props;
 ---
 
 <button
@@ -17,6 +18,7 @@ const { slug, locale, size = "normal", variant = "icon" } = Astro.props;
   class:list={["favorite-btn", `favorite-btn--${size}`, `favorite-btn--${variant}`]}
   data-favorite
   data-slug={slug}
+  data-title={title}
   aria-pressed={false}
   aria-label={t(locale, "favoriteAddAria")}
 >
