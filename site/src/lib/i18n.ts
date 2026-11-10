@@ -56,6 +56,7 @@ const fr = {
   navContribute: "Contribuer",
   navAwesomeYoto: "Awesome Yoto",
   navIconsCatalogue: "Catalogue d’icônes",
+  navCommunitySites: "Sites de la communauté",
   navGithub: "GitHub",
   newTab: "(nouvel onglet)",
   languageSwitchLabel: "Langue",
@@ -65,6 +66,7 @@ const fr = {
   themeLight: "Clair",
   themeDark: "Sombre",
   themeSystem: "Système",
+  settingsLabel: "Réglages",
 
   footerCommunityBefore: "Fait partie de la",
   footerCommunityLink: "communauté Yoto",
@@ -327,6 +329,7 @@ const en: Record<MessageKey, string> = {
   navContribute: "Contribute",
   navAwesomeYoto: "Awesome Yoto",
   navIconsCatalogue: "Icons catalogue",
+  navCommunitySites: "Community sites",
   navGithub: "GitHub",
   newTab: "(new tab)",
   languageSwitchLabel: "Language",
@@ -336,6 +339,7 @@ const en: Record<MessageKey, string> = {
   themeLight: "Light",
   themeDark: "Dark",
   themeSystem: "System",
+  settingsLabel: "Settings",
 
   footerCommunityBefore: "Part of the",
   footerCommunityLink: "Yoto Community",

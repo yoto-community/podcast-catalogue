@@ -1106,6 +1106,43 @@ function bindGlobalListeners(): void {
     applyTheme();
   });
 
+  // Le sélecteur de langue du menu « Réglages » mémorise le choix puis navigue
+  // vers la page équivalente, quand elle existe.
+  document.addEventListener("change", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement) || !target.matches("[data-locale-select]")) return;
+    const value = target.value;
+    if (!isLocale(value)) return;
+    writePrefs({ locale: value });
+    try {
+      localStorage.setItem("yoto-locale", value);
+    } catch {
+      /* stockage indisponible : le choix n'est pas mémorisé */
+    }
+    const href = target.selectedOptions[0]?.dataset.href;
+    if (href) window.location.assign(href);
+  });
+
+  // Referme le menu « Réglages » au clic extérieur, comme sur les autres sites.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    for (const menu of document.querySelectorAll<HTMLDetailsElement>(
+      "[data-settings-menu][open]",
+    )) {
+      if (!menu.contains(target)) menu.removeAttribute("open");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    for (const menu of document.querySelectorAll<HTMLDetailsElement>(
+      "[data-settings-menu][open]",
+    )) {
+      menu.removeAttribute("open");
+    }
+  });
+
   window.addEventListener("storage", (event) => {
     if (
       event.key === PREFS_KEY ||
