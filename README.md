@@ -1,5 +1,12 @@
 # yoto-podcast-catalog
 
+| Badge                                                                                                                                                                                                                                    | Description       | Link                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------------- |
+| [![CI](https://img.shields.io/github.com/yoto-community/podcast-catalogue/actions/workflows/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white)](https://yoto-community.github.io/podcast-catalogue)                          | État CI           | https://yoto-community.github.io/podcast-catalogue                    |
+| [![Health](https://img.shields.io/github.com/yoto-community/podcast-catalogue/actions/workflows/feed-health.yml?style=for-the-badge&logo=githubactions&logoColor=white)](https://yoto-community.github.io/podcast-catalogue/feed-health) | Santé des flux    | https://yoto-community.github.io/podcast-catalogue/feed-health        |
+| [![Pages](https://img.shields.io/github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml?style=for-the-badge&logo=githubactions&logoColor=white)](https://yoto-community.github.io/podcast-catalogue)                    | Déploiement Pages | https://yoto-community.github.io/podcast-catalogue                    |
+| [![License](https://img.shields.io/badge/license-MIT-yellow.svg?style=for-the-badge)](https://github.com/yoto-community/podcast-catalogue/blob/main/LICENSE)                                                                             | Licence MIT       | https://github.com/yoto-community/podcast-catalogue/blob/main/LICENSE |
+
 Catalogue **statique de podcasts pour enfants** : une source éditoriale humaine
 (`entries/`), validée par une CI bloquante, publiée en JSON (`dist/`) et exposée par un
 site statique (GitHub Pages) où l'on peut chercher et **écouter un épisode**.
@@ -7,11 +14,6 @@ site statique (GitHub Pages) où l'on peut chercher et **écouter un épisode**.
 L'objectif pratique : **constituer des cartes MYO (Make Your Own) Yoto** — repérer un
 podcast adapté à l'âge, récupérer son flux RSS et l'ajouter sur une carte de son lecteur
 Yoto.
-
-[![CI](https://github.com/yoto-community/podcast-catalogue/actions/workflows/ci.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/ci.yml)
-[![Santé des flux](https://github.com/yoto-community/podcast-catalogue/actions/workflows/feed-health.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/feed-health.yml)
-[![Pages](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml/badge.svg)](https://github.com/yoto-community/podcast-catalogue/actions/workflows/pages.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > 198 podcasts · 2 langues · 4 tranches d'âge · 10 épisodes pré-extraits par podcast.
 
