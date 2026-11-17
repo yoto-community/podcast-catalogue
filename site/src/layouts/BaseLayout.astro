@@ -75,17 +75,12 @@ const navItems = [
     href: pageUrl(favoritesPath(locale)),
     exact: false,
   },
+  {
+    label: t(locale, "navSponsors"),
+    href: "https://github.com/sponsors/yoto-community",
+    exact: true,
+  },
 ];
-
-/** Pages hors périmètre, en français uniquement : visibles seulement dans la nav FR. */
-const communityItems =
-  locale === "fr"
-    ? [
-        { prefix: "/developers", label: t(locale, "navApi"), href: pageUrl("/developers/") },
-        { prefix: "/health", label: t(locale, "navHealth"), href: pageUrl("/health/") },
-        { prefix: "/contribuer", label: t(locale, "navContribute"), href: pageUrl("/contribuer/") },
-      ]
-    : [];
 
 /** Liens vers les autres sites de la communauté Yoto. */
 const portalUrl =
@@ -110,8 +105,27 @@ const localeOptions = [
     : []),
 ];
 
-const communityCurrent = communityItems.some((item) => isCurrent(item.prefix) === "page");
 const repoUrl = "https://github.com/yoto-community/podcast-catalogue";
+
+/** Pages hors périmètre, en français uniquement : visibles seulement dans la nav FR. */
+const communityItems =
+  locale === "fr"
+    ? [
+        { prefix: "/developers", label: t(locale, "navApi"), href: pageUrl("/developers/") },
+        { prefix: "/health", label: t(locale, "navHealth"), href: pageUrl("/health/") },
+        { prefix: "/contribuer", label: t(locale, "navContribute"), href: pageUrl("/contribuer/") },
+      ]
+    : [];
+
+/** Liens externes communs (visibles FR et EN). */
+const externalItems = [
+  {
+    label: t(locale, "navGithub"),
+    href: repoUrl,
+  },
+];
+
+const communityCurrent = communityItems.some((item) => isCurrent(item.prefix) === "page");
 const updated = formatDateLong(manifest.updatedAt, locale);
 
 /** Liens `hreflang` : uniquement quand la page existe dans les deux interfaces. */
@@ -286,17 +300,21 @@ const catalogueActive =
                       </a>
                     </li>
                   ))}
-                  <li class="site-nav__panel-separator" aria-hidden="true"></li>
-                  <li>
-                    <a href={repoUrl} target="_blank" rel="noopener noreferrer">
-                      {t(locale, "navGithub")}
-                      <span class="site-nav__external-mark" aria-hidden="true">
-                        {" "}
-                        ↗{" "}
-                      </span>
-                      <span class="sr-only">{t(locale, "newTab")}</span>
-                    </a>
-                  </li>
+                  {communityItems.length > 0 && (
+                    <li class="site-nav__panel-separator" aria-hidden="true"></li>
+                  )}
+                  {externalItems.map((item) => (
+                    <li>
+                      <a href={item.href} target="_blank" rel="noopener noreferrer">
+                        {item.label}
+                        <span class="site-nav__external-mark" aria-hidden="true">
+                          {" "}
+                          ↗{" "}
+                        </span>
+                        <span class="sr-only">{t(locale, "newTab")}</span>
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </details>
             </li>
@@ -402,16 +420,18 @@ const catalogueActive =
                   </li>
                 ))}
                 {communityItems.length > 0 && <li class="mobile-separator" aria-hidden="true"></li>}
-                <li>
-                  <a href={repoUrl} target="_blank" rel="noopener noreferrer">
-                    {t(locale, "navGithub")}
-                    <span class="site-nav__external-mark" aria-hidden="true">
-                      {" "}
-                      ↗{" "}
-                    </span>
-                    <span class="sr-only">{t(locale, "newTab")}</span>
-                  </a>
-                </li>
+                {externalItems.map((item) => (
+                  <li>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer">
+                      {item.label}
+                      <span class="site-nav__external-mark" aria-hidden="true">
+                        {" "}
+                        ↗{" "}
+                      </span>
+                      <span class="sr-only">{t(locale, "newTab")}</span>
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </nav>
