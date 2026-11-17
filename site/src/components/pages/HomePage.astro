@@ -4,16 +4,25 @@ import CatalogBrowser from "../CatalogBrowser.astro";
 import {
   authorOptions,
   categoryOptions,
+  getAuthors,
   getEntries,
   getGroups,
   getManifest,
+  getPublishers,
   groupAgeRange,
   groupLabel,
   groupOptions,
   languageOptions,
 } from "../../lib/catalog";
 import { t, type Locale } from "../../lib/i18n";
-import { alternates, entryPath, groupPath, homePath } from "../../lib/routes";
+import {
+  alternates,
+  authorsPath,
+  entryPath,
+  groupPath,
+  homePath,
+  publishersPath,
+} from "../../lib/routes";
 import { itemListJsonLd } from "../../lib/seo";
 import { pageUrl } from "../../lib/url";
 
@@ -34,6 +43,25 @@ const groupNav = groups
     active: false,
   }))
   .filter((item) => item.count > 0);
+
+/** Entrées transversales de la page Catalogue — sorties de l'en-tête. */
+const browseNav = {
+  label: t(locale, "catalogBrowse"),
+  items: [
+    {
+      href: pageUrl(publishersPath(locale)),
+      label: t(locale, "navPublishers"),
+      count: getPublishers(locale).length,
+      active: false,
+    },
+    {
+      href: pageUrl(authorsPath(locale)),
+      label: t(locale, "navAuthors"),
+      count: getAuthors(locale).length,
+      active: false,
+    },
+  ],
+};
 
 const jsonLd = itemListJsonLd(
   t(locale, "homeTitle"),
@@ -107,6 +135,7 @@ const path = homePath(locale);
     groups={groupOptions(entries, locale)}
     categories={categoryOptions(entries, locale)}
     authors={authorOptions(entries, locale)}
+    browse={browseNav}
     nav={{ label: t(locale, "groupAllGroups"), items: groupNav }}
   />
 </BaseLayout>

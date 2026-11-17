@@ -4,15 +4,7 @@ import "../styles/global.css";
 import { getManifest } from "../lib/catalog";
 import { formatDateLong } from "../lib/format";
 import { t, type Locale } from "../lib/i18n";
-import {
-  authorsPath,
-  favoritesPath,
-  homePath,
-  publishersPath,
-  searchPath,
-  themesPath,
-  newReleasesPath,
-} from "../lib/routes";
+import { favoritesPath, homePath, searchPath, themesPath, newReleasesPath } from "../lib/routes";
 import { serializeJsonLd } from "../lib/seo";
 import { pageUrl } from "../lib/url";
 import FavoritesInit from "../components/FavoritesInit.astro";
@@ -50,35 +42,30 @@ function isCurrent(prefix: string, exact = false): "page" | undefined {
   return cleanPath === clean || cleanPath.startsWith(`${clean}/`) ? "page" : undefined;
 }
 
-const navItems = [
+/** Élément de la navigation principale de l'en-tête. */
+type MainNavItem = {
+  label: string;
+  href: string;
+  /** Préfixe de section, pour `aria-current`. */
+  prefix?: string;
+  /** Page d'accueil : actif sur tout le catalogue (fiches, tranches, éditeurs…). */
+  catalogue?: boolean;
+};
+
+const navItems: MainNavItem[] = [
   {
-    prefix: homePath(locale),
+    catalogue: true,
     label: t(locale, "navCatalogue"),
     href: pageUrl(homePath(locale)),
-    exact: true,
-  },
-  {
-    prefix: publishersPath(locale),
-    label: t(locale, "navPublishers"),
-    href: pageUrl(publishersPath(locale)),
-    exact: false,
-  },
-  {
-    prefix: authorsPath(locale),
-    label: t(locale, "navAuthors"),
-    href: pageUrl(authorsPath(locale)),
-    exact: false,
   },
   {
     prefix: favoritesPath(locale),
     label: t(locale, "navFavorites"),
     href: pageUrl(favoritesPath(locale)),
-    exact: false,
   },
   {
     label: t(locale, "navSponsors"),
     href: "https://github.com/sponsors/yoto-community",
-    exact: true,
   },
 ];
 
@@ -146,11 +133,11 @@ const hreflangLinks =
     : [];
 
 // Les pages hors périmètre (Contribuer, API, Santé) restent en français.
+// Éditeurs et Auteurs sont des sous-sections du catalogue : elles gardent
+// « Catalogue » actif dans l'en-tête.
 const sectionPrefixes = [
   searchPath(locale),
   themesPath(locale),
-  authorsPath(locale),
-  publishersPath(locale),
   newReleasesPath(locale),
   favoritesPath(locale),
 ].map((value) => value.replace(/\/+$/, ""));
@@ -158,6 +145,12 @@ const catalogueActive =
   cleanPath === homePath(locale).replace(/\/+$/, "") ||
   (cleanPath.startsWith(`${homePath(locale).replace(/\/+$/, "")}/`) &&
     !sectionPrefixes.some((prefix) => cleanPath.startsWith(prefix)));
+
+/** `aria-current="page"` d'un lien de la navigation principale. */
+function navCurrent(item: MainNavItem): "page" | undefined {
+  if (item.catalogue) return catalogueActive ? "page" : undefined;
+  return item.prefix ? isCurrent(item.prefix) : undefined;
+}
 ---
 
 <!doctype html>
@@ -258,10 +251,8 @@ const catalogueActive =
               <li>
                 <a
                   href={item.href}
-                  aria-current={
-                    item.exact ? (catalogueActive ? "page" : undefined) : isCurrent(item.prefix)
-                  }
-                  data-nav-exact={item.exact ? "" : undefined}
+                  aria-current={navCurrent(item)}
+                  data-nav-exact={item.catalogue ? "" : undefined}
                 >
                   {item.label}
                 </a>
@@ -398,12 +389,7 @@ const catalogueActive =
             <ul class="mobile-nav-list">
               {navItems.map((item) => (
                 <li>
-                  <a
-                    href={item.href}
-                    aria-current={
-                      item.exact ? (catalogueActive ? "page" : undefined) : isCurrent(item.prefix)
-                    }
-                  >
+                  <a href={item.href} aria-current={navCurrent(item)}>
                     {item.label}
                   </a>
                 </li>

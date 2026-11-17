@@ -18,6 +18,8 @@ interface Props {
   preset?: { language?: string; group?: string };
   /** Afficher le filtre auteur en permanence (hors section pliable). */
   showAuthorFilter?: boolean;
+  /** Navigation transversale (éditeurs, auteurs…), affichée au-dessus des tranches. */
+  browse?: { label: string; items: NavItem[] };
   nav?: { label: string; items: NavItem[] };
 }
 
@@ -32,6 +34,7 @@ const {
   locale,
   preset,
   showAuthorFilter,
+  browse,
   nav,
 } = Astro.props;
 const sorted = sortByName(entries, locale);
@@ -52,6 +55,22 @@ const podcastCount = (count: number) =>
       {podcastCount(entries.length)}
     </p>
   </header>
+
+  {browse && browse.items.length > 0 && (
+    <nav class="catalog__browse" aria-label={browse.label}>
+      <span class="catalog__browse-label">{t(locale, "catalogBrowseLabel")}</span>
+      <ul>
+        {browse.items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.active ? "page" : undefined}>
+              {item.label}
+              <span class="catalog__browse-count">({item.count})</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
 
   {nav && nav.items.length > 1 && (
     <nav class="catalog__nav" aria-label={nav.label}>

@@ -463,6 +463,56 @@ main:focus {
   margin-bottom: 1.25rem;
 }
 
+/* Liens transversaux (éditeurs, auteurs) : de vrais liens, nettement séparés
+   des filtres et des tranches qui suivent. */
+.catalog__browse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.catalog__browse-label {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.catalog__browse ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+}
+
+.catalog__browse li + li::before {
+  content: "·";
+  margin-right: 0.75rem;
+  color: var(--text-muted);
+}
+
+.catalog__browse a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.catalog__browse a:hover,
+.catalog__browse a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.catalog__browse-count {
+  margin-left: 0.15rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 .catalog__nav ul {
   display: flex;
   flex-wrap: wrap;

@@ -121,6 +121,8 @@ const fr = {
   groupJsonLdName: "{label} — podcasts",
 
   /* ------------------------------------------------------------- catalogue */
+  catalogBrowse: "Parcourir par éditeur ou par auteur",
+  catalogBrowseLabel: "Parcourir par",
   catalogFilters: "Filtres",
   catalogSearchLabel: "Rechercher un podcast",
   catalogSearchPlaceholder: "Nom, éditeur, description, catégorie…",
@@ -395,6 +397,8 @@ const en: Record<MessageKey, string> = {
   groupJsonLdName: "{label} — podcasts",
 
   /* ------------------------------------------------------------- catalogue */
+  catalogBrowse: "Browse by publisher or author",
+  catalogBrowseLabel: "Browse by",
   catalogFilters: "Filters",
   catalogSearchLabel: "Search for a podcast",
   catalogSearchPlaceholder: "Name, publisher, description, category…",
